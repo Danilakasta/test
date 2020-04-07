@@ -97,7 +97,7 @@ public class ContractorsViewLogic implements Serializable {
         view.clearSelection();
         view.updateContractor(item);
         setFragmentParameter("");
-        view.showNotification(item.getCompanyName()
+        view.showNotification(item.getName()
                 + (newContractor ? " добавлено" : " сохранено"));
     }
 
@@ -105,7 +105,7 @@ public class ContractorsViewLogic implements Serializable {
         view.clearSelection();
         view.removeContractor(item);
         setFragmentParameter("");
-        view.showNotification(item.getCompanyName() + " удалено");
+        view.showNotification(item.getName() + " удалено");
     }
 
     public void editContractor(Contractor Contractor) {

@@ -5,6 +5,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -24,8 +25,8 @@ import com.roofapp.ui.MainLayout;
  * See also {@link ProductViewLogic} for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
-@Route(value = "Products", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+@Route(value = "products", layout = MainLayout.class)
+//@RouteAlias(value = "", layout = MainLayout.class)
 public class ProductView extends HorizontalLayout
         implements HasUrlParameter<String> {
 
@@ -57,6 +58,7 @@ public class ProductView extends HorizontalLayout
        form = new ProductForm(viewLogic,productService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
+        barAndGridLayout.add( new H2(this.VIEW_NAME));
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
         barAndGridLayout.setFlexGrow(1, grid);

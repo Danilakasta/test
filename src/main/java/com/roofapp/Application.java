@@ -1,6 +1,10 @@
 package com.roofapp;
 
+import com.roofapp.backend.data.entity.User;
+import com.roofapp.backend.repositories.UserRepository;
 import com.roofapp.backend.service.ProductService;
+import com.roofapp.backend.service.UserService;
+import com.roofapp.ui.MainLayout;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +20,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @ComponentScan({"com.roofapp.backend.service", "com.roofapp.config"})
 
-@SpringBootApplication()
+@SpringBootApplication(scanBasePackageClasses = {/*SecurityConfiguration.class,*/ MainLayout.class, Application.class,
+        UserService.class }, exclude = ErrorMvcAutoConfiguration.class)
+@EnableJpaRepositories(basePackageClasses = { UserRepository.class })
+@EntityScan(basePackageClasses = { User.class })
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

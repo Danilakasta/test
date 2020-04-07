@@ -22,8 +22,8 @@ public class ContractorGrid extends Grid<Contractor> {
 
         setSizeFull();
 
-        addColumn(Contractor::getCompanyName).setHeader("Название")
-                .setFlexGrow(20).setSortable(true).setKey("companyname");
+        addColumn(Contractor::getName).setHeader("Название")
+                .setFlexGrow(20).setSortable(true).setKey("name");
 
         // Format and add " €" to price
         final DecimalFormat decimalFormat = new DecimalFormat();
@@ -118,7 +118,7 @@ public class ContractorGrid extends Grid<Contractor> {
 
     private void setColumnVisibility(int width) {
      if (width > 800) {
-            getColumnByKey("companyname").setVisible(true);
+            getColumnByKey("name").setVisible(true);
            // getColumnByKey("price").setVisible(true);
           //  getColumnByKey("type").setVisible(true);
           //  getColumnByKey("stock").setVisible(true);

@@ -58,12 +58,10 @@ public class LoginScreen extends FlexLayout {
         VerticalLayout loginInformation = new VerticalLayout();
         loginInformation.setClassName("login-information");
 
-        H1 loginInfoHeader = new H1("Login Information");
+        H1 loginInfoHeader = new H1("ROOF FACTORY");
         loginInfoHeader.setWidth("100%");
         Span loginInfoText = new Span(
-                "Log in as \"admin\" to have full access. Log in with any " +
-                        "other username to have read-only access. For all " +
-                        "users, the password is same as the username.");
+                "Войдите в систему как admin, чтобы иметь полный доступ. пароль admin");
         loginInfoText.setWidth("100%");
         loginInformation.add(loginInfoHeader);
         loginInformation.add(loginInfoText);

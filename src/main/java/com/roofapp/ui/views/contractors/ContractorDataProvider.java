@@ -83,7 +83,7 @@ public class ContractorDataProvider extends ListDataProvider<Contractor> {
         }
         this.filterText = filterText.trim().toLowerCase(Locale.ENGLISH);
 
-        setFilter(contractor -> passesFilter(contractor.getCompanyName(), this.filterText)
+        setFilter(contractor -> passesFilter(contractor.getName(), this.filterText)
                         || passesFilter(contractor.getType(), this.filterText)
                 //    || passesFilter(product.getCategory(), this.filterText)
         );

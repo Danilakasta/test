@@ -62,7 +62,7 @@ public class AdminView extends VerticalLayout {
                 VaadinIcon.MINUS_CIRCLE_O.create(), event -> {
 
                     // Ask for confirmation before deleting stuff
-                    final ConfirmDialog dialog = new ConfirmDialog(
+              /*      final ConfirmDialog dialog = new ConfirmDialog(
                             "Please confirm",
                             "Are you sure you want to delete the category? Books in this category will not be deleted.",
                             "Delete", () -> {
@@ -74,7 +74,7 @@ public class AdminView extends VerticalLayout {
                             });
 
                     dialog.open();
-
+*/
                 });
         deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 

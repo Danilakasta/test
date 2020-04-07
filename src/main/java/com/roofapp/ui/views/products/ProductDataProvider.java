@@ -82,7 +82,7 @@ public class ProductDataProvider extends ListDataProvider<Product> {
         }
         this.filterText = filterText.trim().toLowerCase(Locale.ENGLISH);
 
-        setFilter(product -> passesFilter(product.getProductName(), this.filterText)
+        setFilter(product -> passesFilter(product.getName(), this.filterText)
                         || passesFilter(product.getType(), this.filterText)
                 //    || passesFilter(product.getCategory(), this.filterText)
         );

@@ -38,20 +38,20 @@ public class ContractorsForm extends Div {
 
     ContractorService contractorService;
 
-    private final TextField companyName;
+    private final TextField name;
 
     private final Select<ContractorType> type;
 
-  //  private final PhoneNumberField phohe;
+    //  private final PhoneNumberField phohe;
     private final TextField phohe;
-    private final EmailField email ;
+    private final EmailField email;
 
-    private final  TextField urAddress;
-    private final  TextField fizAddress;
-    private final  IntegerField inn ;
-    private final  IntegerField kpp;
-    private final  IntegerField okpo;
-    private final  IntegerField ogrn;
+    private final TextField urAddress;
+    private final TextField fizAddress;
+    private final IntegerField inn;
+    private final IntegerField kpp;
+    private final IntegerField okpo;
+    private final IntegerField ogrn;
 
    /*  private final TextField price;
     private final TextField weight;
@@ -132,11 +132,11 @@ public class ContractorsForm extends Div {
 
         //   viewLogic = sampleCrudLogic;
 
-        companyName = new TextField("Название");
-        companyName.setWidth("80%");
-        companyName.setRequired(true);
-        companyName.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(companyName);
+        name = new TextField("Название");
+        name.setWidth("80%");
+        name.setRequired(true);
+        name.setValueChangeMode(ValueChangeMode.EAGER);
+        content.add(name);
 
         type = new Select<>();
         type.setLabel("Тип");
@@ -144,9 +144,9 @@ public class ContractorsForm extends Div {
         type.setItems(ContractorType.values());
         content.add(type);
 
-        final HorizontalLayout horizontalLayout = new HorizontalLayout(companyName, type);
+        final HorizontalLayout horizontalLayout = new HorizontalLayout(name, type);
         horizontalLayout.setWidth("100%");
-        horizontalLayout.setFlexGrow(1, companyName, type);
+        horizontalLayout.setFlexGrow(1, name, type);
         content.add(horizontalLayout);
 
         phohe = new TextField("Номер телефона");

@@ -3,10 +3,7 @@ package com.roofapp.backend.data.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,11 +13,13 @@ import java.util.Objects;
 public abstract class AbstractEntity implements Serializable {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy= GenerationType.SEQUENCE)
 	private Long id;
 
 	@Version
 	private int version;
 
-
+	public boolean isNew() {
+		return id == null;
+	}
 }

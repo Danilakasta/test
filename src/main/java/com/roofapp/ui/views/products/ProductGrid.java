@@ -22,8 +22,8 @@ public class ProductGrid extends Grid<Product> {
 
         setSizeFull();
 
-        addColumn(Product::getProductName).setHeader("Название")
-                .setFlexGrow(20).setSortable(true).setKey("productname");
+        addColumn(Product::getName).setHeader("Название")
+                .setFlexGrow(20).setSortable(true).setKey("name");
 
         // Format and add " €" to price
         final DecimalFormat decimalFormat = new DecimalFormat();
@@ -65,7 +65,7 @@ public class ProductGrid extends Grid<Product> {
                 .setFlexGrow(5).setKey("width");
 
         addColumn(product -> decimalFormat.format(product.getPrice()) + " р")
-                .setHeader("Цена закупки").setTextAlign(ColumnTextAlign.END)
+                .setHeader("Цена ").setTextAlign(ColumnTextAlign.END)
                 .setComparator(Comparator.comparing(Product::getPrice))
                 .setFlexGrow(3).setKey("price");
 
@@ -98,19 +98,19 @@ public class ProductGrid extends Grid<Product> {
 
     private void setColumnVisibility(int width) {
         if (width > 800) {
-            getColumnByKey("productname").setVisible(true);
+            getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
             getColumnByKey("type").setVisible(true);
             getColumnByKey("stock").setVisible(true);
           //  getColumnByKey("category").setVisible(true);
         } else if (width > 550) {
-            getColumnByKey("productname").setVisible(true);
+            getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
             getColumnByKey("type").setVisible(false);
             getColumnByKey("stock").setVisible(false);
          //   getColumnByKey("category").setVisible(true);
         } else {
-            getColumnByKey("productname").setVisible(true);
+            getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
             getColumnByKey("type").setVisible(false);
             getColumnByKey("stock").setVisible(false);

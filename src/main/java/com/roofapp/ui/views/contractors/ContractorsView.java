@@ -8,6 +8,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -23,8 +24,8 @@ import com.vaadin.flow.router.*;
  */
 //@Route(value = "Contractors", layout = MainLayout.class)
 //@RouteAlias(value = "", layout = MainLayout.class)
-@Route(value = "Contractors", layout = MainLayout.class)
-@PageTitle("Contractors")
+@Route(value = "contractors", layout = MainLayout.class)
+@PageTitle("contractors")
 public class ContractorsView extends HorizontalLayout
         implements HasUrlParameter<String> {
 
@@ -56,6 +57,7 @@ public class ContractorsView extends HorizontalLayout
         form = new ContractorsForm(viewLogic, contractorService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
+        barAndGridLayout.add( new H2(this.VIEW_NAME));
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
         barAndGridLayout.setFlexGrow(1, grid);

@@ -18,6 +18,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -26,6 +27,7 @@ import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.roofapp.backend.data.entity.Product;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -38,8 +40,8 @@ public class ProductForm extends Div {
 
     ProductService productService;
 
-    private final TextField productName;
-    private final TextField price;
+    private final TextField name;
+    private final IntegerField price;
     private final TextField weight;
 
     private final TextField length;
@@ -116,11 +118,12 @@ public class ProductForm extends Div {
 
      //   viewLogic = sampleCrudLogic;
 
-        productName = new TextField("Название");
-        productName.setWidth("100%");
-        productName.setRequired(true);
-        productName.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(productName);
+        name = new TextField("Название");
+        name.setWidth("100%");
+        name.setRequired(true);
+        name.setValueChangeMode(ValueChangeMode.EAGER);
+        content.add(name);
+
         type = new Select<>();
         type.setLabel("Вид");
         type.setWidth("100%");
@@ -145,7 +148,7 @@ public class ProductForm extends Div {
         horizontalLayout2.setFlexGrow(1, type,materialColor);
         content.add(horizontalLayout2);
 
-        price = new TextField("Цена закупки");
+        price = new IntegerField("Цена закупки");
         price.setSuffixComponent(new Span("р"));
         price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         price.setValueChangeMode(ValueChangeMode.EAGER);
@@ -172,10 +175,10 @@ public class ProductForm extends Div {
         content.add(category);
 */
         binder = new BeanValidationBinder<>(Product.class);
-        binder.forField(price).withConverter(new PriceConverter())
-                .bind("price");
+      //  binder.forField(price).withConverter(new PriceConverter())
+           //    .bind("price");
         binder.forField(weight).withConverter(new StockCountConverter())
-                .bind("weight");
+               .bind("weight");
         binder.forField(length).withConverter(new StockCountConverter())
                 .bind("length");
         binder.bindInstanceFields(this);

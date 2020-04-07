@@ -12,11 +12,11 @@ public class MainLayoutElement extends AppLayoutElement {
 
     public List<WebElement> findMenuLinks() {
         waitForVaadin();
-        if(! "Contractors".equals(findElements(By.className("menu-link")).get(0).getText())){
+        if(! "orders".equals(findElements(By.className("menu-link")).get(0).getText())){
             this.getDrawerToggle().click();
         }
 
-        waitUntil(driver ->"Contractors".equals(findElements(By.className("menu-link")).get(0).getText()));
+        waitUntil(driver ->"orders".equals(findElements(By.className("menu-link")).get(0).getText()));
         final List<WebElement> elements = new ArrayList<>();
         elements.addAll(findElements(By.className("menu-link")));
         elements.addAll(findElements(By.className("menu-button")));

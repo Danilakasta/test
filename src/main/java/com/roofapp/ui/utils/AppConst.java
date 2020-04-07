@@ -4,22 +4,22 @@ import org.springframework.data.domain.Sort;
 
 import java.util.Locale;
 
-public class BakeryConst {
+public class AppConst {
 
-	public static final Locale APP_LOCALE = Locale.US;
+	public static final Locale APP_LOCALE = new Locale("ru", "RU");//Locale.US;
 
-	public static final String PAGE_ROOT = "";
-	public static final String PAGE_STOREFRONT = "storefront";
-	public static final String PAGE_STOREFRONT_EDIT = "storefront/edit";
+	public static final String PAGE_ROOT = "orders";
+	public static final String PAGE_STOREFRONT = "orders";
+	public static final String PAGE_STOREFRONT_EDIT = "orders/edit";
 	public static final String PAGE_DASHBOARD = "dashboard";
 	public static final String PAGE_USERS = "users";
 	public static final String PAGE_PRODUCTS = "products";
 
-	public static final String TITLE_STOREFRONT = "Storefront";
-	public static final String TITLE_DASHBOARD = "Dashboard";
-	public static final String TITLE_USERS = "Users";
-	public static final String TITLE_PRODUCTS = "Products";
-	public static final String TITLE_LOGOUT = "Logout";
+	public static final String TITLE_STOREFRONT = "storefront";
+	public static final String TITLE_DASHBOARD = "dashboard";
+	public static final String TITLE_USERS = "users";
+	public static final String TITLE_PRODUCTS = "products";
+	public static final String TITLE_LOGOUT = "logout";
 	public static final String TITLE_NOT_FOUND = "Page was not found";
 	public static final String TITLE_ACCESS_DENIED = "Access denied";
 

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-@ComponentScan({"com.roofapp.backend.service"})
+@ComponentScan({"com.roofapp.backend.service","com.roofapp.ui"})
 @EnableAsync
 @Configuration
 @EnableAspectJAutoProxy

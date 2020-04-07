@@ -10,8 +10,15 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class ConfirmDialog extends Dialog {
 
-    public ConfirmDialog(String caption, String text, String confirmButtonText,
-            Runnable confirmListener) {
+    private String caption;
+
+    private  String text;
+
+    private String confirmButtonText;
+
+    private  Runnable confirmListener;
+
+    public ConfirmDialog() {
 
         final VerticalLayout content = new VerticalLayout();
         content.setPadding(false);
@@ -36,4 +43,19 @@ public class ConfirmDialog extends Dialog {
 
     }
 
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setConfirmButtonText(String confirmButtonText) {
+        this.confirmButtonText = confirmButtonText;
+    }
+
+    public void setConfirmListener(Runnable confirmListener) {
+        this.confirmListener = confirmListener;
+    }
 }

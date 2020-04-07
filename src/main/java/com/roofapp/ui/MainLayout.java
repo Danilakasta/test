@@ -4,9 +4,12 @@ package com.roofapp.ui;
 //import com.roofapp.authentication.AccessControlFactory;
 import com.roofapp.authentication.AccessControl;
 import com.roofapp.authentication.AccessControlFactory;
+import com.roofapp.ui.views.machines.MachinesView;
+import com.roofapp.ui.views.manufacture.ManufactureView;
 import com.roofapp.ui.views.materials.MaterialsView;
 import com.roofapp.ui.views.products.ProductView;
 import com.roofapp.ui.views.contractors.ContractorsView;
+import com.roofapp.ui.views.order.OrderView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
@@ -62,10 +65,12 @@ public class MainLayout extends AppLayout implements RouterLayout {
        //         "img/table-logo.png", VaadinSession.getCurrent().getBrowser());
 
       //  final Image image = new Image(resolvedImage, "");
-        final Label title = new Label("Roof Factory");
+        final Label title = new Label("Roof Factory Prototype");
      //   top.add(image, title);
         top.add(title);
         addToNavbar(top);
+        addToDrawer(createMenuLink(OrderView.class, "Заказы",
+                VaadinIcon.EDIT.create()));
 
         addToDrawer(createMenuLink(ContractorsView.class, ContractorsView.VIEW_NAME,
                 VaadinIcon.USERS.create()));
@@ -77,8 +82,17 @@ public class MainLayout extends AppLayout implements RouterLayout {
         addToDrawer(createMenuLink(MaterialsView.class, MaterialsView.VIEW_NAME,
                 VaadinIcon.VIEWPORT.create()));
 
+
+        addToDrawer(createMenuLink(MachinesView.class, MachinesView.VIEW_NAME,
+                VaadinIcon.WORKPLACE.create()));
+
+        addToDrawer(createMenuLink(ManufactureView.class, ManufactureView.VIEW_NAME,
+                VaadinIcon.ADD_DOCK.create()));
+
         addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
                 VaadinIcon.INFO_CIRCLE.create()));
+
+
 
         // Create logout button but don't add it yet; admin view might be added
         // in between (see #onAttach())

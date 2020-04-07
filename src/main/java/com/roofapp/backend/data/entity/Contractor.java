@@ -19,7 +19,7 @@ public class Contractor {
     private Long id;
 
    // @Size(min = 2, message = "")
-   private String companyName;
+   private String name;
 
     private ContractorType type = ContractorType.UR;
 

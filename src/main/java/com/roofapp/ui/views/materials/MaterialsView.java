@@ -7,6 +7,9 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -20,8 +23,8 @@ import com.vaadin.flow.router.*;
  * See also {@link MateriaslViewLogic} for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
-@Route(value = "Materials", layout = MainLayout.class)
-@PageTitle("Materials")
+@Route(value = "materials", layout = MainLayout.class)
+@PageTitle("materials")
 //@RouteAlias(value = "", layout = MainLayout.class)
 public class MaterialsView extends HorizontalLayout
         implements HasUrlParameter<String> {
@@ -54,6 +57,7 @@ public class MaterialsView extends HorizontalLayout
        form = new MaterialForm(viewLogic,materialService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
+        barAndGridLayout.add( new H2(this.VIEW_NAME));
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
         barAndGridLayout.setFlexGrow(1, grid);
