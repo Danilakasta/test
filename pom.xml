@@ -94,11 +94,11 @@
         </dependency>
         <!-- Added to provide logging output as Vaadin uses -->
         <!-- the unbound SLF4J no-operation (NOP) logger implementation -->
-        <dependency>
+       <!-- <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
         </dependency>
-
+-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>

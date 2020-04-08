@@ -37,7 +37,10 @@ import com.roofapp.ui.about.AboutView;
  * The main layout. Contains the navigation menu.
  */
 @Theme(value = Lumo.class)
-@PWA(name = "Rooffactory", shortName = "Roof Factory")
+/*@PWA(name = "Rooffactory",
+        shortName = "RoofFactory",
+        startPath = "login"
+)*/
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/menu-buttons.css", themeFor = "vaadin-button")
 public class MainLayout extends AppLayout implements RouterLayout {
