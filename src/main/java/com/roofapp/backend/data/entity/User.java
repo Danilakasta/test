@@ -16,7 +16,7 @@ public class User extends AbstractEntity {
 	@Column(unique = true)
 	private String email;
 
-	@NotNull
+	//@NotNull
 	@Size(min = 4, max = 255)
 	private String passwordHash;
 

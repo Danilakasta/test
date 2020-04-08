@@ -15,7 +15,7 @@ public class AppConst {
 	public static final String PAGE_USERS = "users";
 	public static final String PAGE_PRODUCTS = "products";
 
-	public static final String TITLE_STOREFRONT = "storefront";
+	public static final String TITLE_STOREFRONT = "roof";
 	public static final String TITLE_DASHBOARD = "dashboard";
 	public static final String TITLE_USERS = "users";
 	public static final String TITLE_PRODUCTS = "products";

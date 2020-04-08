@@ -18,10 +18,10 @@ public class HistoryItem extends AbstractEntity {
 	@Size(max = 255)
 	private String message;
 
-	@NotNull
+	//@NotNull
 	private LocalDateTime timestamp;
 	@ManyToOne
-	@NotNull
+//	@NotNull
 	private User createdBy = new User();
 
 	HistoryItem() {

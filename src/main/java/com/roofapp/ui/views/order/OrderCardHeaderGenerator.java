@@ -45,7 +45,7 @@ public class OrderCardHeaderGenerator {
 	private List<HeaderWrapper> headerChain = new ArrayList<>();
 
 	private OrderCardHeader getRecentHeader() {
-		return new OrderCardHeader("Recent", "Before this week");
+		return new OrderCardHeader("Устаревший", "Прошлая неделя");
 	}
 
 	private OrderCardHeader getYesterdayHeader() {
@@ -62,7 +62,7 @@ public class OrderCardHeaderGenerator {
 		LocalDate today = LocalDate.now();
 		LocalDate yesterday = today.minusDays(1);
 		LocalDate thisWeekStart = today.minusDays(today.getDayOfWeek().getValue() - 1);
-		return new OrderCardHeader("Неделю назад", secondaryHeaderFor(thisWeekStart, yesterday));
+		return new OrderCardHeader("На этой неделе", secondaryHeaderFor(thisWeekStart, yesterday));
 	}
 
 	private OrderCardHeader getThisWeekStartingTomorrow(boolean showPrevious) {
@@ -74,7 +74,7 @@ public class OrderCardHeaderGenerator {
 	}
 
 	private OrderCardHeader getUpcomingHeader() {
-		return new OrderCardHeader("Предстоящий", "После этой недели");
+		return new OrderCardHeader("Предстоящий", "Плановый заказ");
 	}
 
 	private String secondaryHeaderFor(LocalDate date) {

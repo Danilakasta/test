@@ -29,17 +29,17 @@ public class Order extends AbstractEntity implements OrderSummary {
 	public static final String ENTITY_GRAPTH_BRIEF = "Order.brief";
 	public static final String ENTITY_GRAPTH_FULL = "Order.full";
 
-	@NotNull(message = "{bakery.due.date.required}")
+	//@NotNull(message = "{bakery.due.date.required}")
 	private LocalDate dueDate;
 
-	@NotNull(message = "{bakery.due.time.required}")
+//	@NotNull(message = "{bakery.due.time.required}")
 	private LocalTime dueTime;
 
-	@NotNull(message = "{bakery.pickup.location.required}")
+//	@NotNull(message = "{bakery.pickup.location.required}")
 	@ManyToOne
 	private PickupLocation pickupLocation;
 
-	@NotNull
+	//@NotNull
 	@OneToOne(cascade = CascadeType.ALL)
 	private Customer customer;
 
@@ -50,7 +50,7 @@ public class Order extends AbstractEntity implements OrderSummary {
 	@NotEmpty
 	@Valid
 	private List<OrderItem> items;
-	@NotNull(message = "{bakery.status.required}")
+	//@NotNull(message = "{bakery.status.required}")
 	private OrderState state;
 
 

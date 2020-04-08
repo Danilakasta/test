@@ -29,7 +29,7 @@ import com.vaadin.flow.router.*;
 public class MaterialsView extends HorizontalLayout
         implements HasUrlParameter<String> {
 
-    public static final String VIEW_NAME = "Материалы";
+    public static final String VIEW_NAME = "Сырье";
 
 
    private final MaterialService productService;
