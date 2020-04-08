@@ -71,11 +71,8 @@ public class EntityPresenter<T extends AbstractEntity, V extends EntityView<T>>
 		try {
 			operation.run();
 			return true;
-		}catch (Exception e)	{
-			e.printStackTrace();
-		}
 
-		/*}
+			}
 		catch (UserFriendlyDataException e) {
 			// Commit failed because of application-level data constraints
 			consumeError(e, e.getMessage(), true);
@@ -94,9 +91,9 @@ public class EntityPresenter<T extends AbstractEntity, V extends EntityView<T>>
 			consumeError(e, CrudErrorMessage.ENTITY_NOT_FOUND, false);
 		}
 		catch (ConstraintViolationException e) {
-		//	consumeError(e, CrudErrorMessage.REQUIRED_FIELDS_MISSING, false);
-			return true;
-		}*/
+			consumeError(e, CrudErrorMessage.REQUIRED_FIELDS_MISSING, false);
+		//	return true;
+		}
 		return false;
 	}
 

@@ -2,6 +2,7 @@ package com.roofapp.ui;
 
 //import com.roofapp.authentication.AccessControl;
 //import com.roofapp.authentication.AccessControlFactory;
+
 import com.roofapp.authentication.AccessControl;
 import com.roofapp.authentication.AccessControlFactory;
 import com.roofapp.ui.views.machines.MachinesView;
@@ -19,17 +20,20 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
-        import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-        import com.vaadin.flow.router.RouteConfiguration;
+import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
-        import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.server.VaadinService;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import com.roofapp.ui.about.AboutView;
 
@@ -64,12 +68,12 @@ public class MainLayout extends AppLayout implements RouterLayout {
         // Note! Image resource url is resolved here as it is dependent on the
         // execution mode (development or production) and browser ES level
         // support
-     //   final String resolvedImage = VaadinService.getCurrent().resolveResource(
-       //         "img/table-logo.png", VaadinSession.getCurrent().getBrowser());
+       // final String resolvedImage = VaadinService.getCurrent().resolveResource(
+        //        "img/logo.png"/*, VaadinSession.getCurrent().getBrowser()*/);
 
       //  final Image image = new Image(resolvedImage, "");
         final Label title = new Label("Roof Factory Prototype");
-     //   top.add(image, title);
+      //  top.add(image, title);
         top.add(title);
         addToNavbar(top);
         addToDrawer(createMenuLink(OrderView.class, "Заказы",
@@ -94,7 +98,6 @@ public class MainLayout extends AppLayout implements RouterLayout {
 
         addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
                 VaadinIcon.INFO_CIRCLE.create()));
-
 
 
         // Create logout button but don't add it yet; admin view might be added

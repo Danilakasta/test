@@ -14,7 +14,7 @@ $_documentContainer.innerHTML = `<dom-module id="bakery-app-layout-theme" theme-
       }
 
       [part="navbar"] {
-        z-index: 200;
+        z-index: 2;
         box-shadow: 0 0 16px 2px var(--lumo-shade-20pct);
       }
 
