@@ -17,17 +17,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     int countByNameLikeIgnoreCase(String name);
 
     @Query(value = "select row_number() over() as id,\n" +
-            "p.`length` ,\n" +
+            "p.length ,\n" +
             "p.material_color ,\n" +
             "concat(concat(concat('Заказ # ', oi.items_id),' '),p.name) as name,\n" +
             "p.price ,\n" +
-            "p.product_name ,\n" +
-            "p.`type` ,\n" +
+            "p.name ,\n" +
+            "p.type ,\n" +
             "p.weight,\n" +
             "p.width ,\n" +
             "p.version \n" +
             "from order_item oi \n" +
             "right join product p on oi.product_id  = p.id \n" +
-            "order by material_color,width desc",nativeQuery = true)
+            "order by material_color, width desc",nativeQuery = true)
     List<Product> findOrdersOrder();
 }
