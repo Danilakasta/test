@@ -1,1 +1,1 @@
-web: java -Dspring.profiles.active="production" $JAVA_OPTS -jar target/roofcrm-1.0-SNAPSHOT.war --port $PORT target/*.war
+web: java $JAVA_OPTS -jar target/roofcrm-1.0-SNAPSHOT.war --port $PORT target/*.war
