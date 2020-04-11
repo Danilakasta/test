@@ -98,7 +98,7 @@ public class MateriaslViewLogic implements Serializable {
         view.clearSelection();
         view.updateProduct(item);
         setFragmentParameter("");
-        view.showNotification(item.getName()
+        view.showNotification(item.getSerialNumber()
                 + (newProduct ? " добавлено" : " сохранено"));
     }
 
@@ -106,7 +106,7 @@ public class MateriaslViewLogic implements Serializable {
         view.clearSelection();
         view.removeProduct(item);
         setFragmentParameter("");
-        view.showNotification(item.getName() + " удалено");
+        view.showNotification(item.getSerialNumber() + " удалено");
     }
 
     public void edit(Material item) {

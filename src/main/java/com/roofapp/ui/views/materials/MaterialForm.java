@@ -2,7 +2,6 @@ package com.roofapp.ui.views.materials;
 
 import com.roofapp.backend.data.CoverType;
 import com.roofapp.backend.data.MaterialColor;
-import com.roofapp.backend.data.MaterialType;
 import com.roofapp.backend.data.Width;
 import com.roofapp.backend.data.entity.Material;
 import com.roofapp.backend.service.MaterialService;
@@ -21,12 +20,11 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
+import javax.swing.plaf.multi.MultiMenuBarUI;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -41,32 +39,26 @@ public class MaterialForm extends Div {
 
     MaterialService materialService;
 
-    private final TextField name;
-    private final TextField price;
-    private final TextField weight;
-
-    private final TextField length;
-
-    private final Select<MaterialType> type;
-
-    private final Select<MaterialColor> materialColor;
-
-    private final Select<Width> width;
-
-    private final Select<CoverType> cover ;
-
+    private final IntegerField serialNumber;
+    private final TextField manufacturer;
     private final TextField party;
 
-    private final TextField manufacturer;
 
+    private final NumberField price;
+    private final NumberField priceDelivery;
+    private final NumberField priceOneTone;
+    private final IntegerField weightOfBay;
+    private final IntegerField length;
+    private final NumberField priceOneMetre;
+    private final Select<MaterialColor> materialColor;
+    private final Select<Width> width;
+    private final Select<CoverType> cover;
     private final NumberField teorCoefficient;
-
     private final NumberField factCoefficient;
+    private final NumberField used;
+    private final NumberField remains;
 
-    private final IntegerField used;
-
-
- //   private final CheckboxGroup<Category> category;
+    //   private final CheckboxGroup<Category> category;
     private Button save;
     private Button discard;
     private Button cancel;
@@ -79,13 +71,13 @@ public class MaterialForm extends Div {
     }
 
     private final Binder<Material> binder;
-    
+
     private Material currentMaterial;
 
-    private static class PriceConverter extends StringToBigDecimalConverter {
+    private static class PriceConverter extends StringToIntegerConverter {
 
         public PriceConverter() {
-            super(BigDecimal.ZERO, "Cannot convert value to a number.");
+            super(0, "Cannot convert value to a number.");
         }
 
         @Override
@@ -100,9 +92,9 @@ public class MaterialForm extends Div {
         }
     }
 
-    private static class StockCountConverter extends StringToIntegerConverter {
+    private static class IntConverter extends StringToIntegerConverter {
 
-        public StockCountConverter() {
+        public IntConverter() {
             super(0, "Could not convert value to " + Integer.class.getName()
                     + ".");
         }
@@ -125,25 +117,35 @@ public class MaterialForm extends Div {
     @Autowired
     public MaterialForm(MateriaslViewLogic viewLogic, MaterialService MaterialService) {
         this.materialService = MaterialService;
-        setClassName("Material-form ");
+        setClassName("product-form ");
 
         content = new VerticalLayout();
         content.setSizeUndefined();
-        content.addClassName("Material-form-content");
+        content.addClassName("product-form-content");
         add(content);
 
-     //   viewLogic = sampleCrudLogic;
 
-        name = new TextField("Название");
-        name.setWidth("100%");
-        name.setRequired(true);
-        name.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(name);
-        type = new Select<>();
-        type.setLabel("Вид");
-        type.setWidth("100%");
-        type.setItems(MaterialType.values());
-        //  content.add(type);
+        serialNumber = new IntegerField("Порядковый номер");
+        serialNumber.setSuffixComponent(new Span("№"));
+        serialNumber.setWidth("25%");
+        serialNumber.setValueChangeMode(ValueChangeMode.EAGER);
+        content.add(serialNumber);
+
+        manufacturer = new TextField("Производитель");
+        manufacturer.setWidth("50%");
+        manufacturer.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+        manufacturer.setValueChangeMode(ValueChangeMode.EAGER);
+
+        party = new TextField("Партия");
+        party.setWidth("25%");
+        party.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+        party.setValueChangeMode(ValueChangeMode.EAGER);
+
+        final HorizontalLayout horizontalLayout = new HorizontalLayout(serialNumber, manufacturer, party);
+        horizontalLayout.setWidth("100%");
+        horizontalLayout.setFlexGrow(1, serialNumber, manufacturer);
+        content.add(horizontalLayout);
+
 
         materialColor = new Select<>();
         materialColor.setLabel("Цвет");
@@ -151,56 +153,63 @@ public class MaterialForm extends Div {
         materialColor.setItems(MaterialColor.values());
         // content.add(materialColor);
 
+        cover = new Select<>();
+        cover.setLabel("Покрытие");
+        cover.setWidth("100%");
+        cover.setItems(CoverType.values());
+
         width = new Select<>();
         width.setLabel("Толщина");
         width.setWidth("100%");
         width.setItems(Width.values());
         // content.add(materialColor);
 
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(type,
-                materialColor,width);
+        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(materialColor, cover, width);
         horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(1, type,materialColor);
+        horizontalLayout2.setFlexGrow(3, materialColor, cover, width);
         content.add(horizontalLayout2);
 
-        price = new TextField("Цена закупки");
+
+        price = new NumberField("Цена бухты");
         price.setSuffixComponent(new Span("р"));
         price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         price.setValueChangeMode(ValueChangeMode.EAGER);
 
-        weight = new TextField("Вес кг.");
-        weight.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        weight.setValueChangeMode(ValueChangeMode.EAGER);
+        priceDelivery = new NumberField("Цена доставки");
+        priceDelivery.setSuffixComponent(new Span("р"));
+        priceDelivery.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+        priceDelivery.setValueChangeMode(ValueChangeMode.EAGER);
 
-        length = new TextField("Длинна пог. м.");
+        priceOneTone = new NumberField("Цена за тонну");
+        priceOneTone.setSuffixComponent(new Span("р"));
+        priceOneTone.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+        priceOneTone.setValueChangeMode(ValueChangeMode.EAGER);
+
+        final HorizontalLayout horizontalLayout3 = new HorizontalLayout(price, priceDelivery, priceOneTone);
+        horizontalLayout3.setWidth("100%");
+        horizontalLayout3.setFlexGrow(3, price, priceDelivery, priceOneTone);
+        content.add(horizontalLayout3);
+
+
+        weightOfBay = new IntegerField("Вес бухты");
+        weightOfBay.setSuffixComponent(new Span("кг"));
+        weightOfBay.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+        weightOfBay.setValueChangeMode(ValueChangeMode.EAGER);
+
+        length = new IntegerField("Длинна пас.");
+        length.setSuffixComponent(new Span("пог. м."));
         length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         length.setValueChangeMode(ValueChangeMode.EAGER);
 
-        final HorizontalLayout horizontalLayout = new HorizontalLayout(price,
-                weight, length);
-        horizontalLayout.setWidth("100%");
-        horizontalLayout.setFlexGrow(1, price, weight);
-        content.add(horizontalLayout);
+        priceOneMetre = new NumberField("Себеc. теор");
+        priceOneMetre.setSuffixComponent(new Span("р пог.м."));
+        priceOneMetre.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+        priceOneMetre.setValueChangeMode(ValueChangeMode.EAGER);
 
-        cover= new Select<>();
-        cover.setLabel("Покрытие");
-        cover.setWidth("100%");
-        cover.setItems(CoverType.values());
-
-
-        party = new TextField("Партия");
-        party.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        party.setValueChangeMode(ValueChangeMode.EAGER);
-
-        manufacturer = new TextField("Производитель");
-        manufacturer.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        manufacturer.setValueChangeMode(ValueChangeMode.EAGER);
-
-
-        final HorizontalLayout horizontalLayout3 = new HorizontalLayout(cover,party,manufacturer);
-        horizontalLayout3.setWidth("100%");
-        horizontalLayout3.setFlexGrow(1, cover,party,manufacturer);
-        content.add(horizontalLayout3);
+        final HorizontalLayout horizontalLayout4 = new HorizontalLayout(weightOfBay, length, priceOneMetre);
+        horizontalLayout4.setWidth("100%");
+        horizontalLayout4.setFlexGrow(3, weightOfBay, length, priceOneMetre);
+        content.add(horizontalLayout4);
 
 
         teorCoefficient = new NumberField("Теор. коеф");
@@ -213,29 +222,35 @@ public class MaterialForm extends Div {
         factCoefficient.setValueChangeMode(ValueChangeMode.EAGER);
         content.add(factCoefficient);
 
-        used = new IntegerField("Израсходовано");
+        final HorizontalLayout horizontalLayout5 = new HorizontalLayout(teorCoefficient, factCoefficient);
+        horizontalLayout5.setWidth("100%");
+        horizontalLayout5.setFlexGrow(2, teorCoefficient, factCoefficient);
+        content.add(horizontalLayout5);
+
+
+        used = new NumberField("Израсходовано");
+        used.setSuffixComponent(new Span("м"));
+        used.setEnabled(false);
         used.setWidth("100%");
         used.setValueChangeMode(ValueChangeMode.EAGER);
         content.add(used);
 
-        final HorizontalLayout horizontalLayout4 = new HorizontalLayout(teorCoefficient,factCoefficient,used);
-        horizontalLayout4.setWidth("100%");
-        horizontalLayout4.setFlexGrow(1, teorCoefficient,factCoefficient,used);
-        content.add(horizontalLayout4);
-      /*  aaa = new TextField("");
-        aaa.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        aaa.setValueChangeMode(ValueChangeMode.EAGER);
+        remains = new NumberField("Остаток");
+        remains.setSuffixComponent(new Span("м"));
+        remains.setEnabled(false);
+        remains.setWidth("100%");
+        remains.setValueChangeMode(ValueChangeMode.EAGER);
+        content.add(remains);
 
-        */
+        final HorizontalLayout horizontalLayout6 = new HorizontalLayout(used, remains);
+        horizontalLayout6.setWidth("100%");
+        horizontalLayout6.setFlexGrow(2, used, remains);
+        content.add(horizontalLayout6);
 
 
         binder = new BeanValidationBinder<>(Material.class);
-        binder.forField(price).withConverter(new PriceConverter())
-                .bind("price");
-        binder.forField(weight).withConverter(new StockCountConverter())
-                .bind("weight");
-        binder.forField(length).withConverter(new StockCountConverter())
-                .bind("length");
+
+
         binder.bindInstanceFields(this);
 
         // enable/disable save button while editing
@@ -283,9 +298,9 @@ public class MaterialForm extends Div {
         content.add(save, discard, delete, cancel);
     }
 
-  //  public void setCategories(Collection<Category> categories) {
+    //  public void setCategories(Collection<Category> categories) {
     //    category.setItems(categories);
-  //  }
+    //  }
 
     public void edit(Material Material) {
         if (Material == null) {

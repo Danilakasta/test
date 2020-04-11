@@ -2,6 +2,7 @@ package com.roofapp.ui.views.materials;
 
 import com.roofapp.backend.data.entity.Material;
 import com.roofapp.backend.data.entity.Material;
+import com.roofapp.ui.utils.FormattingUtils;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
@@ -20,22 +21,17 @@ import java.util.Comparator;
 public class MaterialsGrid extends Grid<Material> {
 
     public MaterialsGrid() {
-
         setSizeFull();
 
-        addColumn(Material::getName).setHeader("Название")
-                .setFlexGrow(20).setSortable(true).setKey("name");
+        addColumn(Material::getSerialNumber).setHeader("Порядковый номер")
+                .setFlexGrow(20).setSortable(true).setKey("serialNumber");
 
-        // Format and add " €" to price
-        final DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setMaximumFractionDigits(2);
-        decimalFormat.setMinimumFractionDigits(2);
+        addColumn(Material::getManufacturer).setHeader("Производитель")
+                .setFlexGrow(5).setSortable(true).setKey("manufacturer");
 
-        // Add an traffic light icon in front of availability
-        // Three css classes with the same names of three availability values,
-        // Available, Coming and Discontinued, are defined in shared-styles.css
-        // and are
-        // used here in availabilityTemplate.
+        addColumn(Material::getParty).setHeader("Номер партии")
+                .setFlexGrow(5).setSortable(true).setKey("рarty");
+
 
         //final String availabilityTemplate = "<iron-icon icon=\"vaadin:circle\" class-name=\"[[item.type]]\"></iron-icon> [[item.type]]";
         final String materialColorTemplate = "<iron-icon icon=\"vaadin:circle\" class-name=\"[[item.materialColor]]\"></iron-icon> [[item.materialColor]]";
@@ -47,15 +43,14 @@ public class MaterialsGrid extends Grid<Material> {
                         .comparing(Material::getMaterialColor))
                 .setFlexGrow(5).setKey("materialColor");
 
-        final String typeTemplate = "[[item.type]]";
-        addColumn(TemplateRenderer.<Material>of(typeTemplate)
-                .withProperty("type",
-                        Material -> Material.getType().toString()))
-                                .setHeader("Тип материала")
-                                .setComparator(Comparator
-                                        .comparing(Material::getType))
-                                .setFlexGrow(5).setKey("type");
-
+        final String coverTemplate = "[[item.cover]]";
+        addColumn(TemplateRenderer.<Material>of(coverTemplate)
+                .withProperty("cover",
+                        Material -> Material.getCover().toString()))
+                .setHeader("Покрытие")
+                .setComparator(Comparator
+                        .comparing(Material::getCover))
+                .setFlexGrow(5).setKey("cover");
 
         final String widthTemplate = "[[item.width]]";
         addColumn(TemplateRenderer.<Material>of(widthTemplate)
@@ -66,28 +61,29 @@ public class MaterialsGrid extends Grid<Material> {
                         .comparing(Material::getWidth))
                 .setFlexGrow(5).setKey("width");
 
-        final String coverTemplate = "[[item.cover]]";
-        addColumn(TemplateRenderer.<Material>of(widthTemplate)
-                .withProperty("cover",
-                         Material -> Material.getCover().toString()))
-                .setHeader("Покрытие")
-                .setComparator(Comparator
-                        .comparing(Material::getCover))
-                .setFlexGrow(5).setKey("cover");
 
 
-        addColumn(Material -> decimalFormat.format(Material.getPrice()) + " р")
-                .setHeader("Цена закупки").setTextAlign(ColumnTextAlign.END)
+        addColumn(Material -> Material.getPrice())
+                .setHeader("Цена бухты").setTextAlign(ColumnTextAlign.END)
                 .setComparator(Comparator.comparing(Material::getPrice))
                 .setFlexGrow(3).setKey("price");
 
-        addColumn(Material -> Material.getWeight() == 0 ? "-"
-                : Integer.toString(Material.getWeight()))
-                        .setHeader("Вес")
-                        .setTextAlign(ColumnTextAlign.END)
-                        .setComparator(
-                                Comparator.comparingInt(Material::getWeight))
-                        .setFlexGrow(3).setKey("stock");
+        addColumn(Material -> Material.getPriceDelivery())
+                .setHeader("Цена доставки").setTextAlign(ColumnTextAlign.END)
+                .setComparator(Comparator.comparing(Material::getPriceDelivery))
+                .setFlexGrow(3).setKey("priceDelivery");
+
+        addColumn(Material -> Material.getPriceOneTone())
+                .setHeader("Цена за тонну").setTextAlign(ColumnTextAlign.END)
+                .setComparator(Comparator.comparing(Material::getPriceOneTone))
+                .setFlexGrow(3).setKey("priceOneTone");
+
+
+
+        addColumn(Material -> Material.getWeightOfBay())
+                .setHeader("Вес бухты кг").setTextAlign(ColumnTextAlign.END)
+                .setComparator(Comparator.comparing(Material::getPriceOneMetre))
+                .setFlexGrow(3).setKey("weightOfBay");
 
         addColumn(Material -> Material.getLength() == 0 ? "-"
                 : Integer.toString(Material.getLength()))
@@ -97,13 +93,12 @@ public class MaterialsGrid extends Grid<Material> {
                         Comparator.comparingInt(Material::getLength))
                 .setFlexGrow(3).setKey("length");
 
+        addColumn(Material -> Material.getPriceOneMetre())
+                .setHeader("Себес. пог.м. теор").setTextAlign(ColumnTextAlign.END)
+                .setComparator(Comparator.comparing(Material::getPriceOneMetre))
+                .setFlexGrow(3).setKey("priceOneMetre");
 
 
-        addColumn(Material::getParty).setHeader("Партия")
-                .setFlexGrow(5).setSortable(true).setKey("рarty");
-
-        addColumn(Material::getManufacturer).setHeader("Производитель")
-                .setFlexGrow(5).setSortable(true).setKey("manufacturer");
 
         addColumn(Material::getTeorCoefficient).setHeader("Теор. коеф")
                 .setFlexGrow(5).setSortable(true).setKey("teorCoefficient");
@@ -111,13 +106,14 @@ public class MaterialsGrid extends Grid<Material> {
         addColumn(Material::getFactCoefficient).setHeader("Факт. коэф")
                 .setFlexGrow(5).setSortable(true).setKey("factCoefficient");
 
+
+
         addColumn(Material::getUsed).setHeader("Израсходовано")
                 .setFlexGrow(5).setSortable(true).setKey("used");
 
+        addColumn(Material::getUsed).setHeader("остаток")
+                .setFlexGrow(5).setSortable(true).setKey("remains");
 
-        // Show all categories the Material is in, separated by commas
-      //  addColumn(this::formatCategories).setHeader("Category").setFlexGrow(12)
-         //       .setKey("category");
 
         // If the browser window size changes, check if all columns fit on
         // screen
@@ -128,23 +124,33 @@ public class MaterialsGrid extends Grid<Material> {
 
     private void setColumnVisibility(int width) {
         if (width > 800) {
-            getColumnByKey("name").setVisible(true);
+            getColumnByKey("cover").setVisible(true);
+            getColumnByKey("width").setVisible(true);
             getColumnByKey("price").setVisible(true);
-            getColumnByKey("type").setVisible(true);
-            getColumnByKey("stock").setVisible(true);
-          //  getColumnByKey("category").setVisible(true);
+            getColumnByKey("priceDelivery").setVisible(true);
+            getColumnByKey("priceOneTone").setVisible(true);
+            getColumnByKey("weightOfBay").setVisible(true);
+            getColumnByKey("length").setVisible(true);
+            getColumnByKey("priceOneMetre").setVisible(true);
+            getColumnByKey("teorCoefficien").setVisible(true);
+            getColumnByKey("factCoefficient").setVisible(true);
+            getColumnByKey("used").setVisible(true);
+            getColumnByKey("remains").setVisible(true);
         } else if (width > 550) {
-            getColumnByKey("name").setVisible(true);
-            getColumnByKey("price").setVisible(true);
-            getColumnByKey("type").setVisible(false);
-            getColumnByKey("stock").setVisible(false);
-         //   getColumnByKey("category").setVisible(true);
+            getColumnByKey("cover").setVisible(false);
+            getColumnByKey("width").setVisible(false);
+            getColumnByKey("price").setVisible(false);
+            getColumnByKey("priceDelivery").setVisible(false);
+            getColumnByKey("priceOneTone").setVisible(false);
+            getColumnByKey("weightOfBay").setVisible(false);
+            getColumnByKey("length").setVisible(false);
+            getColumnByKey("priceOneMetre").setVisible(false);
+            getColumnByKey("teorCoefficien").setVisible(false);
+            getColumnByKey("factCoefficient").setVisible(false);
+            getColumnByKey("used").setVisible(false);
+            getColumnByKey("remains").setVisible(false);
         } else {
-            getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
-            getColumnByKey("type").setVisible(false);
-            getColumnByKey("stock").setVisible(false);
-          //  getColumnByKey("category").setVisible(false);
         }
     }
 

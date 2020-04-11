@@ -2,52 +2,68 @@ package com.roofapp.backend.data.entity;
 
 import com.roofapp.backend.data.*;
 import lombok.Data;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity(name="Materials")
 @Data
-public class Material {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    private Long id;
+public class Material extends AbstractEntity {
 
    // @Size(min = 2, message = "Product name must have at least two characters")
-    private String name;
-  //  @Min(0)
-    private BigDecimal price = BigDecimal.ZERO;
-
-    private int weight = 0;
-
-    private int length = 0;
-
-    private MaterialType type ;
-
-    private MaterialColor materialColor = MaterialColor.BROWN;
-
-    private Width width = Width.W28;
-
-    //Покрытие
-    private CoverType cover = CoverType.NONE;
-
+    //Порядковый номер
+    @NotNull
+    private Integer serialNumber ;
+    //Производитель
+    @NotNull
+    private String manufacturer;
+    //Номер партии
+    @NotNull
     private String party;
 
-    private String manufacturer;
+    //цвет
+    @NotNull
+    private MaterialColor materialColor = MaterialColor.BROWN;
+    //Покрытие
+    @NotNull
+    private CoverType cover = CoverType.NONE;
+    //толшина
+    @NotNull
+    private Width width = Width.W28;
 
+    //  @Min(0)
+    //Цена бухты
+    @NotNull
+    private Double price ;
+    //Цена доставки
+    @NotNull
+    private Double priceDelivery ;
+    // Цена за тонну
+    @NotNull
+    private Double  priceOneTone;
+
+
+    //Вес бухты кг
+    private Integer weightOfBay;
+    //Длинна паспортная
+    private Integer length;
+    //Себестоймость погонного метра теор
+    private Double priceOneMetre ;
+
+
+    //Теоритический коэф
     private Double teorCoefficient;
-
+    //Факт коэф
     private Double factCoefficient;
 
-    private int used;
-
-    public boolean isNew() {
-        return this.id == null;
-    }
-
+    //расход
+    private Double used;
+    //остаток
+    private Double remains;
 
 }

@@ -16,8 +16,8 @@ public abstract class AbstractEntity implements Serializable {
 	@GeneratedValue(strategy= GenerationType.SEQUENCE)
 	private Long id;
 
-	@Version
-	private int version;
+//	@Version
+	//private int version;
 
 	public boolean isNew() {
 		return id == null;

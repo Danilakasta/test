@@ -123,11 +123,11 @@ public class ContractorsForm extends Div {
     @Autowired
     public ContractorsForm(ContractorsViewLogic viewLogic, ContractorService contractorService) {
         this.contractorService = contractorService;
-        setClassName("Contractor-form ");
+        setClassName("product-form ");
 
         content = new VerticalLayout();
         content.setSizeUndefined();
-        content.addClassName("Contractor-form-content");
+        content.addClassName("product-form-content");
         add(content);
 
         //   viewLogic = sampleCrudLogic;
