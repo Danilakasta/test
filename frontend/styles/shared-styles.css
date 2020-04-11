@@ -113,14 +113,8 @@ body {
     color: #f54993;
 }
 
-.Brown{
-    color: #A0522D;
-}
-
-.Green{
-    color: #32CD32;
-}
-
-.Blue{
-    color: #0000FF;
-}
+.RAL9016 { color:#F7FBF5;}
+.RAL5015{ color:#2874B2;}
+.RAL6010 {color:#3E753B;}
+.RAL7035{ color:#CBD0CC;}
+.RAL8016 {color:#4C2F26;}

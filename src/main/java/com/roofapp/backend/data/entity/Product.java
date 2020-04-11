@@ -37,7 +37,7 @@ public class Product extends AbstractEntity {
 
     private ProductType type;
 
-    private MaterialColor materialColor = MaterialColor.BROWN;
+    private MaterialColor materialColor = MaterialColor.RAL9016;
 
     private Width width = Width.W28;
 

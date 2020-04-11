@@ -28,7 +28,7 @@ public class Material extends AbstractEntity {
 
     //цвет
     @NotNull
-    private MaterialColor materialColor = MaterialColor.BROWN;
+    private MaterialColor materialColor = MaterialColor.RAL9016;
     //Покрытие
     @NotNull
     private CoverType cover = CoverType.NONE;

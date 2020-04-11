@@ -27,10 +27,10 @@ public class MaterialsGrid extends Grid<Material> {
                 .setFlexGrow(20).setSortable(true).setKey("serialNumber");
 
         addColumn(Material::getManufacturer).setHeader("Производитель")
-                .setFlexGrow(5).setSortable(true).setKey("manufacturer");
+                .setFlexGrow(50).setSortable(true).setKey("manufacturer");
 
         addColumn(Material::getParty).setHeader("Номер партии")
-                .setFlexGrow(5).setSortable(true).setKey("рarty");
+                .setFlexGrow(20).setSortable(true).setKey("рarty");
 
 
         //final String availabilityTemplate = "<iron-icon icon=\"vaadin:circle\" class-name=\"[[item.type]]\"></iron-icon> [[item.type]]";
