@@ -5,21 +5,21 @@ import com.vaadin.flow.component.ComponentEvent;
 
 public class PriceChangeEvent extends ComponentEvent<OrderItemEditor> {
 
-	private final int oldValue;
+	private final Double oldValue;
 
-	private final int newValue;
+	private final Double newValue;
 
-	public PriceChangeEvent(OrderItemEditor component, int oldValue, int newValue) {
+	public PriceChangeEvent(OrderItemEditor component, Double oldValue, Double newValue) {
 		super(component, false);
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 	}
 
-	public int getOldValue() {
+	public Double getOldValue() {
 		return oldValue;
 	}
 
-	public int getNewValue() {
+	public Double getNewValue() {
 		return newValue;
 	}
 

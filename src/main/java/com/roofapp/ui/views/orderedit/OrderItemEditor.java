@@ -20,6 +20,7 @@ import com.vaadin.flow.component.internal.AbstractFieldSupport;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
@@ -27,6 +28,8 @@ import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.templatemodel.TemplateModel;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -41,7 +44,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 	private Button delete;
 
 	@Id("amount")
-	private IntegerField amount;
+	private NumberField amount;
 
 	@Id("price")
 	private Div price;
@@ -49,7 +52,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 	@Id("comment")
 	private TextField comment;
 
-	private int totalPrice;
+	private Double totalPrice;
 	
     private final AbstractFieldSupport<OrderItemEditor, OrderItem> fieldSupport;
 
@@ -63,6 +66,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 			fireEvent(new ProductChangeEvent(this, e.getValue()));
 		});
 		amount.addValueChangeListener(e -> setPrice());
+		amount.setPattern("#0.00");
 		comment.addValueChangeListener(e -> fireEvent(new CommentChangeEvent(this, e.getValue())));
 
 		binder.forField(amount).bind("quantity");
@@ -76,14 +80,14 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 	}
 	
 	private void setPrice() {
-		int oldValue = totalPrice;
-		Integer selectedAmount = amount.getValue();
+		Double oldValue = totalPrice;
+		Double selectedAmount = amount.getValue();
 		Product product = products.getValue();
-		totalPrice = 0;
+		totalPrice = Double.valueOf(0);
 		if (selectedAmount != null && product != null) {
-			totalPrice = selectedAmount * product.getPrice();
+			totalPrice = new BigDecimal(selectedAmount * product.getPrice()).setScale(2, RoundingMode.HALF_UP).doubleValue();
 		}
-		price.setText(FormattingUtils.formatAsCurrency(totalPrice));
+		price.setText(/*FormattingUtils.formatAsCurrency(*/totalPrice.toString()/*)*/);
 		if (oldValue != totalPrice) {
 			fireEvent(new PriceChangeEvent(this, oldValue, totalPrice));
 		}

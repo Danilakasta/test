@@ -19,6 +19,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -41,7 +42,7 @@ public class ProductForm extends Div {
     ProductService productService;
 
     private final TextField name;
-    private final IntegerField price;
+    private final NumberField price;
     private final TextField weight;
 
     private final TextField length;
@@ -148,7 +149,7 @@ public class ProductForm extends Div {
         horizontalLayout2.setFlexGrow(1, type,materialColor);
         content.add(horizontalLayout2);
 
-        price = new IntegerField("Цена закупки");
+        price = new NumberField("Цена");
         price.setSuffixComponent(new Span("р"));
         price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         price.setValueChangeMode(ValueChangeMode.EAGER);

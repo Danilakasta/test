@@ -42,6 +42,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalTime;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -176,7 +178,7 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 	}
 
 	public void close() {
-		setTotalPrice(0);
+		setTotalPrice(0d);
 	}
 
 	public void write(Order order) throws ValidationException {
@@ -212,8 +214,9 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 		return addListener(CancelEvent.class, listener);
 	}
 
-	private void setTotalPrice(int totalPrice) {
-		getModel().setTotalPrice(FormattingUtils.formatAsCurrency(totalPrice));
+	private void setTotalPrice(Double totalPrice) {
+		getModel().setTotalPrice(new BigDecimal(totalPrice).setScale(2, RoundingMode.HALF_UP).toString());
+		//getModel().setTotalPrice(/*FormattingUtils.formatAsCurrency(*/totalPrice.toString()/*)*/);
 	}
 
 	public void setCurrentUser(User currentUser) {

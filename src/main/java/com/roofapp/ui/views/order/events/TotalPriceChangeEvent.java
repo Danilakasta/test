@@ -5,14 +5,14 @@ import com.vaadin.flow.component.ComponentEvent;
 
 public class TotalPriceChangeEvent extends ComponentEvent<OrderItemsEditor> {
 
-	private final Integer totalPrice;
+	private final Double totalPrice;
 
-	public TotalPriceChangeEvent(OrderItemsEditor component, Integer totalPrice) {
+	public TotalPriceChangeEvent(OrderItemsEditor component, Double totalPrice) {
 		super(component, false);
 		this.totalPrice = totalPrice;
 	}
 
-	public Integer getTotalPrice() {
+	public Double getTotalPrice() {
 		return totalPrice;
 	}
 

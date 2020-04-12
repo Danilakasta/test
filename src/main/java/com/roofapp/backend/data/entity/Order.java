@@ -152,7 +152,7 @@ public class Order extends AbstractEntity implements OrderSummary {
 	}
 
 	@Override
-	public Integer getTotalPrice() {
-		return items.stream().map(i -> i.getTotalPrice()).reduce(0, Integer::sum);
+	public Double getTotalPrice() {
+		return items.stream().map(i -> i.getTotalPrice()).reduce(Double.valueOf(0), Double::sum);
 	}
 }

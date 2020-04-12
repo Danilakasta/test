@@ -21,5 +21,5 @@ public interface OrderSummary {
 
 	PickupLocation getPickupLocation();
 
-	Integer getTotalPrice();
+	Double getTotalPrice();
 }

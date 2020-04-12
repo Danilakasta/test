@@ -1,5 +1,7 @@
 package com.roofapp.backend.data.entity;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
@@ -7,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@Data
 public class OrderItem extends AbstractEntity {
 
 	@ManyToOne
@@ -15,36 +18,12 @@ public class OrderItem extends AbstractEntity {
 
 	@Min(1)
 	//@NotNull
-	private Integer quantity = 1;
+	private Double quantity = 1d ;
 
 	@Size(max = 255)
 	private String comment;
 
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public int getTotalPrice() {
-		return quantity == null || product == null ? 0 : quantity * product.getPrice();
+	public Double getTotalPrice() {
+		return quantity == null || product == null ? Double.valueOf(0) : quantity * product.getPrice();
 	}
 }

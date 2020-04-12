@@ -24,7 +24,7 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 
 	private DataProvider<Product, String> productDataProvider;
 
-	private int totalPrice = 0;
+	private Double totalPrice = 0d;
 
 	private boolean hasChanges = false;
 
@@ -40,7 +40,7 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 	public void setValue(List<OrderItem> items) {
 		fieldSupport.setValue(items);
 		removeAll();
-		totalPrice = 0;
+		totalPrice = 0d;
 		hasChanges = false;
 
 		if (items != null) {
@@ -62,7 +62,7 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 				remove(orderItemEditor);
 				OrderItem orderItem = orderItemEditor.getValue();
 				setValue(getValue().stream().filter(element -> element != orderItem).collect(Collectors.toList()));
-				updateTotalPriceOnItemPriceChange(orderItem.getTotalPrice(), 0);
+				updateTotalPriceOnItemPriceChange(orderItem.getTotalPrice(), Double.valueOf(0));
 				setHasChanges(true);
 			}
 		});
@@ -93,8 +93,8 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 		}
 	}
 
-	private void updateTotalPriceOnItemPriceChange(int oldItemPrice, int newItemPrice) {
-		final int delta = newItemPrice - oldItemPrice;
+	private void updateTotalPriceOnItemPriceChange(Double oldItemPrice, Double newItemPrice) {
+		final Double delta = newItemPrice - oldItemPrice;
 		totalPrice += delta;
 		setHasChanges(true);
 		fireEvent(new TotalPriceChangeEvent(this, totalPrice));

@@ -27,9 +27,9 @@ public class Product extends AbstractEntity {
     @NotBlank(message = "{bakery.name.required}")
     private String name;
     //  @Min(0)
-    @Min(value = 0, message = "{bakery.price.limits}")
-    @Max(value = 100000, message = "{bakery.price.limits}")
-    private Integer price = 0;
+ //   @Min(value = 0, message = "{bakery.price.limits}")
+  //  @Max(value = 100000, message = "{bakery.price.limits}")
+    private Double price;
 
     private int weight = 0;
 

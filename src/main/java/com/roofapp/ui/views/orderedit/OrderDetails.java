@@ -101,10 +101,10 @@ public class OrderDetails extends PolymerTemplate<OrderDetails.Model> {
 		@Encode(value = StorefrontLocalDateConverter.class, path = "dueDate")
 		@Encode(value = LocalTimeConverter.class, path = "dueTime")
 		@Encode(value = OrderStateConverter.class, path = "state")
-		@Encode(value = CurrencyFormatter.class, path = "items.product.price")
+		//@Encode(value = CurrencyFormatter.class, path = "items.product.price")
 		@Encode(value = LocalDateTimeConverter.class, path = "history.timestamp")
 		@Encode(value = OrderStateConverter.class, path = "history.newState")
-		@Encode(value = CurrencyFormatter.class, path = "totalPrice")
+		//@Encode(value = CurrencyFormatter.class, path = "totalPrice")
 		void setItem(Order order);
 
 		void setReview(boolean review);
