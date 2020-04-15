@@ -5,6 +5,7 @@ package com.roofapp.ui;
 
 import com.roofapp.authentication.AccessControl;
 import com.roofapp.authentication.AccessControlFactory;
+import com.roofapp.ui.views.deliveries.DeliveriesView;
 import com.roofapp.ui.views.machines.MachinesView;
 import com.roofapp.ui.views.manufacture.ManufactureView;
 import com.roofapp.ui.views.materials.MaterialsView;
@@ -41,6 +42,11 @@ import com.roofapp.ui.about.AboutView;
  * The main layout. Contains the navigation menu.
  */
 @Theme(value = Lumo.class)
+@PWA(name = "Bakery App Starter", shortName = "roofApp",
+        startPath = "login",
+        backgroundColor = "#227aef", themeColor = "#227aef",
+        offlinePath = "offline-page.html",
+        offlineResources = {"images/offline-login-banner.jpg"})
 /*@PWA(name = "Rooffactory",
         shortName = "RoofFactory",
         startPath = "login"
@@ -96,8 +102,13 @@ public class MainLayout extends AppLayout implements RouterLayout {
         addToDrawer(createMenuLink(ManufactureView.class, ManufactureView.VIEW_NAME,
                 VaadinIcon.ADD_DOCK.create()));
 
+        addToDrawer(createMenuLink(DeliveriesView.class, DeliveriesView .VIEW_NAME,
+                VaadinIcon.INFO_CIRCLE.create()));
+
         addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
                 VaadinIcon.INFO_CIRCLE.create()));
+
+
 
 
         // Create logout button but don't add it yet; admin view might be added

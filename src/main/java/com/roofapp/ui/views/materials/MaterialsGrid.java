@@ -132,7 +132,7 @@ public class MaterialsGrid extends Grid<Material> {
             getColumnByKey("weightOfBay").setVisible(true);
             getColumnByKey("length").setVisible(true);
             getColumnByKey("priceOneMetre").setVisible(true);
-            getColumnByKey("teorCoefficien").setVisible(true);
+//            getColumnByKey("teorCoefficien").setVisible(true);
             getColumnByKey("factCoefficient").setVisible(true);
             getColumnByKey("used").setVisible(true);
             getColumnByKey("remains").setVisible(true);
@@ -145,7 +145,7 @@ public class MaterialsGrid extends Grid<Material> {
             getColumnByKey("weightOfBay").setVisible(false);
             getColumnByKey("length").setVisible(false);
             getColumnByKey("priceOneMetre").setVisible(false);
-            getColumnByKey("teorCoefficien").setVisible(false);
+         //   getColumnByKey("teorCoefficien").setVisible(false);
             getColumnByKey("factCoefficient").setVisible(false);
             getColumnByKey("used").setVisible(false);
             getColumnByKey("remains").setVisible(false);
