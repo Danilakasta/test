@@ -5,7 +5,7 @@ package com.roofapp.ui;
 
 import com.roofapp.authentication.AccessControl;
 import com.roofapp.authentication.AccessControlFactory;
-import com.roofapp.ui.views.deliveries.DeliveriesView;
+//import com.roofapp.ui.views.deliveries.DeliveriesView;
 import com.roofapp.ui.views.machines.MachinesView;
 import com.roofapp.ui.views.manufacture.ManufactureView;
 import com.roofapp.ui.views.materials.MaterialsView;
@@ -102,8 +102,8 @@ public class MainLayout extends AppLayout implements RouterLayout {
         addToDrawer(createMenuLink(ManufactureView.class, ManufactureView.VIEW_NAME,
                 VaadinIcon.ADD_DOCK.create()));
 
-        addToDrawer(createMenuLink(DeliveriesView.class, DeliveriesView .VIEW_NAME,
-                VaadinIcon.INFO_CIRCLE.create()));
+     //   addToDrawer(createMenuLink(DeliveriesView.class, DeliveriesView .VIEW_NAME,
+       //         VaadinIcon.INFO_CIRCLE.create()));
 
         addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
                 VaadinIcon.INFO_CIRCLE.create()));
