@@ -1,5 +1,8 @@
 package com.roofapp.backend.data.entity;
 
+import com.roofapp.backend.data.Role;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrePersist;
@@ -7,7 +10,7 @@ import javax.persistence.PreUpdate;
 import javax.validation.constraints.*;
 import java.util.Objects;
 
-@Entity(name="UserInfo")
+@Entity(name="Users")
 public class User extends AbstractEntity {
 
 	@NotEmpty
@@ -28,9 +31,8 @@ public class User extends AbstractEntity {
 	@Size(max = 255)
 	private String lastName;
 
-	@NotBlank
-	@Size(max = 255)
-	private String role;
+
+	private Role role;
 
 	private boolean locked = false;
 
@@ -49,6 +51,7 @@ public class User extends AbstractEntity {
 	}
 
 	public void setPasswordHash(String passwordHash) {
+
 		this.passwordHash = passwordHash;
 	}
 
@@ -68,11 +71,11 @@ public class User extends AbstractEntity {
 		this.lastName = lastName;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 

@@ -2,6 +2,7 @@ package com.roofapp.app.security;
 
 import com.roofapp.backend.data.entity.User;
 import com.roofapp.backend.repositories.UserRepository;
+import com.vaadin.flow.component.textfield.IntegerField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -45,7 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("No user present with username: " + username);
 		} else {
 			return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPasswordHash(),
-					Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
+					Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName())));
 		}
 	}
 }

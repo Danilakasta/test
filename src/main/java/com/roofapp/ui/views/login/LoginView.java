@@ -21,7 +21,9 @@ public class LoginView extends LoginOverlay
 		i18n.setHeader(new LoginI18n.Header());
 		i18n.getHeader().setTitle("CRM ROOF FACTORY");
 		i18n.getHeader().setDescription(
-			"admin@roof.com + admin\n" + "manager@roof.com + manager");
+			"Админ admin@roof.ru+ admin\n"
+					+ " Менеджер manager@roof.ru + manager\n"
+					+ " Станочник machineingener@roof.ru + machine");
 		i18n.setAdditionalInformation(null);
 		i18n.setForm(new LoginI18n.Form());
 		i18n.getForm().setSubmit("Войти");

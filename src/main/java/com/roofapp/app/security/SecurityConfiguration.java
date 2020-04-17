@@ -19,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
+import java.util.Arrays;
+
 /**
  * Configures spring security, doing the following:
  * <li>Bypass security checks for static resources,</li>
@@ -78,7 +80,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// Not using Spring CSRF here to be able to use plain HTML for the login page
+		// Not using Spring CSRF here to be able to use plain HTML for the login pa
+		String[] roles = Arrays.toString(Role.class.getEnumConstants()).replaceAll("^.|.$", "").split(", ");
 		http.csrf().disable()
 
 				// Register our CustomRequestCache, that saves unauthorized access attempts, so
@@ -92,7 +95,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
 
 				// Allow all requests by logged in users.
-				.anyRequest().hasAnyAuthority(Role.getAllRoles())
+				.anyRequest().hasAnyAuthority(roles)
 
 				// Configure the login page.
 				.and().formLogin().loginPage(LOGIN_URL).permitAll().loginProcessingUrl(LOGIN_PROCESSING_URL)

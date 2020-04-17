@@ -1,7 +1,7 @@
 package com.roofapp.ui.views.machines;
 
-import com.roofapp.authentication.AccessControl;
-import com.roofapp.authentication.AccessControlFactory;
+//import com.roofapp.authentication.AccessControl;
+//import com.roofapp.authentication.AccessControlFactory;
 import com.roofapp.backend.data.entity.Machine;
 import com.vaadin.flow.component.UI;
 
@@ -29,10 +29,10 @@ public class MachineViewLogic implements Serializable {
      * buttons if the user doesn't have access.
      */
     public void init() {
-        if (!AccessControlFactory.getInstance().createAccessControl()
-               .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+     //   if (!AccessControlFactory.getInstance().createAccessControl()
+        //       .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
             view.setEnabled(false);
-        }
+       // }
 
 
     }
@@ -124,9 +124,9 @@ public class MachineViewLogic implements Serializable {
     }
 
     public void rowSelected(Machine Machine) {
-        if (AccessControlFactory.getInstance().createAccessControl()
-                .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+      //  if (AccessControlFactory.getInstance().createAccessControl()
+         //       .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
             editMachine(Machine);
-        }
+      //  }
     }
 }

@@ -1,7 +1,7 @@
 package com.roofapp.ui.views.contractors;
 
-import com.roofapp.authentication.AccessControl;
-import com.roofapp.authentication.AccessControlFactory;
+///import com.roofapp.authentication.AccessControl;
+//import com.roofapp.authentication.AccessControlFactory;
 import com.roofapp.backend.data.entity.Contractor;
 import com.vaadin.flow.component.UI;
 
@@ -29,10 +29,10 @@ public class ContractorsViewLogic implements Serializable {
      * buttons if the user doesn't have access.
      */
     public void init() {
-        if (!AccessControlFactory.getInstance().createAccessControl()
-               .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+    //    if (!AccessControlFactory.getInstance().createAccessControl()
+     //          .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
             view.setNewContractorEnabled(false);
-        }
+     //   }
 
 
     }
@@ -124,9 +124,9 @@ public class ContractorsViewLogic implements Serializable {
     }
 
     public void rowSelected(Contractor item) {
-        if (AccessControlFactory.getInstance().createAccessControl()
-                .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+      //  if (AccessControlFactory.getInstance().createAccessControl()
+       //         .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
             editContractor(item);
-        }
+      //7  }
     }
 }

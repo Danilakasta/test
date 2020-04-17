@@ -1,6 +1,7 @@
 package com.roofapp.backend.service;
 
 import com.roofapp.backend.data.entity.AbstractEntity;
+import com.roofapp.backend.data.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,5 +12,6 @@ public interface FilterableCrudService<T extends AbstractEntity> extends CrudSer
 	Page<T> findAnyMatching(Optional<String> filter, Pageable pageable);
 
 	long countAnyMatching(Optional<String> filter);
+
 
 }

@@ -2,8 +2,8 @@ package com.roofapp.ui.views.products;
 
 import java.io.Serializable;
 
-import com.roofapp.authentication.AccessControl;
-import com.roofapp.authentication.AccessControlFactory;
+//import com.roofapp.authentication.AccessControl;
+//import com.roofapp.authentication.AccessControlFactory;
 import com.roofapp.backend.data.entity.Product;
 import com.vaadin.flow.component.UI;
 
@@ -29,10 +29,10 @@ public class ProductViewLogic implements Serializable {
      * buttons if the user doesn't have access.
      */
     public void init() {
-        if (!AccessControlFactory.getInstance().createAccessControl()
-               .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+     //   if (!AccessControlFactory.getInstance().createAccessControl()
+        //       .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
             view.setNewProductEnabled(false);
-        }
+      //  }
 
 
     }
@@ -124,9 +124,9 @@ public class ProductViewLogic implements Serializable {
     }
 
     public void rowSelected(Product product) {
-        if (AccessControlFactory.getInstance().createAccessControl()
-                .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+       // if (AccessControlFactory.getInstance().createAccessControl()
+        //        .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
             editProduct(product);
-        }
+     //   }
     }
 }

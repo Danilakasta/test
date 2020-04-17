@@ -68,6 +68,7 @@ public class MachineService implements FilterableCrudService<Machine>  {
         }
     }
 
+
     public Page<Machine> find(Pageable pageable) {
         return MachineRepository.findBy(pageable);
     }

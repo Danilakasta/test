@@ -40,6 +40,7 @@ public class PickupLocationService implements FilterableCrudService<PickupLocati
 		}
 	}
 
+
 	public PickupLocation getDefault() {
 		return findAnyMatching(Optional.empty(), PageRequest.of(0, 1)).iterator().next();
 	}

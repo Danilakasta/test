@@ -1,14 +1,18 @@
 package com.roofapp.backend.service;
 
+import com.roofapp.app.security.CurrentUser;
 import com.roofapp.backend.data.entity.User;
 import com.roofapp.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.PrimitiveIterator;
 
 @Service
 public class UserService implements FilterableCrudService<User> {
@@ -16,18 +20,21 @@ public class UserService implements FilterableCrudService<User> {
 	public static final String MODIFY_LOCKED_USER_NOT_PERMITTED = "User has been locked and cannot be modified or deleted";
 	private static final String DELETING_SELF_NOT_PERMITTED = "You cannot delete your own account";
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Autowired
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+
 	}
 
 	public Page<User> findAnyMatching(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
 			return getRepository()
-					.findByEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCaseOrRoleLikeIgnoreCase(
-							repositoryFilter, repositoryFilter, repositoryFilter, repositoryFilter, pageable);
+					.findByEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCase(
+							repositoryFilter, repositoryFilter, repositoryFilter, pageable);
 		} else {
 			return find(pageable);
 		}
@@ -37,8 +44,8 @@ public class UserService implements FilterableCrudService<User> {
 	public long countAnyMatching(Optional<String> filter) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return userRepository.countByEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCaseOrRoleLikeIgnoreCase(
-					repositoryFilter, repositoryFilter, repositoryFilter, repositoryFilter);
+			return userRepository.countByEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCase(
+					repositoryFilter, repositoryFilter, repositoryFilter);
 		} else {
 			return count();
 		}
@@ -56,6 +63,7 @@ public class UserService implements FilterableCrudService<User> {
 	@Override
 	public User save(User currentUser, User entity) {
 		throwIfUserLocked(entity);
+		entity.setPasswordHash(passwordEncoder.encode(entity.getPasswordHash()));
 		return getRepository().saveAndFlush(entity);
 	}
 
@@ -83,5 +91,11 @@ public class UserService implements FilterableCrudService<User> {
 	public User createNew(User currentUser) {
 		return new User();
 	}
+
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
+
+
 
 }

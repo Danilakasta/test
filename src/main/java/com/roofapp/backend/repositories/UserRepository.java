@@ -1,5 +1,6 @@
 package com.roofapp.backend.repositories;
 
+import com.roofapp.backend.data.Role;
 import com.roofapp.backend.data.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,9 +12,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Page<User> findBy(Pageable pageable);
 
-	Page<User> findByEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCaseOrRoleLikeIgnoreCase(
-            String emailLike, String firstNameLike, String lastNameLike, String roleLike, Pageable pageable);
+	Page<User> findByEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCase(
+			String emailLike, String firstNameLike, String lastNameLike, Pageable pageable);
 
-	long countByEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCaseOrRoleLikeIgnoreCase(
-            String emailLike, String firstNameLike, String lastNameLike, String roleLike);
+	long countByEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCase (
+            String emailLike, String firstNameLike, String lastNameLike);
 }

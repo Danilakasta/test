@@ -1,9 +1,11 @@
-package com.roofapp.ui.views.materials;
+package com.roofapp.ui.views.users;
 
 
-import com.roofapp.backend.data.entity.Material;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.app.security.CurrentUser;
+import com.roofapp.backend.data.Role;
+import com.roofapp.backend.data.entity.User;
 import com.vaadin.flow.component.UI;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 
@@ -11,16 +13,18 @@ import java.io.Serializable;
  * This class provides an interface for the logical operations between the CRUD
  * view, its parts like the product editor form and the data source, including
  * fetching and saving products.
- *
+ * <p>
  * Having this separate from the view makes it easier to test various parts of
  * the system separately, and to e.g. provide alternative views for the same
  * data.
  */
-public class MateriaslViewLogic implements Serializable {
+public class UserViewLogic implements Serializable {
 
-    private final MaterialsView view;
+    CurrentUser currentUser;
 
-    public MateriaslViewLogic(MaterialsView simpleCrudView) {
+    private final UserView view;
+
+    public UserViewLogic(UserView simpleCrudView) {
         view = simpleCrudView;
     }
 
@@ -29,10 +33,10 @@ public class MateriaslViewLogic implements Serializable {
      * buttons if the user doesn't have access.
      */
     public void init() {
-       // if (!AccessControlFactory.getInstance().createAccessControl()
-           //    .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+        // if (!AccessControlFactory.getInstance().createAccessControl()
+        //    .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+        if (!view.currentUser.getUser().getRole().equals(Role.ADMIN))
             view.setNewProductEnabled(false);
-      ///  }
 
 
     }
@@ -47,7 +51,6 @@ public class MateriaslViewLogic implements Serializable {
      * change view. It actually appends the productId as a parameter to the URL.
      * The parameter is set to keep the view state the same during e.g. a
      * refresh and to enable bookmarking of individual product selections.
-     *
      */
     private void setFragmentParameter(String productId) {
         String fragmentParameter;
@@ -57,7 +60,7 @@ public class MateriaslViewLogic implements Serializable {
             fragmentParameter = productId;
         }
 
-        UI.getCurrent().navigate(MaterialsView.class, fragmentParameter);
+        UI.getCurrent().navigate(UserView.class, fragmentParameter);
     }
 
     /**
@@ -65,7 +68,6 @@ public class MateriaslViewLogic implements Serializable {
      * entering a new product if productId is null, otherwise loads the product
      * with the given productId and shows its data in the form fields so the
      * user can edit them.
-     *
      *
      * @param productId
      */
@@ -78,7 +80,7 @@ public class MateriaslViewLogic implements Serializable {
                 // login
                 try {
                     final int pid = Integer.parseInt(productId);
-                    final Material item = find(pid);
+                    final User item = find(pid);
                     view.selectRow(item);
                 } catch (final NumberFormatException e) {
                 }
@@ -88,45 +90,45 @@ public class MateriaslViewLogic implements Serializable {
         }
     }
 
-    private Material find(int productId) {
+    private User find(int productId) {
         return null;// DataService.get().getProductById(productId);
     }
 
-    public void save(Material item) {
+    public void save(User item) {
         final boolean newProduct = item.isNew();
         view.clearSelection();
-        view.updateProduct(item);
+        view.updateUser(item);
         setFragmentParameter("");
-        view.showNotification(item.getSerialNumber()
+        view.showNotification(item.getFirstName() + " " + item.getLastName()
                 + (newProduct ? " добавлено" : " сохранено"));
     }
 
-    public void delete(Material item) {
+    public void delete(User item) {
         view.clearSelection();
         view.removeProduct(item);
         setFragmentParameter("");
-        view.showNotification(item.getSerialNumber() + " удалено");
+        view.showNotification(item.getFirstName() + " удалено");
     }
 
-    public void edit(Material item) {
+    public void edit(User item) {
         if (item == null) {
             setFragmentParameter("");
         } else {
             setFragmentParameter(item.getId() + "");
         }
-        view.editProduct(item);
+        view.editUser(item);
     }
 
     public void newItem() {
         view.clearSelection();
         setFragmentParameter("new");
-        view.editProduct(new Material());
+        view.editUser(new User());
     }
 
-    public void rowSelected(Material item) {
-      //  if (AccessControlFactory.getInstance().createAccessControl()
-       //         .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
-            edit(item);
-     //   }
+    public void rowSelected(User item) {
+        //  if (AccessControlFactory.getInstance().createAccessControl()
+        //         .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+        edit(item);
+        //   }
     }
 }

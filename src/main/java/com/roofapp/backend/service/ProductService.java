@@ -72,6 +72,8 @@ public class ProductService implements FilterableCrudService<Product>  {
         }
     }
 
+
+
     public Page<Product> find(Pageable pageable) {
         return productRepository.findBy(pageable);
     }

@@ -24,7 +24,7 @@ public class Product extends AbstractEntity {
      private Long id;
  */
     // @Size(min = 2, message = "Product name must have at least two characters")
-    @NotBlank(message = "{bakery.name.required}")
+  //  @NotBlank(message = "{bakery.name.required}")
     private String name;
     //  @Min(0)
  //   @Min(value = 0, message = "{bakery.price.limits}")

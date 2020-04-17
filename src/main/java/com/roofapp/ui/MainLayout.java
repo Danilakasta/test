@@ -3,24 +3,24 @@ package com.roofapp.ui;
 //import com.roofapp.authentication.AccessControl;
 //import com.roofapp.authentication.AccessControlFactory;
 
-import com.roofapp.authentication.AccessControl;
-import com.roofapp.authentication.AccessControlFactory;
 //import com.roofapp.ui.views.deliveries.DeliveriesView;
+
+import com.roofapp.app.security.CurrentUser;
+import com.roofapp.backend.data.Role;
 import com.roofapp.ui.views.machines.MachinesView;
 import com.roofapp.ui.views.manufacture.ManufactureView;
 import com.roofapp.ui.views.materials.MaterialsView;
 import com.roofapp.ui.views.products.ProductView;
 import com.roofapp.ui.views.contractors.ContractorsView;
 import com.roofapp.ui.views.order.OrderView;
-import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.KeyModifier;
+import com.roofapp.ui.views.users.UserView;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
@@ -28,37 +28,43 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinService;
+import com.vaadin.flow.server.VaadinServlet;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import com.roofapp.ui.about.AboutView;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static com.roofapp.ui.utils.AppConst.TITLE_LOGOUT;
 
 /**
  * The main layout. Contains the navigation menu.
  */
 @Theme(value = Lumo.class)
-@PWA(name = "Bakery App Starter", shortName = "roofApp",
+@PWA(name = "Roof Factory", shortName = "roofApp",
         startPath = "login",
         backgroundColor = "#227aef", themeColor = "#227aef",
         offlinePath = "offline-page.html",
         offlineResources = {"images/offline-login-banner.jpg"})
-/*@PWA(name = "Rooffactory",
-        shortName = "RoofFactory",
-        startPath = "login"
-)*/
+
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/menu-buttons.css", themeFor = "vaadin-button")
 public class MainLayout extends AppLayout implements RouterLayout {
 
     private final Button logoutButton;
 
-    public MainLayout() {
 
+    private final CurrentUser currentUser;
+
+    @Autowired
+    public MainLayout(CurrentUser currentUser) {
+        this.currentUser = currentUser;
         // Header of the menu (the navbar)
 
         // menu toggle
@@ -74,55 +80,64 @@ public class MainLayout extends AppLayout implements RouterLayout {
         // Note! Image resource url is resolved here as it is dependent on the
         // execution mode (development or production) and browser ES level
         // support
-       // final String resolvedImage = VaadinService.getCurrent().resolveResource(
+        // final String resolvedImage = VaadinService.getCurrent().resolveResource(
         //        "img/logo.png"/*, VaadinSession.getCurrent().getBrowser()*/);
 
-      //  final Image image = new Image(resolvedImage, "");
+        //  final Image image = new Image(resolvedImage, "");
         final Label title = new Label("Roof Factory Prototype");
-      //  top.add(image, title);
+        //  top.add(image, title);
         top.add(title);
         addToNavbar(top);
-        addToDrawer(createMenuLink(OrderView.class, "Заказы",
-                VaadinIcon.EDIT.create()));
+        if (currentUser.getUser().getRole().equals(Role.ADMIN) ||
+                currentUser.getUser().getRole().equals(Role.MANAGER))
+            addToDrawer(createMenuLink(OrderView.class, "Заказы",
+                    VaadinIcon.EDIT.create()));
+        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+            addToDrawer(createMenuLink(ContractorsView.class, ContractorsView.VIEW_NAME,
+                    VaadinIcon.USER_CARD.create()));
 
-        addToDrawer(createMenuLink(ContractorsView.class, ContractorsView.VIEW_NAME,
-                VaadinIcon.USERS.create()));
+        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+            addToDrawer(createMenuLink(ProductView.class, ProductView.VIEW_NAME,
+                    VaadinIcon.BARCODE.create()));
 
-        // Navigation items
-        addToDrawer(createMenuLink(ProductView.class, ProductView.VIEW_NAME,
-                VaadinIcon.BARCODE.create()));
+        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+            addToDrawer(createMenuLink(MaterialsView.class, MaterialsView.VIEW_NAME,
+                    VaadinIcon.VIEWPORT.create()));
 
-        addToDrawer(createMenuLink(MaterialsView.class, MaterialsView.VIEW_NAME,
-                VaadinIcon.VIEWPORT.create()));
+        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+            addToDrawer(createMenuLink(MachinesView.class, MachinesView.VIEW_NAME,
+                    VaadinIcon.WORKPLACE.create()));
 
+        if (currentUser.getUser().getRole().equals(Role.ADMIN) ||
+                currentUser.getUser().getRole().equals(Role.MACHINE_ENGINEER))
+            addToDrawer(createMenuLink(ManufactureView.class, ManufactureView.VIEW_NAME,
+                    VaadinIcon.ADD_DOCK.create()));
 
-        addToDrawer(createMenuLink(MachinesView.class, MachinesView.VIEW_NAME,
-                VaadinIcon.WORKPLACE.create()));
+        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+            addToDrawer(createMenuLink(UserView.class, UserView.VIEW_NAME,
+                    VaadinIcon.USERS.create()));
 
-        addToDrawer(createMenuLink(ManufactureView.class, ManufactureView.VIEW_NAME,
-                VaadinIcon.ADD_DOCK.create()));
+        //   addToDrawer(createMenuLink(DeliveriesView.class, DeliveriesView .VIEW_NAME,
+        //         VaadinIcon.INFO_CIRCLE.create()));
 
-     //   addToDrawer(createMenuLink(DeliveriesView.class, DeliveriesView .VIEW_NAME,
-       //         VaadinIcon.INFO_CIRCLE.create()));
-
-        addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
-                VaadinIcon.INFO_CIRCLE.create()));
-
-
+        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+            addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
+                    VaadinIcon.INFO_CIRCLE.create()));
 
 
         // Create logout button but don't add it yet; admin view might be added
         // in between (see #onAttach())
         logoutButton = createMenuButton("Выйти", VaadinIcon.SIGN_OUT.create());
         logoutButton.addClickListener(e -> logout());
-
         logoutButton.getElement().setAttribute("title", "Logout (Ctrl+L)");
-
+        addToDrawer(logoutButton);
 
     }
 
+
     private void logout() {
-        AccessControlFactory.getInstance().createAccessControl().signOut();
+        VaadinSession.getCurrent().getSession().invalidate();
+        UI.getCurrent().navigate("");
     }
 
     private RouterLink createMenuLink(Class<? extends Component> viewClass,
@@ -144,18 +159,18 @@ public class MainLayout extends AppLayout implements RouterLayout {
         return routerButton;
     }
 
-    private void registerAdminViewIfApplicable(AccessControl accessControl) {
-        // register the admin view dynamically only for any admin user logged in
-        if (accessControl.isUserInRole(AccessControl.ADMIN_ROLE_NAME)
-                && !RouteConfiguration.forSessionScope()
-                .isRouteRegistered(AdminView.class)) {
-            RouteConfiguration.forSessionScope().setRoute(AdminView.VIEW_NAME,
-                    AdminView.class, MainLayout.class);
-            // as logout will purge the session route registry, no need to
-            // unregister the view on logout
-        }
-    }
-
+    /*  private void registerAdminViewIfApplicable(AccessControl accessControl) {
+          // register the admin view dynamically only for any admin user logged in
+          if (accessControl.isUserInRole(AccessControl.ADMIN_ROLE_NAME)
+                  && !RouteConfiguration.forSessionScope()
+                  .isRouteRegistered(AdminView.class)) {
+              RouteConfiguration.forSessionScope().setRoute(AdminView.VIEW_NAME,
+                      AdminView.class, MainLayout.class);
+              // as logout will purge the session route registry, no need to
+              // unregister the view on logout
+          }
+      }
+  */
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
@@ -165,7 +180,7 @@ public class MainLayout extends AppLayout implements RouterLayout {
                 KeyModifier.CONTROL);
 
         // add the admin view menu item if user has admin role
-        final AccessControl accessControl = AccessControlFactory.getInstance()
+      /*  final AccessControl accessControl = AccessControlFactory.getInstance()
                 .createAccessControl();
         if (accessControl.isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
 
@@ -177,9 +192,9 @@ public class MainLayout extends AppLayout implements RouterLayout {
             addToDrawer(createMenuLink(AdminView.class, AdminView.VIEW_NAME,
                     VaadinIcon.DOCTOR.create()));
         }
-
+*/
         // Finally, add logout button for all users
-        addToDrawer(logoutButton);
+
     }
 
 }

@@ -14,11 +14,11 @@ public class Customer extends AbstractEntity {
 	private String fullName;
 
 	@NotBlank
-	@Size(max = 20, message = "{bakery.phone.number.invalid}")
+	//@Size(max = 20, message = "{bakery.phone.number.invalid}")
 	// A simple phone number checker, allowing an optional international prefix
 	// plus a variable number of digits that could be separated by dashes or
 	// spaces
-	@Pattern(regexp = "^(\\+\\d+)?([ -]?\\d+){4,14}$", message = "{bakery.phone.number.invalid}")
+	//@Pattern(regexp = "^(\\+\\d+)?([ -]?\\d+){4,14}$", message = "{bakery.phone.number.invalid}")
 	private String phoneNumber;
 	
 	@Size(max = 255)
