@@ -89,26 +89,33 @@ public class MainLayout extends AppLayout implements RouterLayout {
         top.add(title);
         addToNavbar(top);
         if (currentUser.getUser().getRole().equals(Role.ADMIN) ||
+                currentUser.getUser().getRole().equals(Role.DIRECTOR) ||
                 currentUser.getUser().getRole().equals(Role.MANAGER))
             addToDrawer(createMenuLink(OrderView.class, "Заказы",
                     VaadinIcon.EDIT.create()));
-        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+        if (currentUser.getUser().getRole().equals(Role.ADMIN)
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR)
+                || currentUser.getUser().getRole().equals(Role.MANAGER))
             addToDrawer(createMenuLink(ContractorsView.class, ContractorsView.VIEW_NAME,
                     VaadinIcon.USER_CARD.create()));
 
-        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+        if (currentUser.getUser().getRole().equals(Role.ADMIN)
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR) )
             addToDrawer(createMenuLink(ProductView.class, ProductView.VIEW_NAME,
                     VaadinIcon.BARCODE.create()));
 
-        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+        if (currentUser.getUser().getRole().equals(Role.ADMIN)
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR) )
             addToDrawer(createMenuLink(MaterialsView.class, MaterialsView.VIEW_NAME,
                     VaadinIcon.VIEWPORT.create()));
 
-        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+        if (currentUser.getUser().getRole().equals(Role.ADMIN)
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR) )
             addToDrawer(createMenuLink(MachinesView.class, MachinesView.VIEW_NAME,
                     VaadinIcon.WORKPLACE.create()));
 
-        if (currentUser.getUser().getRole().equals(Role.ADMIN) ||
+        if (currentUser.getUser().getRole().equals(Role.ADMIN)
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR) ||
                 currentUser.getUser().getRole().equals(Role.MACHINE_ENGINEER))
             addToDrawer(createMenuLink(ManufactureView.class, ManufactureView.VIEW_NAME,
                     VaadinIcon.ADD_DOCK.create()));

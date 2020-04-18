@@ -14,41 +14,42 @@ import com.vaadin.flow.router.*;
 @JsModule("./styles/shared-styles.js")
 @Viewport(AppConst.VIEWPORT)
 public class LoginView extends LoginOverlay
-	implements AfterNavigationObserver, BeforeEnterObserver {
+        implements AfterNavigationObserver, BeforeEnterObserver {
 
-	public LoginView() {
-		LoginI18n i18n = LoginI18n.createDefault();
-		i18n.setHeader(new LoginI18n.Header());
-		i18n.getHeader().setTitle("CRM ROOF FACTORY");
-		i18n.getHeader().setDescription(
-			"Админ admin@roof.ru+ admin\n"
-					+ " Менеджер manager@roof.ru + manager\n"
-					+ " Станочник machineingener@roof.ru + machine");
-		i18n.setAdditionalInformation(null);
-		i18n.setForm(new LoginI18n.Form());
-		i18n.getForm().setSubmit("Войти");
-		//i18n.getForm().setTitle("Вход");
-		i18n.getForm().setUsername("Почта");
-		i18n.getForm().setPassword("Пароль");
-		setI18n(i18n);
-		setForgotPasswordButtonVisible(false);
-		setAction("login");
-	}
-	
-	@Override
-	public void beforeEnter(BeforeEnterEvent event) {
-		if (SecurityUtils.isUserLoggedIn()) {
-			event.forwardTo(MainLayout.class);
-		} else {
-			setOpened(true);
-		}
-	}
+    public LoginView() {
+        LoginI18n i18n = LoginI18n.createDefault();
+        i18n.setHeader(new LoginI18n.Header());
+        i18n.getHeader().setTitle("CRM ROOF FACTORY");
+        i18n.getHeader().setDescription(
+                "Админ admin@roof.ru+ admin\n"
+                        + "Директор director@roof.ru director\n"
+                        + " Менеджер manager@roof.ru + manager\n"
+                        + " Станочник machineingener@roof.ru + machine");
+        i18n.setAdditionalInformation(null);
+        i18n.setForm(new LoginI18n.Form());
+        i18n.getForm().setSubmit("Войти");
+        //i18n.getForm().setTitle("Вход");
+        i18n.getForm().setUsername("Почта");
+        i18n.getForm().setPassword("Пароль");
+        setI18n(i18n);
+        setForgotPasswordButtonVisible(false);
+        setAction("login");
+    }
 
-	@Override
-	public void afterNavigation(AfterNavigationEvent event) {
-		setError(
-			event.getLocation().getQueryParameters().getParameters().containsKey(
-				"error"));
-	}
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (SecurityUtils.isUserLoggedIn()) {
+            event.forwardTo(MainLayout.class);
+        } else {
+            setOpened(true);
+        }
+    }
+
+    @Override
+    public void afterNavigation(AfterNavigationEvent event) {
+        setError(
+                event.getLocation().getQueryParameters().getParameters().containsKey(
+                        "error"));
+    }
 
 }
