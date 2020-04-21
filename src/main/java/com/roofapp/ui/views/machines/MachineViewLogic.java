@@ -31,7 +31,7 @@ public class MachineViewLogic implements Serializable {
     public void init() {
      //   if (!AccessControlFactory.getInstance().createAccessControl()
         //       .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
-            view.setEnabled(false);
+            view.setEnabled(true);
        // }
 
 
