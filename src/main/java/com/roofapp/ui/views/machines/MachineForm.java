@@ -1,6 +1,7 @@
 package com.roofapp.ui.views.machines;
 
 import com.roofapp.backend.data.MachineType;
+import com.roofapp.backend.data.WaveHeight;
 import com.roofapp.backend.data.Width;
 import com.roofapp.backend.data.entity.Machine;
 import com.roofapp.backend.service.MachineService;
@@ -43,7 +44,10 @@ public class MachineForm extends Div {
     private final Select<MachineType> type;
     
     private final Select<Width> width;
- //   private final CheckboxGroup<Category> category;
+
+    private final Select<WaveHeight> waveHeight;
+
+    //   private final CheckboxGroup<Category> category;
     private Button save;
     private Button discard;
     private Button cancel;
@@ -121,29 +125,36 @@ public class MachineForm extends Div {
         type.setWidth("100%");
         type.setItems(MachineType.values());
         //  content.add(type);
-        
+
+        waveHeight = new Select<>();
+        waveHeight.setLabel("Высота волны");
+        waveHeight.setWidth("100%");
+        waveHeight.setItems(WaveHeight.values());
+        // content.add(materialColor);
+
         width = new Select<>();
-        width.setLabel("Толщина мет");
+        width.setLabel("Допустимая толщина мет");
         width.setWidth("100%");
         width.setItems(Width.values());
         // content.add(materialColor);
 
+        
+        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(type, waveHeight,width);
+        horizontalLayout2.setWidth("100%");
+        horizontalLayout2.setFlexGrow(1, type, waveHeight,width);
+        content.add(horizontalLayout2);
 
-        length = new TextField("Длинна м.");
+        length = new TextField("Длинна станка м.");
+        length.setWidth("20%");
         length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         length.setValueChangeMode(ValueChangeMode.EAGER);
-        
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(type,length
-                ,width);
-        horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(1, type,length,width);
-        content.add(horizontalLayout2);
-  
+         content.add(length);
 
         binder = new BeanValidationBinder<>(Machine.class);
         binder.forField(length).withConverter(new MachineForm.StockCountConverter())
                 .bind("length");
         binder.bindInstanceFields(this);
+
 
         // enable/disable save button while editing
         binder.addStatusChangeListener(event -> {

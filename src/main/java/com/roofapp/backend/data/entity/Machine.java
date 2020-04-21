@@ -1,9 +1,6 @@
 package com.roofapp.backend.data.entity;
 
-import com.roofapp.backend.data.MachineType;
-import com.roofapp.backend.data.MaterialColor;
-import com.roofapp.backend.data.ProductType;
-import com.roofapp.backend.data.Width;
+import com.roofapp.backend.data.*;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -26,6 +23,8 @@ public class Machine extends AbstractEntity {
     private MachineType type;
 
     private Width width = Width.W28;
+
+    private WaveHeight waveHeight;
 
     @Override
     public String toString() {

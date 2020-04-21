@@ -50,6 +50,14 @@ public class MachinesGrid extends Grid<Machine> {
                         Comparator.comparingInt(Machine::getLength))
                 .setFlexGrow(3).setKey("length");
 
+        final String widthTemplateTemplate = "[[item.waveHeight]]";
+        addColumn(TemplateRenderer.<Machine>of(widthTemplateTemplate)
+                .withProperty("waveHeight",
+                        item -> item.getWaveHeight().toString()))
+                .setHeader("Высота волны")
+                .setComparator(Comparator
+                        .comparing(Machine::getWaveHeight))
+                .setFlexGrow(5).setKey("waveHeight");
 
         final String widthTemplate = "[[item.width]]";
         addColumn(TemplateRenderer.<Machine>of(widthTemplate)
