@@ -31,7 +31,7 @@ public class ContractorsViewLogic implements Serializable {
     public void init() {
     //    if (!AccessControlFactory.getInstance().createAccessControl()
      //          .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
-            view.setNewContractorEnabled(false);
+            view.setNewContractorEnabled(true);
      //   }
 
 

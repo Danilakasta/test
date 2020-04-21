@@ -29,7 +29,6 @@ import com.roofapp.ui.MainLayout;
 //@RouteAlias(value = "", layout = MainLayout.class)
 public class ProductView extends HorizontalLayout
         implements HasUrlParameter<String> {
-
     public static final String VIEW_NAME = "Номенклатура";
 
 

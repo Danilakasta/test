@@ -36,7 +36,7 @@ public class UserViewLogic implements Serializable {
         // if (!AccessControlFactory.getInstance().createAccessControl()
         //    .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
         if (!view.currentUser.getUser().getRole().equals(Role.ADMIN))
-            view.setNewProductEnabled(false);
+            view.setNewProductEnabled(true);
 
 
     }
