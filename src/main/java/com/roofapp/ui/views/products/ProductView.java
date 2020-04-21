@@ -30,7 +30,7 @@ import com.roofapp.ui.MainLayout;
 public class ProductView extends HorizontalLayout
         implements HasUrlParameter<String> {
 
-    public static final String VIEW_NAME = "Продукция";
+    public static final String VIEW_NAME = "Номенклатура";
 
 
    private final ProductService productService;
