@@ -105,11 +105,11 @@ public class MachineForm extends Div {
     @Autowired
     public MachineForm(MachineViewLogic viewLogic, MachineService MachineService) {
         this.MachineService = MachineService;
-        setClassName("Machine-form ");
+        setClassName("product-form");
 
         content = new VerticalLayout();
         content.setSizeUndefined();
-        content.addClassName("Machine-form-content");
+        content.addClassName("product-form-content");
         add(content);
 
      //   viewLogic = sampleCrudLogic;

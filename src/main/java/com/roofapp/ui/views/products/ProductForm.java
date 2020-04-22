@@ -110,7 +110,7 @@ public class ProductForm extends Div {
     @Autowired
     public ProductForm(ProductViewLogic viewLogic, ProductService productService) {
         this.productService = productService;
-        setClassName("product-form ");
+        setClassName("product-form");
 
         content = new VerticalLayout();
         content.setSizeUndefined();
