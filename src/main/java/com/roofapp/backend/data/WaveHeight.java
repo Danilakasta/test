@@ -1,6 +1,7 @@
 package com.roofapp.backend.data;
 
 public enum WaveHeight {
+    H0(0),
     H07(7),
     H08(8),
     H20(20),

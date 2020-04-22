@@ -24,7 +24,7 @@ public class Machine extends AbstractEntity {
 
     private Width width = Width.W28;
 
-    private WaveHeight waveHeight;
+    private WaveHeight waveHeight = WaveHeight.H0;
 
     @Override
     public String toString() {
