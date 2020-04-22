@@ -30,7 +30,7 @@ import com.vaadin.flow.router.Route;
 public class MachinesView extends HorizontalLayout
         implements HasUrlParameter<String> {
 
-    public static final String VIEW_NAME = "Станки";
+    public static final String VIEW_NAME = "Оборудование";
 
 
     private final MachineService machineService;
