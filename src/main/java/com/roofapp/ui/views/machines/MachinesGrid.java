@@ -63,7 +63,7 @@ public class MachinesGrid extends Grid<Machine> {
         addColumn(TemplateRenderer.<Machine>of(widthTemplate)
                 .withProperty("width",
                         item -> item.getWidth().toString()))
-                .setHeader("Допус. тол метала")
+                .setHeader("Допуст.толщ.метала")
                 .setComparator(Comparator
                         .comparing(Machine::getWidth))
                 .setFlexGrow(5).setKey("width");
