@@ -9,6 +9,7 @@ import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -65,7 +66,7 @@ public class AccountView extends HorizontalLayout
         form = new AccountForm(viewLogic, service,contractorService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add( new H2(this.VIEW_NAME));
+        barAndGridLayout.add( new H4(this.VIEW_NAME));
 
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
