@@ -119,7 +119,7 @@ public class ProductForm extends Div {
 
      //   viewLogic = sampleCrudLogic;
 
-        name = new TextField("Название");
+        name = new TextField("Наименование");
         name.setWidth("100%");
         name.setRequired(true);
         name.setValueChangeMode(ValueChangeMode.EAGER);

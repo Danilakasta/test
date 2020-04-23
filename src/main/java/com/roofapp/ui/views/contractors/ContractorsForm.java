@@ -1,5 +1,6 @@
 package com.roofapp.ui.views.contractors;
 
+import com.roofapp.backend.data.ContractorSubType;
 import com.roofapp.backend.data.ContractorType;
 import com.roofapp.backend.data.entity.Contractor;
 import com.roofapp.backend.service.ContractorService;
@@ -9,6 +10,7 @@ import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -42,6 +44,9 @@ public class ContractorsForm extends Div {
 
     private final Select<ContractorType> type;
 
+    private final Select<ContractorSubType> contractorSubType;
+
+
     //  private final PhoneNumberField phohe;
     private final TextField phohe;
     private final EmailField email;
@@ -53,19 +58,10 @@ public class ContractorsForm extends Div {
     private final IntegerField okpo;
     private final IntegerField ogrn;
 
-   /*  private final TextField price;
-    private final TextField weight;
 
-    private final TextField length;
+    private final TextField deliveryAddress;
 
 
-
-    private final Select<MaterialColor> materialColor;
-
-    private final Select<Width> width;
-    */
-
-    //   private final CheckboxGroup<Category> category;
     private Button save;
     private Button discard;
     private Button cancel;
@@ -132,7 +128,7 @@ public class ContractorsForm extends Div {
 
         //   viewLogic = sampleCrudLogic;
 
-        name = new TextField("Название");
+        name = new TextField("Наименование, *ФИО для физ лиц");
         name.setWidth("80%");
         name.setRequired(true);
         name.setValueChangeMode(ValueChangeMode.EAGER);
@@ -154,6 +150,7 @@ public class ContractorsForm extends Div {
         content.add(phohe);
 
         email = new EmailField("Почта");
+        email.setSuffixComponent(new Span("@"));
         email.setWidth("60%");
         email.setClearButtonVisible(true);
         email.setErrorMessage("Пожалуйста введидеадрес правильно");
@@ -166,41 +163,59 @@ public class ContractorsForm extends Div {
         content.add(horizontalLayout2);
 
         urAddress = new TextField("Юр. адрес");
-        urAddress.setWidth("100%");
+        urAddress.setWidth("60%");
         urAddress.setRequired(true);
         urAddress.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(urAddress);
-
-        fizAddress = new TextField("Физ. адрес");
-        fizAddress.setWidth("100%");
-        fizAddress.setRequired(true);
-        fizAddress.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(fizAddress);
 
         inn = new IntegerField("ИНН");
-        inn.setWidth("100%");
+        inn.setWidth("20%");
         inn.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(inn);
 
         kpp = new IntegerField("КПП");
-        kpp.setWidth("100%");
+        kpp.setWidth("20%");
         kpp.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(kpp);
+
+
+        final HorizontalLayout horizontalLayout3 = new HorizontalLayout(urAddress,inn,kpp   );
+        horizontalLayout3.setWidth("100%");
+        horizontalLayout3.setFlexGrow(1, urAddress,inn,kpp  );
+        content.add(horizontalLayout3);
+
+        fizAddress = new TextField("Физ. адрес");
+        fizAddress.setWidth("60%");
+        fizAddress.setRequired(true);
+        fizAddress.setValueChangeMode(ValueChangeMode.EAGER);
+
 
         okpo = new IntegerField("ОКПО");
-        okpo.setWidth("100%");
+        okpo.setWidth("20%");
         okpo.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(okpo);
 
         ogrn = new IntegerField("ОГРН");
-        ogrn.setWidth("100%");
+        ogrn.setWidth("20%");
         ogrn.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(ogrn);
 
-        final HorizontalLayout horizontalLayout3 = new HorizontalLayout(inn, kpp, okpo, ogrn);
-        horizontalLayout3.setWidth("100%");
-        horizontalLayout3.setFlexGrow(1, inn, kpp, okpo, ogrn);
-        content.add(horizontalLayout3);
+
+        final HorizontalLayout horizontalLayout4 = new HorizontalLayout(fizAddress ,  okpo, ogrn   );
+        horizontalLayout4 .setWidth("100%");
+        horizontalLayout4 .setFlexGrow(1, fizAddress ,  okpo, ogrn  );
+        content.add(horizontalLayout4 );
+
+
+        contractorSubType = new Select<>();
+        contractorSubType.setLabel("Тип клиента");
+        contractorSubType.setWidth("20%");
+        contractorSubType.setItems(ContractorSubType.values());
+
+        deliveryAddress = new TextField("Адрес доставки");
+        deliveryAddress.setWidth("60%");
+        deliveryAddress.setRequired(true);
+        fizAddress.setValueChangeMode(ValueChangeMode.EAGER);
+
+        final HorizontalLayout horizontalLayout5 = new HorizontalLayout( contractorSubType,deliveryAddress   );
+        horizontalLayout5.setWidth("100%");
+        horizontalLayout5 .setFlexGrow(1, contractorSubType, deliveryAddress   );
+        content.add(horizontalLayout5);
 
 
         binder = new BeanValidationBinder<>(Contractor.class);
