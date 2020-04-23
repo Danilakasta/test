@@ -219,12 +219,6 @@ public class ContractorsForm extends Div {
 
 
         binder = new BeanValidationBinder<>(Contractor.class);
-       /* binder.forField(price).withConverter(new PriceConverter())
-                .bind("price");
-        binder.forField(weight).withConverter(new StockCountConverter())
-                .bind("weight");
-        binder.forField(length).withConverter(new StockCountConverter())
-                .bind("length");          */
         binder.bindInstanceFields(this);
 
 

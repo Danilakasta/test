@@ -7,6 +7,7 @@ package com.roofapp.ui;
 
 import com.roofapp.app.security.CurrentUser;
 import com.roofapp.backend.data.Role;
+import com.roofapp.ui.views.accounts.AccountView;
 import com.roofapp.ui.views.machines.MachinesView;
 import com.roofapp.ui.views.manufacture.ManufactureView;
 import com.roofapp.ui.views.materials.MaterialsView;
@@ -98,6 +99,12 @@ public class MainLayout extends AppLayout implements RouterLayout {
                 || currentUser.getUser().getRole().equals(Role.MANAGER))
             addToDrawer(createMenuLink(ContractorsView.class, ContractorsView.VIEW_NAME,
                     VaadinIcon.USER_CARD.create()));
+
+        if (currentUser.getUser().getRole().equals(Role.ADMIN)
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR)
+                || currentUser.getUser().getRole().equals(Role.MANAGER))
+            addToDrawer(createMenuLink(AccountView.class, AccountView.VIEW_NAME,
+                    VaadinIcon.CASH.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN)
                 || currentUser.getUser().getRole().equals(Role.DIRECTOR) )

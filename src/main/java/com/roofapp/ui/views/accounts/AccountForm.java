@@ -1,10 +1,9 @@
-package com.roofapp.ui.views.machines;
+package com.roofapp.ui.views.accounts;
 
-import com.roofapp.backend.data.MachineType;
-import com.roofapp.backend.data.WaveHeight;
-import com.roofapp.backend.data.Width;
-import com.roofapp.backend.data.entity.Machine;
-import com.roofapp.backend.service.MachineService;
+
+import com.roofapp.backend.data.entity.Account;
+import com.roofapp.backend.data.entity.Contractor;
+import com.roofapp.backend.service.AccountService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -13,38 +12,54 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
+import com.vaadin.flow.data.converter.StringToLongConverter;
+import com.vaadin.flow.data.validator.RegexpValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.roofapp.backend.service.ContractorService;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * A form for editing a single Machine.
  */
 
-public class MachineForm extends Div {
+public class AccountForm extends Div {
 
     private final VerticalLayout content;
 
-    MachineService MachineService;
+    AccountService service;
 
-    private final TextField name;
+    private final Select<Contractor> contractor;
 
-    private final TextField length;
-    private final Select<MachineType> type;
-    
-    private final Select<Width> width;
+    private final TextField value;
 
-    private final Select<WaveHeight> waveHeight;
+    private final TextField corrAccount;
+
+    private final TextField bankName;
+
+    private final IntegerField inn;
+
+    private final IntegerField bik;
+
+
+    private final IntegerField code;
+
+    private final TextField departAddress;
+
+
 
     //   private final CheckboxGroup<Category> category;
     private Button save;
@@ -52,14 +67,14 @@ public class MachineForm extends Div {
     private Button cancel;
     private final Button delete;
 
-    private MachineViewLogic viewLogic;
+    private AccountViewLogic viewLogic;
 
-    public void setViewLogic(MachineViewLogic viewLogic) {
+    public void setViewLogic(AccountViewLogic viewLogic) {
         this.viewLogic = viewLogic;
     }
 
-    private final Binder<Machine> binder;
-    private Machine currentMachine;
+    private final Binder<Account> binder;
+    private Account currentMachine;
 
     private static class PriceConverter extends StringToBigDecimalConverter {
 
@@ -102,8 +117,8 @@ public class MachineForm extends Div {
     }
 
     @Autowired
-    public MachineForm(MachineViewLogic viewLogic, MachineService MachineService) {
-        this.MachineService = MachineService;
+    public AccountForm(AccountViewLogic viewLogic, AccountService service,ContractorService contractorService) {
+        this.service = service;
         setClassName("product-form");
 
         content = new VerticalLayout();
@@ -111,47 +126,64 @@ public class MachineForm extends Div {
         content.addClassName("product-form-content");
         add(content);
 
-     //   viewLogic = sampleCrudLogic;
+        contractor = new Select<>();
+        contractor.setLabel("Плательщик");
+        contractor.setWidth("100%");
+        contractor.setItemLabelGenerator(Contractor::getName);
+        contractor.setItems(contractorService.findAll());
+        content.add(contractor);
 
-        name = new TextField("Название");
-        name.setWidth("100%");
-        name.setRequired(true);
-        name.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(name);
+        //   viewLogic = sampleCrudLogic;
+        bankName = new TextField("Банк получателя");
+        bankName.setWidth("100%");
+        bankName.setValueChangeMode(ValueChangeMode.EAGER);
+        content.add(bankName);
 
-        type = new Select<>();
-        type.setLabel("Вид");
-        type.setWidth("100%");
-        type.setItems(MachineType.values());
-        //  content.add(type);
+        value = new TextField("Счет");
+        value.setWidth("100%");
+        value.setValueChangeMode(ValueChangeMode.EAGER);
 
-        waveHeight = new Select<>();
-        waveHeight.setLabel("Высота волны");
-        waveHeight.setWidth("100%");
-        waveHeight.setItems(WaveHeight.values());
-        // content.add(materialColor);
+        corrAccount = new TextField("кор счет");
+        corrAccount.setWidth("100%");
+        corrAccount.setValueChangeMode(ValueChangeMode.EAGER);
 
-        width = new Select<>();
-        width.setLabel("Допустимая толщина мет");
-        width.setWidth("100%");
-        width.setItems(Width.values());
-        // content.add(materialColor);
+        final HorizontalLayout horizontalLayout = new HorizontalLayout(value,corrAccount  );
+        horizontalLayout .setWidth("100%");
+        horizontalLayout .setFlexGrow(1,value,corrAccount );
+        content.add(horizontalLayout );
 
-        
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(type, waveHeight,width);
-        horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(1, type, waveHeight,width);
-        content.add(horizontalLayout2);
+        inn = new IntegerField("Инн");
+        inn.setWidth("100%");
+        inn.setValueChangeMode(ValueChangeMode.EAGER);
 
-        length = new TextField("Длинна станка м.");
-        length.setWidth("20%");
-        length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        length.setValueChangeMode(ValueChangeMode.EAGER);
-         content.add(length);
+        bik = new IntegerField("Бик");
+        bik.setWidth("100%");
+        bik.setValueChangeMode(ValueChangeMode.EAGER);
 
-        binder = new BeanValidationBinder<>(Machine.class);
-        binder.forField(length).withConverter(new MachineForm.StockCountConverter())
-                .bind("length");
+        code = new IntegerField("Код подразделения");
+        code.setWidth("100%");
+        code.setValueChangeMode(ValueChangeMode.EAGER);
+
+        final HorizontalLayout horizontalLayout2 = new HorizontalLayout( inn,bik,  code );
+        horizontalLayout2 .setWidth("100%");
+        horizontalLayout2 .setFlexGrow(1,inn, bik,  code  );
+        content.add(horizontalLayout2 );
+
+        departAddress = new TextField("Адрес подразделения банка");
+        departAddress.setWidth("100%");
+        departAddress.setValueChangeMode(ValueChangeMode.EAGER);
+        content.add(departAddress);
+
+
+        binder = new BeanValidationBinder<>(Account.class);
+
+       /* binder.forField(value)
+                .withConverter(new StringToLongConverter("Счет состоит из чисел"))
+                .bind("value");
+        binder.forField(corrAccount)
+                .withConverter(new StringToLongConverter("Счет состоит из чиселёё Ё ЁяяяясссФЯМ"))
+                .bind("corrAccount");
+*/
         binder.bindInstanceFields(this);
 
 
@@ -200,16 +232,17 @@ public class MachineForm extends Div {
         content.add(save, discard, delete, cancel);
     }
 
-  //  public void setCategories(Collection<Category> categories) {
+    //  public void setCategories(Collection<Category> categories) {
     //    category.setItems(categories);
-  //  }
+    //  }
 
-    public void editMachine(Machine Machine) {
-        if (Machine == null) {
-            Machine = new Machine();
+    public void editMachine(Account account) {
+        if (account == null) {
+            account = new Account();
         }
-        delete.setVisible(!Machine.isNew());
-        currentMachine = Machine;
-        binder.readBean(Machine);
+        delete.setVisible(!account.isNew());
+        currentMachine = account;
+        binder.readBean(account);
     }
+
 }

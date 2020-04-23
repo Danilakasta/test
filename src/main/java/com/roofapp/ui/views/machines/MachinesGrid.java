@@ -1,7 +1,6 @@
 package com.roofapp.ui.views.machines;
 
 import com.roofapp.backend.data.entity.Machine;
-import com.roofapp.backend.data.entity.Product;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.ColumnTextAlign;

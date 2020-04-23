@@ -1,7 +1,7 @@
-package com.roofapp.ui.views.machines;
+package com.roofapp.ui.views.accounts;
 
-import com.roofapp.backend.data.entity.Machine;
-import com.roofapp.backend.service.MachineService;
+import com.roofapp.backend.data.entity.Account;
+import com.roofapp.backend.service.AccountService;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,25 +12,25 @@ import java.util.Objects;
 
 /**
  * Utility class that encapsulates filtering and CRUD operations for
- * {@link Machine} entities.
+ * {@link Account} entities.
  * <p>
 
  */
-public class MachineDataProvider extends ListDataProvider<Machine> {
+public class AccountDataProvider extends ListDataProvider<Account> {
 
     /**
      * Text filter that can be changed separately.
      */
     private String filterText = "";
-    private List<Machine> Machines;
+    private List<Account> Machines;
 
 
-    private final MachineService MachineService;
+    private final AccountService service;
 
     @Autowired
-    public MachineDataProvider(Collection<Machine> items, MachineService MachineService) {
+    public AccountDataProvider(Collection<Account> items, AccountService service) {
         super(items);
-        this.MachineService = MachineService;
+        this.service = service;
     }
 
 
@@ -43,28 +43,28 @@ public class MachineDataProvider extends ListDataProvider<Machine> {
     /**
      * Store given Machine to the backing data service.
      *
-     * @param Machine the updated or new Machine
+     * @param item the updated or new Machine
      */
-    public void save(Machine Machine) {
-        if (Machine.isNew()) {
-            getItems().add(Machine);
+    public void save(Account item) {
+        if (item.isNew()) {
+            getItems().add(item);
             refreshAll();
         } else {
           // refreshItem(Machine);
             refreshAll();
         }
-        MachineService.save(Machine);
+        service.save(null,item);
     }
 
     /**
      * Delete given Machine from the backing data service.
      *
-     * @param Machine the Machine to be deleted
+     * @param item the Machine to be deleted
      */
-    public void delete(Machine Machine) {
+    public void delete(Account item) {
      //   DataService.get().deleteMachine(Machine.getId());
-        MachineService.delete(Machine);
-        getItems().remove(Machine);
+        service.delete(null,item);
+        getItems().remove(item);
         refreshAll();
     }
 
@@ -82,8 +82,8 @@ public class MachineDataProvider extends ListDataProvider<Machine> {
         }
         this.filterText = filterText.trim().toLowerCase(Locale.ENGLISH);
 
-        setFilter(Machine -> passesFilter(Machine.getName(), this.filterText)
-                        || passesFilter(Machine.getType(), this.filterText)
+        setFilter(item -> passesFilter(item.getValue(), this.filterText)
+                        || passesFilter(item.getValue(), this.filterText)
                 //    || passesFilter(Machine.getCategory(), this.filterText)
         );
     }
