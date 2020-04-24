@@ -25,7 +25,7 @@ public class AccountGrid extends Grid<Account> {
                 .setWidth("200px")
                 .setFlexGrow(20).setSortable(true).setKey("value");
 
-        addColumn(Account::getCorrAccount).setHeader("corrAccount")
+        addColumn(Account::getCorrAccount).setHeader("Кор счет")
                 .setWidth("200px")
                 .setFlexGrow(20).setSortable(true).setKey("corrAccount");
 

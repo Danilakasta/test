@@ -143,7 +143,7 @@ public class AccountForm extends Div {
         value.setWidth("100%");
         value.setValueChangeMode(ValueChangeMode.EAGER);
 
-        corrAccount = new TextField("кор счет");
+        corrAccount = new TextField("Кор счет");
         corrAccount.setWidth("100%");
         corrAccount.setValueChangeMode(ValueChangeMode.EAGER);
 
