@@ -1,8 +1,9 @@
 package com.roofapp.backend.data;
 
 public enum MachineType {
-    W100("Профнастил"),
-    F200("Метало черепица");
+    P("Профнастил"),
+    M("Метало черепица"),
+    G("Гладкий лист");
 
 
     private final String name;
