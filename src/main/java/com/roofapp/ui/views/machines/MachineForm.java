@@ -10,9 +10,11 @@ import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -45,6 +47,11 @@ public class MachineForm extends Div {
     private final Select<Width> width;
 
     private final Select<WaveHeight> waveHeight;
+
+
+    private final IntegerField trimming;
+
+  //  private final Select<ForbiddenSize>  forbiddenSize;
 
     //   private final CheckboxGroup<Category> category;
     private Button save;
@@ -148,6 +155,25 @@ public class MachineForm extends Div {
         horizontalLayout3.setFlexGrow(1, width, length);
         content.add(horizontalLayout3);
 
+
+        trimming = new IntegerField("Торцовка");
+        trimming.setWidth("50%");
+        trimming.setSuffixComponent(new Span("см."));
+        trimming.setValueChangeMode(ValueChangeMode.EAGER);
+
+
+      /*  forbiddenSize = new Select<>();
+        trimming.setWidth("50%");
+        forbiddenSize.setLabel("Запрещеные размеры");
+        forbiddenSize.setWidth("100%");
+        forbiddenSize.setItems();
+
+
+       */
+        final HorizontalLayout horizontalLayout4 = new HorizontalLayout(trimming );
+        horizontalLayout4.setWidth("50%");
+        horizontalLayout4.setFlexGrow(1, trimming );
+        content.add(horizontalLayout4);
 
         binder = new BeanValidationBinder<>(Machine.class);
         binder.forField(length).withConverter(new MachineForm.StockCountConverter())

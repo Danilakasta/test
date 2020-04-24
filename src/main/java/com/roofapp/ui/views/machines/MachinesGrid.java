@@ -8,7 +8,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
 
-import java.text.DecimalFormat;
 import java.util.Comparator;
 
 /**
@@ -25,38 +24,24 @@ public class MachinesGrid extends Grid<Machine> {
         addColumn(Machine::getName).setHeader("Название")
                 .setFlexGrow(20).setSortable(true).setKey("name");
 
-        // Format and add " €" to price
-        final DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setMaximumFractionDigits(2);
-        decimalFormat.setMinimumFractionDigits(2);
-
+        final String widthTemplateTemplate = "[[item.waveHeight]]";
+        addColumn(TemplateRenderer.<Machine>of(widthTemplateTemplate)
+                .withProperty("waveHeight",
+                        item -> item.getWaveHeight().toString()))
+                .setHeader("Тип волны")
+                .setComparator(Comparator
+                        .comparing(Machine::getWaveHeight))
+                .setFlexGrow(5).setKey("waveHeight");
 
 
         final String typeTemplate = "[[item.type]]";
         addColumn(TemplateRenderer.<Machine>of(typeTemplate)
                 .withProperty("type",
                         item ->  item.getType().toString()))
-                                .setHeader("Тип")
+                                .setHeader("Тип проката")
                                 .setComparator(Comparator
                                         .comparing(Machine::getType))
                                 .setFlexGrow(5).setKey("type");
-
-        addColumn(product -> product.getLength() == 0 ? "-"
-                : Integer.toString(product.getLength()))
-                .setHeader("Длина м.")
-                .setTextAlign(ColumnTextAlign.END)
-                .setComparator(
-                        Comparator.comparingInt(Machine::getLength))
-                .setFlexGrow(3).setKey("length");
-
-        final String widthTemplateTemplate = "[[item.waveHeight]]";
-        addColumn(TemplateRenderer.<Machine>of(widthTemplateTemplate)
-                .withProperty("waveHeight",
-                        item -> item.getWaveHeight().toString()))
-                .setHeader("Высота волны")
-                .setComparator(Comparator
-                        .comparing(Machine::getWaveHeight))
-                .setFlexGrow(5).setKey("waveHeight");
 
         final String widthTemplate = "[[item.width]]";
         addColumn(TemplateRenderer.<Machine>of(widthTemplate)
@@ -66,6 +51,18 @@ public class MachinesGrid extends Grid<Machine> {
                 .setComparator(Comparator
                         .comparing(Machine::getWidth))
                 .setFlexGrow(5).setKey("width");
+
+        addColumn(product -> product.getLength() == 0 ? "-"
+                : Integer.toString(product.getLength()))
+                .setHeader("Длина стана м.")
+                .setTextAlign(ColumnTextAlign.END)
+                .setComparator(
+                        Comparator.comparingInt(Machine::getLength))
+                .setFlexGrow(3).setKey("length");
+
+
+
+
 
         UI.getCurrent().getPage().addBrowserWindowResizeListener(
                 e -> setColumnVisibility(e.getWidth()));

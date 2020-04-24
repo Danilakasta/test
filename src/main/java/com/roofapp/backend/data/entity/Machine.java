@@ -31,10 +31,10 @@ public class Machine extends AbstractEntity {
     private WaveHeight waveHeight;
 
     //Торцовка
-   // private trimming;
+    private Integer trimming;
 
     //Запрещеные размеры
-  //  private forbiddenSizes;
+    private ForbiddenSize forbiddenSize;
 
     //Ширина изделия
     private Integer productWidth;
