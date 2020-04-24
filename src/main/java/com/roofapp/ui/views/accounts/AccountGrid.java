@@ -17,13 +17,20 @@ public class AccountGrid extends Grid<Account> {
     public AccountGrid() {
 
         setSizeFull();
-        addColumn(Account::getContractor).setHeader("Получатель")
-                .setFlexGrow(20).setSortable(true).setKey("");
+        addColumn(Account::getContractor).setHeader("Плптельщик")
+                .setWidth("300px")
+                .setFlexGrow(200).setSortable(true).setKey("");
 
         addColumn(Account::getValue).setHeader("счет")
+                .setWidth("200px")
                 .setFlexGrow(20).setSortable(true).setKey("value");
 
+        addColumn(Account::getCorrAccount).setHeader("corrAccount")
+                .setWidth("200px")
+                .setFlexGrow(20).setSortable(true).setKey("corrAccount");
+
         addColumn(Account::getBankName).setHeader("банк получателя")
+                .setWidth("300px")
                 .setFlexGrow(20).setSortable(true).setKey("bankName");
 
         addColumn(Account::getInn).setHeader("Инн банка получателя")
@@ -31,9 +38,6 @@ public class AccountGrid extends Grid<Account> {
 
         addColumn(Account::getBik).setHeader("Бик банка получателя")
                 .setFlexGrow(20).setSortable(true).setKey("bik");
-
-        addColumn(Account::getCorrAccount).setHeader("corrAccount")
-                .setFlexGrow(20).setSortable(true).setKey("corrAccount");
 
         addColumn(Account::getCode).setHeader("Код подразделения")
                 .setFlexGrow(20).setSortable(true).setKey("code");

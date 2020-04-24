@@ -23,16 +23,16 @@ public class Contractor {
     // @Size(min = 2, message = "")
     private String name;
 
-  //  @NotNull
+    //  @NotNull
     private ContractorType type = ContractorType.UR;
 
     //@NotNull
-    private  ContractorSubType contractorSubType;
+    private ContractorSubType contractorSubType;
 
- //   @NotNull
+    //   @NotNull
     private String phone;
 
- //   @NotNull
+    //   @NotNull
     private String email;
 
     private String urAddress;
@@ -57,10 +57,9 @@ public class Contractor {
     }
 
 
-
     @Override
     public String toString() {
-        return name;
+        return type + " " + name;
     }
 
 }

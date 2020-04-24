@@ -129,7 +129,7 @@ public class AccountForm extends Div {
         contractor = new Select<>();
         contractor.setLabel("Плательщик");
         contractor.setWidth("100%");
-        contractor.setItemLabelGenerator(Contractor::getName);
+        contractor.setItemLabelGenerator(Contractor::toString);
         contractor.setItems(contractorService.findAll());
         content.add(contractor);
 

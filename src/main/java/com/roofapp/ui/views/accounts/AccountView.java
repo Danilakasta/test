@@ -33,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AccountView extends HorizontalLayout
         implements HasUrlParameter<String> {
 
-    public static final String VIEW_NAME = "Счета";
+    public static final String VIEW_NAME = "Реквизиты";
 
 
     private  AccountService service;
