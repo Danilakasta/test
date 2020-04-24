@@ -23,21 +23,8 @@ public class ContractorGrid extends Grid<Contractor> {
         setSizeFull();
 
         addColumn(Contractor::getName).setHeader("Название")
+                .setWidth("300px")
                 .setFlexGrow(20).setSortable(true).setKey("name");
-
-        // Format and add " €" to price
-        final DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setMaximumFractionDigits(2);
-        decimalFormat.setMinimumFractionDigits(2);
-
-        // Add an traffic light icon in front of availability
-        // Three css classes with the same names of three availability values,
-        // Available, Coming and Discontinued, are defined in shared-styles.css
-        // and are
-        // used here in availabilityTemplate.
-
-        //final String availabilityTemplate = "<iron-icon icon=\"vaadin:circle\" class-name=\"[[item.type]]\"></iron-icon> [[item.type]]";
-
 
         final String typeTemplate = "[[item.type]]";
         addColumn(TemplateRenderer.<Contractor>of(typeTemplate)
@@ -53,13 +40,16 @@ public class ContractorGrid extends Grid<Contractor> {
 
 
         addColumn(Contractor::getEmail).setHeader("Почта")
+                .setWidth("200px")
                 .setFlexGrow(5).setSortable(true).setKey("email");
 
 
         addColumn(Contractor::getUrAddress).setHeader("Юр. адрес")
+                .setWidth("300px")
                 .setFlexGrow(5).setSortable(true).setKey("urAddress");
 
         addColumn(Contractor::getFizAddress).setHeader("Физ. адрес")
+                .setWidth("300px")
                 .setFlexGrow(5).setSortable(true).setKey("fizAddress");
 
         addColumn(Contractor::getInn).setHeader("ИНН")
@@ -74,43 +64,7 @@ public class ContractorGrid extends Grid<Contractor> {
         addColumn(Contractor::getOgrn).setHeader("ОГРН")
                 .setFlexGrow(5).setSortable(true).setKey("ogpn");
 
-      /*  final String widthTemplate = "[[item.width]]";
-        addColumn(TemplateRenderer.<Product>of(widthTemplate)
-                .withProperty("width",
-                        item -> item.getWidth().toString()))
-                .setHeader("Толшина")
-                .setComparator(Comparator
-                        .comparing(Contractor::getWidth))
-                .setFlexGrow(5).setKey("width");
 
-        addColumn(product -> decimalFormat.format(product.getPrice()) + " р")
-                .setHeader("Цена закупки").setTextAlign(ColumnTextAlign.END)
-                .setComparator(Comparator.comparing(Product::getPrice))
-                .setFlexGrow(3).setKey("price");
-
-        addColumn(product -> product.getWeight() == 0 ? "-"
-                : Integer.toString(product.getWeight()))
-                        .setHeader("Вес")
-                        .setTextAlign(ColumnTextAlign.END)
-                        .setComparator(
-                                Comparator.comparingInt(Product::getWeight))
-                        .setFlexGrow(3).setKey("stock");
-
-        addColumn(product -> product.getLength() == 0 ? "-"
-                : Integer.toString(product.getLength()))
-                .setHeader("Длина м.")
-                .setTextAlign(ColumnTextAlign.END)
-                .setComparator(
-                        Comparator.comparingInt(Product::getLength))
-                .setFlexGrow(3).setKey("length");
-
-        // Show all categories the product is in, separated by commas
-      //  addColumn(this::formatCategories).setHeader("Category").setFlexGrow(12)
-         //       .setKey("category");
-
-        // If the browser window size changes, check if all columns fit on
-        // screen
-        // (e.g. switching from portrait to landscape mode)*/
 
         UI.getCurrent().getPage().addBrowserWindowResizeListener(
                 e -> setColumnVisibility(e.getWidth()));
@@ -119,22 +73,7 @@ public class ContractorGrid extends Grid<Contractor> {
     private void setColumnVisibility(int width) {
      if (width > 800) {
             getColumnByKey("name").setVisible(true);
-           // getColumnByKey("price").setVisible(true);
-          //  getColumnByKey("type").setVisible(true);
-          //  getColumnByKey("stock").setVisible(true);
-          //  getColumnByKey("category").setVisible(true);
-      /*     } else if (width > 550) {
-            getColumnByKey("productname").setVisible(true);
-            getColumnByKey("price").setVisible(true);
-            getColumnByKey("type").setVisible(false);
-            getColumnByKey("stock").setVisible(false);
-         //   getColumnByKey("category").setVisible(true);
-        } else {
-            getColumnByKey("productname").setVisible(true);
-            getColumnByKey("price").setVisible(true);
-            getColumnByKey("type").setVisible(false);
-            getColumnByKey("stock").setVisible(false);
-          //  getColumnByKey("category").setVisible(false);*/
+
         }
     }
 

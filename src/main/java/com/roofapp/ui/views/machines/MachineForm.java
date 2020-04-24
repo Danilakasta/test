@@ -41,7 +41,7 @@ public class MachineForm extends Div {
 
     private final TextField length;
     private final Select<MachineType> type;
-    
+
     private final Select<Width> width;
 
     private final Select<WaveHeight> waveHeight;
@@ -111,43 +111,43 @@ public class MachineForm extends Div {
         content.addClassName("product-form-content");
         add(content);
 
-     //   viewLogic = sampleCrudLogic;
-
         name = new TextField("Название");
-        name.setWidth("100%");
+        name.setWidth("50%");
         name.setRequired(true);
         name.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(name);
-
-        type = new Select<>();
-        type.setLabel("Вид");
-        type.setWidth("100%");
-        type.setItems(MachineType.values());
-        //  content.add(type);
 
         waveHeight = new Select<>();
         waveHeight.setLabel("Высота волны");
-        waveHeight.setWidth("100%");
+        waveHeight.setWidth("25%");
         waveHeight.setItems(WaveHeight.values());
-        // content.add(materialColor);
+
+        type = new Select<>();
+        type.setLabel("Тип проката");
+        type.setWidth("25%");
+        type.setItems(MachineType.values());
+
+        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(name, waveHeight, type);
+        horizontalLayout2.setWidth("100%");
+        horizontalLayout2.setFlexGrow(1, name, waveHeight, type);
+        content.add(horizontalLayout2);
+
 
         width = new Select<>();
         width.setLabel("Допустимая толщина мет");
         width.setWidth("100%");
         width.setItems(Width.values());
+
         // content.add(materialColor);
-
-        
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(type, waveHeight,width);
-        horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(1, type, waveHeight,width);
-        content.add(horizontalLayout2);
-
-        length = new TextField("Длинна станка м.");
-        length.setWidth("20%");
+        length = new TextField("Длинна стана м.");
+        length.setWidth("100%");
         length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         length.setValueChangeMode(ValueChangeMode.EAGER);
-         content.add(length);
+
+        final HorizontalLayout horizontalLayout3 = new HorizontalLayout(width, length);
+        horizontalLayout3.setWidth("100%");
+        horizontalLayout3.setFlexGrow(1, width, length);
+        content.add(horizontalLayout3);
+
 
         binder = new BeanValidationBinder<>(Machine.class);
         binder.forField(length).withConverter(new MachineForm.StockCountConverter())
@@ -200,9 +200,9 @@ public class MachineForm extends Div {
         content.add(save, discard, delete, cancel);
     }
 
-  //  public void setCategories(Collection<Category> categories) {
+    //  public void setCategories(Collection<Category> categories) {
     //    category.setItems(categories);
-  //  }
+    //  }
 
     public void editMachine(Machine Machine) {
         if (Machine == null) {

@@ -1,20 +1,24 @@
 package com.roofapp.backend.data;
 
 public enum WaveHeight {
-    H0(0),
-    H07(7),
-    H08(8),
-    H20(20),
-    H21(21),
-    H35(35),
-    H40(40),
-    H60(60),
-    H75(75),
-    H114(114);
+    H07("ПС 07"),
+    H08("ПС 08"),
+    H20("ПС 20"),
+    H21("ПС 21"),
+    H35("ПС 35"),
+    H40("ПС 40"),
+    H60("ПС 60"),
+    H75("ПС 75"),
+    H114("ПС 114"),
+    SMOOTH_SHEET("Гладкий лист"),
+    SUPER_MATURE("Супермонтеррей"),
+    MODERN("Модерн"),
+    CLASSIC("Классика");
 
-    private final Integer height;
 
-    private WaveHeight(Integer height) {
+    private final String height;
+
+    private WaveHeight(String height) {
         this.height = height;
     }
 

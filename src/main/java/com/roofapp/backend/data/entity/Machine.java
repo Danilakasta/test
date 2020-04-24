@@ -28,7 +28,16 @@ public class Machine extends AbstractEntity {
     private Width width = Width.W28;
 
     @NotNull
-    private WaveHeight waveHeight = WaveHeight.H0;
+    private WaveHeight waveHeight;
+
+    //Торцовка
+   // private trimming;
+
+    //Запрещеные размеры
+  //  private forbiddenSizes;
+
+    //Ширина изделия
+    private Integer productWidth;
 
     @Override
     public String toString() {
