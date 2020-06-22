@@ -2,7 +2,6 @@ package com.roofapp.ui.views.orderedit;
 
 import com.roofapp.backend.data.entity.OrderItem;
 import com.roofapp.backend.data.entity.Product;
-import com.roofapp.ui.utils.FormattingUtils;
 import com.roofapp.ui.views.order.events.CommentChangeEvent;
 import com.roofapp.ui.views.order.events.DeleteEvent;
 import com.roofapp.ui.views.order.events.PriceChangeEvent;
@@ -19,7 +18,6 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.internal.AbstractFieldSupport;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;

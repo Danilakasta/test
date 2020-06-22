@@ -2,7 +2,6 @@ package com.roofapp.ui.views.materials;
 
 
 import com.roofapp.backend.data.entity.Material;
-import com.roofapp.backend.data.entity.Product;
 import com.vaadin.flow.component.UI;
 
 import java.io.Serializable;

@@ -4,7 +4,10 @@ import com.roofapp.backend.data.entity.AbstractEntity;
 import com.roofapp.backend.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
+import java.util.List;
 
 public interface CrudService<T extends AbstractEntity> {
 
@@ -38,4 +41,6 @@ public interface CrudService<T extends AbstractEntity> {
 	}
 
 	T createNew(User currentUser);
+
+	List<T> findAll() ;
 }

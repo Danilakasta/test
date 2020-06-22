@@ -20,7 +20,14 @@ public class MachinesGrid extends Grid<Machine> {
     public MachinesGrid() {
 
         setSizeFull();
+        addGridColumn();
 
+
+      //  UI.getCurrent().getPage().addBrowserWindowResizeListener(
+           //     e -> setColumnVisibility(e.getWidth()));
+    }
+
+   public void addGridColumn(){
         addColumn(Machine::getName).setHeader("Название")
                 .setFlexGrow(20).setSortable(true).setKey("name");
 
@@ -38,10 +45,10 @@ public class MachinesGrid extends Grid<Machine> {
         addColumn(TemplateRenderer.<Machine>of(typeTemplate)
                 .withProperty("type",
                         item ->  item.getType().toString()))
-                                .setHeader("Тип проката")
-                                .setComparator(Comparator
-                                        .comparing(Machine::getType))
-                                .setFlexGrow(5).setKey("type");
+                .setHeader("Тип проката")
+                .setComparator(Comparator
+                        .comparing(Machine::getType))
+                .setFlexGrow(5).setKey("type");
 
         final String widthTemplate = "[[item.width]]";
         addColumn(TemplateRenderer.<Machine>of(widthTemplate)
@@ -61,53 +68,17 @@ public class MachinesGrid extends Grid<Machine> {
                 .setFlexGrow(3).setKey("length");
 
 
-
-
-
-        UI.getCurrent().getPage().addBrowserWindowResizeListener(
-                e -> setColumnVisibility(e.getWidth()));
-    }
-
-    private void setColumnVisibility(int width) {
-        if (width > 800) {
-            getColumnByKey("name").setVisible(true);
-            getColumnByKey("type").setVisible(true);
-        } else if (width > 550) {
-            getColumnByKey("name").setVisible(true);
-            getColumnByKey("type").setVisible(false);
-        } else {
-            getColumnByKey("name").setVisible(true);
-            getColumnByKey("type").setVisible(false);
-        }
     }
 
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
-
-        // fetch browser width
         UI.getCurrent().getInternals().setExtendedClientDetails(null);
-        UI.getCurrent().getPage().retrieveExtendedClientDetails(e -> {
-            setColumnVisibility(e.getBodyClientWidth());
-        });
     }
 
-    public Machine getSelectedRow() {
-        Notification.show("ok");
-        return asSingleSelect().getValue();
-    }
 
     public void refresh(Machine item) {
         getDataCommunicator().refresh(item);
     }
 
-    private String formatCategories(Machine item) {
-      /*  if (product.getCategory() == null || product.getCategory().isEmpty()) {
-            return "";
-        }
-        return product.getCategory().stream()
-                .sorted(Comparator.comparing(Category::getId))
-                .map(Category::getName).collect(Collectors.joining(", "));*/
-        return "";
-    }
 }

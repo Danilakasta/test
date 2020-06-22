@@ -3,6 +3,7 @@ package com.roofapp.ui.views.machines;
 //import com.roofapp.authentication.AccessControl;
 //import com.roofapp.authentication.AccessControlFactory;
 import com.roofapp.backend.data.entity.Machine;
+import com.roofapp.backend.data.entity.AbstractEntity;
 import com.vaadin.flow.component.UI;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ import java.io.Serializable;
  * the system separately, and to e.g. provide alternative views for the same
  * data.
  */
-public class MachineViewLogic implements Serializable {
+public class MachineViewLogic<T> implements Serializable {
 
     private final MachinesView view;
 
@@ -28,16 +29,16 @@ public class MachineViewLogic implements Serializable {
      * Does the initialization of the inventory view including disabling the
      * buttons if the user doesn't have access.
      */
-    public void init() {
+   // public void init() {
      //   if (!AccessControlFactory.getInstance().createAccessControl()
         //       .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
-            view.setEnabled(true);
+         //   view.setEnabled(true);
        // }
 
 
-    }
+  //  }
 
-    public void cancelMachine() {
+    public void cancel() {
         setFragmentParameter("");
         view.clearSelection();
     }
@@ -49,12 +50,12 @@ public class MachineViewLogic implements Serializable {
      * refresh and to enable bookmarking of individual Machine selections.
      *
      */
-    private void setFragmentParameter(String MachineId) {
+    private void setFragmentParameter(String id) {
         String fragmentParameter;
-        if (MachineId == null || MachineId.isEmpty()) {
+        if (id == null || id.isEmpty()) {
             fragmentParameter = "";
         } else {
-            fragmentParameter = MachineId;
+            fragmentParameter = id;
         }
 
         UI.getCurrent().navigate(MachinesView.class, fragmentParameter);
@@ -67,17 +68,17 @@ public class MachineViewLogic implements Serializable {
      * user can edit them.
      *
      * 
-     * @param MachineId
+     * @param id
      */
-    public void enter(String MachineId) {
-        if (MachineId != null && !MachineId.isEmpty()) {
-            if (MachineId.equals("new")) {
+    public void enter(String id) {
+        if (id != null && !id.isEmpty()) {
+            if (id.equals("new")) {
                 newMachine();
             } else {
                 // Ensure this is selected even if coming directly here from
                 // login
                 try {
-                    final int pid = Integer.parseInt(MachineId);
+                    final int pid = Integer.parseInt(id);
                     final Machine Machine = findMachine(pid);
                     view.selectRow(Machine);
                 } catch (final NumberFormatException e) {
@@ -88,16 +89,16 @@ public class MachineViewLogic implements Serializable {
         }
     }
 
-    private Machine findMachine(int MachineId) {
+    private Machine findMachine(int id) {
         return null;// DataService.get().getMachineById(MachineId);
     }
 
-    public void saveMachine(Machine Machine) {
-        final boolean newMachine = Machine.isNew();
+    public void saveMachine(AbstractEntity item) {
+        final boolean newMachine = item.isNew();
         view.clearSelection();
-        view.update(Machine);
+        //view.update(item);
         setFragmentParameter("");
-        view.showNotification(Machine.getName()
+        view.showNotification(item.getId()
                 + (newMachine ? " добавлено" : " сохранено"));
     }
 

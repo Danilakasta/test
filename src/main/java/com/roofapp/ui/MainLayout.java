@@ -10,6 +10,7 @@ import com.roofapp.backend.data.Role;
 import com.roofapp.ui.views.accounts.AccountView;
 import com.roofapp.ui.views.machines.MachinesView;
 import com.roofapp.ui.views.manufacture.ManufactureView;
+import com.roofapp.ui.views.marketAnalysis.ConcurrentProductView;
 import com.roofapp.ui.views.materials.MaterialsView;
 import com.roofapp.ui.views.products.ProductView;
 import com.roofapp.ui.views.contractors.ContractorsView;
@@ -137,6 +138,11 @@ public class MainLayout extends AppLayout implements RouterLayout {
         if (currentUser.getUser().getRole().equals(Role.ADMIN))
             addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
                     VaadinIcon.INFO_CIRCLE.create()));
+
+        if (currentUser.getUser().getRole().equals(Role.ADMIN)||
+                currentUser.getUser().getRole().equals(Role.DIRECTOR))
+            addToDrawer(createMenuLink(ConcurrentProductView.class, ConcurrentProductView.VIEW_NAME,
+                    VaadinIcon.CASH.create()));
 
 
         // Create logout button but don't add it yet; admin view might be added

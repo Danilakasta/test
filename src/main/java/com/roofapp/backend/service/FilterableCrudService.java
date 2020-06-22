@@ -13,5 +13,4 @@ public interface FilterableCrudService<T extends AbstractEntity> extends CrudSer
 
 	long countAnyMatching(Optional<String> filter);
 
-
 }

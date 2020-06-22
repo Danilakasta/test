@@ -67,6 +67,11 @@ public class ForbiddenSizeService implements FilterableCrudService<ForbiddenSize
         return new ForbiddenSize();
     }
 
+    @Override
+    public List<ForbiddenSize> findAll() {
+        return null;
+    }
+
     public List<ForbiddenSize> getFindAll() {
         return forbiddenSizeRepository.findAll();
     }

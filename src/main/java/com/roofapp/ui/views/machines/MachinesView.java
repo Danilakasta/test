@@ -3,6 +3,7 @@ package com.roofapp.ui.views.machines;
 import com.roofapp.backend.data.entity.Machine;
 import com.roofapp.backend.service.MachineService;
 import com.roofapp.ui.MainLayout;
+import com.roofapp.ui.dataproviders.GridDataProvider;
 import com.roofapp.ui.views.products.ProductViewLogic;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
@@ -18,6 +19,7 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * A view for performing create-read-update-delete operations on products.
@@ -32,8 +34,7 @@ public class MachinesView extends HorizontalLayout
 
     public static final String VIEW_NAME = "Оборудование";
 
-
-    private final MachineService machineService;
+    private GridDataProvider dataProvider;
 
     private final MachinesGrid grid;
     private final MachineForm form;
@@ -43,23 +44,26 @@ public class MachinesView extends HorizontalLayout
 
     private Button newProduct;
 
-    private MachineDataProvider dataProvider;
+
 
     public MachinesView(MachineService machineService) {
-        this.machineService = machineService;
+       // this.machineService = machineService;
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();
+
         final HorizontalLayout topLayout = createTopBar();
+        dataProvider = new GridDataProvider(machineService);
+
         grid = new MachinesGrid();
-        dataProvider = new MachineDataProvider(machineService.findAll(), machineService);
         grid.setDataProvider(this.dataProvider);
-        // Allows user to select a single row in the grid.
+
         grid.asSingleSelect().addValueChangeListener(
                 event -> viewLogic.rowSelected(event.getValue()));
-        form = new MachineForm(viewLogic, machineService);
-//        form.setCategories(DataService.get().getAllCategories());
+
+        form = new MachineForm(viewLogic);
+
         final VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add( new H2(this.VIEW_NAME));
+        barAndGridLayout.add(new H2(this.VIEW_NAME));
 
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
@@ -71,8 +75,9 @@ public class MachinesView extends HorizontalLayout
         add(barAndGridLayout);
         add(form);
 
-        viewLogic.init();
+     //   viewLogic.init();
     }
+
 
     public HorizontalLayout createTopBar() {
         filter = new TextField();
@@ -114,15 +119,6 @@ public class MachinesView extends HorizontalLayout
         Notification.show(msg);
     }
 
-    /**
-     * Enables/Disables the new Machine button.
-     *
-     * @param enabled
-     */
-    public void setNewProductEnabled(boolean enabled) {
-
-        newProduct.setEnabled(enabled);
-    }
 
     /**
      * Deselects the selected row in the grid.
@@ -154,7 +150,7 @@ public class MachinesView extends HorizontalLayout
      *
      * @param item
      */
-    public void remove(Machine item ) {
+    public void remove(Machine item) {
         dataProvider.delete(item);
     }
 

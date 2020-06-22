@@ -5,7 +5,6 @@ package com.roofapp.backend.service;
 import com.roofapp.backend.data.OrderState;
 import com.roofapp.backend.data.entity.Order;
 import com.roofapp.backend.data.entity.OrderSummary;
-import com.roofapp.backend.data.entity.Product;
 import com.roofapp.backend.data.entity.User;
 import com.roofapp.backend.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,6 +175,11 @@ public class OrderService implements CrudService<Order> {
 		order.setDueTime(LocalTime.of(16, 0));
 		order.setDueDate(LocalDate.now());
 		return order;
+	}
+
+	@Override
+	public List<Order> findAll() {
+		return null;
 	}
 
 }

@@ -4,7 +4,6 @@ import com.roofapp.backend.data.MachineType;
 import com.roofapp.backend.data.WaveHeight;
 import com.roofapp.backend.data.Width;
 import com.roofapp.backend.data.entity.Machine;
-import com.roofapp.backend.service.MachineService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -19,15 +18,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
-import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 /**
  * A form for editing a single Machine.
@@ -35,82 +27,43 @@ import java.util.Locale;
 
 public class MachineForm extends Div {
 
-    private final VerticalLayout content;
+    //Form field
+    private VerticalLayout content;
+    private TextField name;
+    private IntegerField length;
+    private Select<MachineType> type;
+    private Select<Width> width;
+    private Select<WaveHeight> waveHeight;
+    private IntegerField trimming;
 
-    MachineService MachineService;
+    private Binder<Machine> binder;
+    private Machine currentMachine;
 
-    private final TextField name;
-
-    private final TextField length;
-    private final Select<MachineType> type;
-
-    private final Select<Width> width;
-
-    private final Select<WaveHeight> waveHeight;
-
-
-    private final IntegerField trimming;
-
-  //  private final Select<ForbiddenSize>  forbiddenSize;
-
-    //   private final CheckboxGroup<Category> category;
+    //Form button
     private Button save;
     private Button discard;
     private Button cancel;
-    private final Button delete;
+    private Button delete;
 
-    private MachineViewLogic viewLogic;
 
-    public void setViewLogic(MachineViewLogic viewLogic) {
-        this.viewLogic = viewLogic;
-    }
+    private final MachineViewLogic viewLogic;
 
-    private final Binder<Machine> binder;
-    private Machine currentMachine;
+  //  public void setViewLogic(MachineViewLogic viewLogic) {
+     //   this.viewLogic = viewLogic;
+   // }
 
-    private static class PriceConverter extends StringToBigDecimalConverter {
 
-        public PriceConverter() {
-            super(BigDecimal.ZERO, "Cannot convert value to a number.");
-        }
-
-        @Override
-        protected NumberFormat getFormat(Locale locale) {
-            // Always display currency with two decimals
-            final NumberFormat format = super.getFormat(locale);
-            if (format instanceof DecimalFormat) {
-                format.setMaximumFractionDigits(2);
-                format.setMinimumFractionDigits(2);
-            }
-            return format;
-        }
-    }
-
-    private static class StockCountConverter extends StringToIntegerConverter {
-
-        public StockCountConverter() {
-            super(0, "Could not convert value to " + Integer.class.getName()
-                    + ".");
-        }
-
-        @Override
-        protected NumberFormat getFormat(Locale locale) {
-            // Do not use a thousands separator, as HTML5 input type
-            // number expects a fixed wire/DOM number format regardless
-            // of how the browser presents it to the user (which could
-            // depend on the browser locale).
-            final DecimalFormat format = new DecimalFormat();
-            format.setMaximumFractionDigits(0);
-            format.setDecimalSeparatorAlwaysShown(false);
-            format.setParseIntegerOnly(true);
-            format.setGroupingUsed(false);
-            return format;
-        }
-    }
 
     @Autowired
-    public MachineForm(MachineViewLogic viewLogic, MachineService MachineService) {
-        this.MachineService = MachineService;
+    public MachineForm(MachineViewLogic viewLogic) {
+        this.viewLogic = viewLogic;
+        addFormItems();
+        setBinder();
+        addButtonBar();
+    }
+
+
+    public void addFormItems() {
         setClassName("product-form");
 
         content = new VerticalLayout();
@@ -145,7 +98,7 @@ public class MachineForm extends Div {
         width.setItems(Width.values());
 
         // content.add(materialColor);
-        length = new TextField("Длинна стана м.");
+        length = new IntegerField("Длинна стана м.");
         length.setWidth("100%");
         length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         length.setValueChangeMode(ValueChangeMode.EAGER);
@@ -161,23 +114,15 @@ public class MachineForm extends Div {
         trimming.setSuffixComponent(new Span("см."));
         trimming.setValueChangeMode(ValueChangeMode.EAGER);
 
-
-      /*  forbiddenSize = new Select<>();
-        trimming.setWidth("50%");
-        forbiddenSize.setLabel("Запрещеные размеры");
-        forbiddenSize.setWidth("100%");
-        forbiddenSize.setItems();
-
-
-       */
-        final HorizontalLayout horizontalLayout4 = new HorizontalLayout(trimming );
+        final HorizontalLayout horizontalLayout4 = new HorizontalLayout(trimming);
         horizontalLayout4.setWidth("50%");
-        horizontalLayout4.setFlexGrow(1, trimming );
+        horizontalLayout4.setFlexGrow(1, trimming);
         content.add(horizontalLayout4);
 
+    }
+
+    public void setBinder() {
         binder = new BeanValidationBinder<>(Machine.class);
-        binder.forField(length).withConverter(new MachineForm.StockCountConverter())
-                .bind("length");
         binder.bindInstanceFields(this);
 
 
@@ -188,7 +133,10 @@ public class MachineForm extends Div {
             save.setEnabled(hasChanges && isValid);
             discard.setEnabled(hasChanges);
         });
+    }
 
+
+    public void addButtonBar() {
         save = new Button("Сохранить");
         save.setWidth("100%");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -207,10 +155,10 @@ public class MachineForm extends Div {
 
         cancel = new Button("Отменить");
         cancel.setWidth("100%");
-        cancel.addClickListener(event -> viewLogic.cancelMachine());
+        cancel.addClickListener(event -> viewLogic.cancel());
         cancel.addClickShortcut(Key.ESCAPE);
         getElement()
-                .addEventListener("keydown", event -> viewLogic.cancelMachine())
+                .addEventListener("keydown", event -> viewLogic.cancel())
                 .setFilter("event.key == 'Escape'");
 
         delete = new Button("Удалить");
@@ -226,16 +174,17 @@ public class MachineForm extends Div {
         content.add(save, discard, delete, cancel);
     }
 
-    //  public void setCategories(Collection<Category> categories) {
-    //    category.setItems(categories);
-    //  }
-
-    public void editMachine(Machine Machine) {
-        if (Machine == null) {
-            Machine = new Machine();
+    /**
+     * Edit item
+     *
+     * @param item
+     */
+    public void editMachine(Machine item) {
+        if (item == null) {
+            item = new Machine();
         }
-        delete.setVisible(!Machine.isNew());
-        currentMachine = Machine;
-        binder.readBean(Machine);
+        delete.setVisible(!item.isNew());
+        currentMachine = item;
+        binder.readBean(item);
     }
 }

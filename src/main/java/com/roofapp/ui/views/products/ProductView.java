@@ -1,6 +1,8 @@
 package com.roofapp.ui.views.products;
 
 import com.roofapp.backend.service.ProductService;
+import com.roofapp.backend.service.SiteProductService;
+import com.roofapp.ui.views.marketAnalysis.ConcurrentProductDataProvider;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -15,13 +17,12 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
 import com.roofapp.backend.data.entity.Product;
 import com.roofapp.ui.MainLayout;
 
 /**
  * A view for performing create-read-update-delete operations on products.
- *
+ * <p>
  * See also {@link ProductViewLogic} for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
@@ -32,10 +33,10 @@ public class ProductView extends HorizontalLayout
     public static final String VIEW_NAME = "Номенклатура";
 
 
-   private final ProductService productService;
+    private final ProductService productService;
 
     private final ProductGrid grid;
-   private final ProductForm form;
+    private final ProductForm form;
     private TextField filter;
 
     private final ProductViewLogic viewLogic = new ProductViewLogic(this);
@@ -54,10 +55,10 @@ public class ProductView extends HorizontalLayout
         // Allows user to select a single row in the grid.
         grid.asSingleSelect().addValueChangeListener(
                 event -> viewLogic.rowSelected(event.getValue()));
-       form = new ProductForm(viewLogic,productService);
+        form = new ProductForm(viewLogic, productService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add( new H2(this.VIEW_NAME));
+        barAndGridLayout.add(new H2(this.VIEW_NAME));
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
         barAndGridLayout.setFlexGrow(1, grid);
@@ -103,9 +104,9 @@ public class ProductView extends HorizontalLayout
 
     /**
      * Shows a temporary popup notification to the user.
-     * 
-     * @see Notification#show(String)
+     *
      * @param msg
+     * @see Notification#show(String)
      */
     public void showNotification(String msg) {
         Notification.show(msg);
@@ -113,7 +114,7 @@ public class ProductView extends HorizontalLayout
 
     /**
      * Enables/Disables the new product button.
-     * 
+     *
      * @param enabled
      */
     public void setNewProductEnabled(boolean enabled) {
@@ -130,7 +131,7 @@ public class ProductView extends HorizontalLayout
 
     /**
      * Selects a row
-     * 
+     *
      * @param row
      */
     public void selectRow(Product row) {
@@ -139,7 +140,7 @@ public class ProductView extends HorizontalLayout
 
     /**
      * Updates a product in the list of products.
-     * 
+     *
      * @param product
      */
     public void updateProduct(Product product) {
@@ -148,7 +149,7 @@ public class ProductView extends HorizontalLayout
 
     /**
      * Removes a product from the list of products.
-     * 
+     *
      * @param product
      */
     public void removeProduct(Product product) {
@@ -157,7 +158,7 @@ public class ProductView extends HorizontalLayout
 
     /**
      * Displays user a form to edit a Product.
-     * 
+     *
      * @param product
      */
     public void editProduct(Product product) {
@@ -167,7 +168,7 @@ public class ProductView extends HorizontalLayout
 
     /**
      * Shows and hides the new product form
-     * 
+     *
      * @param show
      */
     public void showForm(boolean show) {
@@ -177,7 +178,7 @@ public class ProductView extends HorizontalLayout
 
     @Override
     public void setParameter(BeforeEvent event,
-            @OptionalParameter String parameter) {
+                             @OptionalParameter String parameter) {
         viewLogic.enter(parameter);
     }
 }
