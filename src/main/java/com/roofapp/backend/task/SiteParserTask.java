@@ -48,7 +48,7 @@ public class SiteParserTask {
     }
 
     @ConditionalOnProperty(value = "scheduling.enabled")
-    @Scheduled(fixedRate = 5000)
+  //  @Scheduled(fixedRate = 5000)
     public void parseSite2() throws Exception {
 
 
