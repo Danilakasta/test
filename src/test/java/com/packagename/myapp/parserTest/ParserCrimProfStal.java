@@ -117,9 +117,9 @@ public class ParserCrimProfStal {
             e.printStackTrace();
         }
 
-        Elements newsHeadlines1 = doc.select(productIemClass);
+      //  Elements newsHeadlines1 = doc.select(productIemClass);
         List<SiteProduct> siteProducts = new ArrayList<>();
-        for (Element subCategoryBloc : newsHeadlines1) {
+      //  for (Element subCategoryBloc : newsHeadlines1) {
 
             Elements newsHeadlines = doc.select(productIemClass);
             for (Element headline : newsHeadlines) {
@@ -134,12 +134,12 @@ public class ParserCrimProfStal {
 
             }
 
-        }
+       // }
         return siteProducts;
     }
 
 
-    @Test
+   // @Test
     public void testFragmentPath() throws Exception {
           List<SiteCategory> categoryList = getAllCategory();
         List<SiteProduct> allSiteProducts = new ArrayList<>();
@@ -152,7 +152,7 @@ public class ParserCrimProfStal {
     }
 
 
-    @Test
+    //@Test
     public void testAllPath() throws Exception {
         List<SiteCategory> categoryList = getAllCategory();
         List<SiteProduct> allSiteProducts = new ArrayList<>();

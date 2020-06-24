@@ -358,7 +358,7 @@ public class ParserRichstone {
         return siteProducts;
     }
 
-    @Test
+  //  @Test
     public void testFragmentPath() throws Exception {
         Map<String, SiteCategory> categoryList = getAllCategoryUrl();
         List<SiteProduct> allSiteProducts = new ArrayList<>();
@@ -414,7 +414,7 @@ public class ParserRichstone {
     }
 
 
-    @Test
+  //  @Test
     public void testAllPath() throws Exception {
         Map<String, SiteCategory> categoryList = getAllCategoryUrl();
         List<SiteProduct> allSiteProducts = new ArrayList<>();
@@ -429,7 +429,7 @@ public class ParserRichstone {
         log.info(String.valueOf(allSiteProducts));
     }
 
-    @Test
+   // @Test
     public void test2() throws Exception {
         log.info("sdf79.90adf".replaceAll("([^\\d.,]|\\B\\.|\\.\\B)+", ""));
     }

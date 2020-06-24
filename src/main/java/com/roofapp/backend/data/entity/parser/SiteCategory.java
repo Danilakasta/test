@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,6 +24,12 @@ public class SiteCategory {
     private String title;
     private String url;
     private String imgPath;
+
+
+
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JoinColumn(name = "parent_id")
+    private List<SiteCategory> subCategory;
 
     @Column(name = "created")
     @CreationTimestamp

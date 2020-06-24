@@ -1,5 +1,7 @@
 package com.roofapp.ui.views.marketAnalysis;
 
+import com.roofapp.backend.data.ProductType;
+import com.roofapp.backend.data.SiteNameEnum;
 import com.roofapp.backend.data.entity.parser.SiteProduct;
 import com.roofapp.backend.service.SiteProductService;
 import com.roofapp.ui.MainLayout;
@@ -12,6 +14,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
@@ -54,6 +57,7 @@ public class ConcurrentProductView extends HorizontalLayout
     private final ConcurrentProductGrid grid;
     //   private final ConcurrentProductForm form;
     private TextField filter;
+    private Select<SiteNameEnum> siteName;
 
     private final ConcurrentProductViewLogic viewLogic = new ConcurrentProductViewLogic(this);
     private Button downloadFile;
@@ -76,7 +80,7 @@ public class ConcurrentProductView extends HorizontalLayout
         //  form = new ConcurrentProductForm(viewLogic, productService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
-      //  barAndGridLayout.add(new H2(this.VIEW_NAME));
+        //  barAndGridLayout.add(new H2(this.VIEW_NAME));
         barAndGridLayout.add(topLayout);
 
         barAndGridLayout.add(grid);
@@ -99,12 +103,21 @@ public class ConcurrentProductView extends HorizontalLayout
                 event -> dataProvider.setFilter(event.getValue()));
         filter.addFocusShortcut(Key.KEY_F, KeyModifier.CONTROL);
 
+        siteName = new Select<>();
+        //  siteName.setLabel("Сайты включеные в парсинг");
+        siteName.setWidth("20%");
+        siteName.setItems(SiteNameEnum.values());
+
         final HorizontalLayout topLayout = new HorizontalLayout();
-        topLayout.setWidth("50%");
+        topLayout.setWidth("80%");
+        topLayout.add(siteName);
         topLayout.add(filter);
         topLayout.setVerticalComponentAlignment(Alignment.START, filter);
         topLayout.add(getFileDownloadButtonWrapper());
         topLayout.expand(filter);
+
+
+
         return topLayout;
     }
 
@@ -118,7 +131,7 @@ public class ConcurrentProductView extends HorizontalLayout
         downloadFile.setIcon(VaadinIcon.FILE_TEXT.create());
         DateFormat dataFormat = new SimpleDateFormat("dd.MM.yyyy_HH:mm");
         FileDownloadWrapper buttonWrapper = new FileDownloadWrapper(
-                new com.vaadin.flow.server.StreamResource("parser_data_" +dataFormat.format(new Date(System.currentTimeMillis())) + ".xlsx",
+                new com.vaadin.flow.server.StreamResource("parser_data_" + dataFormat.format(new Date(System.currentTimeMillis())) + ".xlsx",
                         () -> {
                             try {
                                 return new ByteArrayInputStream(FileUtils.readFileToByteArray(generateReportFile()));
@@ -155,7 +168,7 @@ public class ConcurrentProductView extends HorizontalLayout
             Row row = sheet.createRow(0);
             int collNumb = 0;
             //Шапка файла
-            String[] header = {"Сайт","Категория","Продукт","Цена","Полная Цена","Описание","Картинка","Дата загрузки"};
+            String[] header = {"Сайт", "Категория", "Продукт", "Цена", "Полная Цена", "Описание", "Картинка", "Дата загрузки"};
             List<String> headerText = Arrays.asList(header);
             for (String headcall : headerText) {
                 cell = row.createCell(collNumb, CellType.STRING);
@@ -215,7 +228,6 @@ public class ConcurrentProductView extends HorizontalLayout
 
         return tempFile;
     }
-
 
 
     public void showError(String msg) {

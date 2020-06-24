@@ -135,14 +135,14 @@ public class MainLayout extends AppLayout implements RouterLayout {
         //   addToDrawer(createMenuLink(DeliveriesView.class, DeliveriesView .VIEW_NAME,
         //         VaadinIcon.INFO_CIRCLE.create()));
 
-        if (currentUser.getUser().getRole().equals(Role.ADMIN))
-            addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
-                    VaadinIcon.INFO_CIRCLE.create()));
-
         if (currentUser.getUser().getRole().equals(Role.ADMIN)||
                 currentUser.getUser().getRole().equals(Role.DIRECTOR))
             addToDrawer(createMenuLink(ConcurrentProductView.class, ConcurrentProductView.VIEW_NAME,
                     VaadinIcon.CASH.create()));
+
+        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+            addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
+                    VaadinIcon.INFO_CIRCLE.create()));
 
 
         // Create logout button but don't add it yet; admin view might be added
