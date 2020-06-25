@@ -190,7 +190,7 @@ public class ParserCrimProfStal {
         }
     }
 
-    @Test
+ //   @Test
     public void test2() throws Exception {
         log.info("sdf79.90adf" .replaceAll("([^\\d.,]|\\B\\.|\\.\\B)+", ""));
     }
