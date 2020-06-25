@@ -340,7 +340,7 @@
                     <artifactId>flow-server-production-mode</artifactId>
                 </dependency>
             </dependencies>
-          <!--  <build>
+            <build>
                 <plugins>
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
@@ -363,7 +363,7 @@
                     </plugin>
 
                 </plugins>
-            </build>-->
+            </build>
         </profile>
 
         <profile>
