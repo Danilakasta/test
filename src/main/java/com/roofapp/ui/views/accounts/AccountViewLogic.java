@@ -70,7 +70,7 @@ public class AccountViewLogic implements Serializable {
     public void enter(String MachineId) {
         if (MachineId != null && !MachineId.isEmpty()) {
             if (MachineId.equals("new")) {
-                newMachine();
+                newAccount();
             } else {
                 // Ensure this is selected even if coming directly here from
                 // login
@@ -115,7 +115,7 @@ public class AccountViewLogic implements Serializable {
         view.edit(item);
     }
 
-    public void newMachine() {
+    public void newAccount() {
         view.clearSelection();
         setFragmentParameter("new");
         view.edit(new Account());

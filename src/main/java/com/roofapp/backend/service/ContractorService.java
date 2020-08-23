@@ -8,6 +8,8 @@ public interface ContractorService {
 
     void save(Contractor contractor);
 
+    void saveAll(List<Contractor> contractor);
+
     List<Contractor> findAll();
 
     Contractor findById(Long id);

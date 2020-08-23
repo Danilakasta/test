@@ -52,6 +52,20 @@
             <artifactId>file-download-wrapper</artifactId>
             <version>3.0.1</version>
         </dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.github.legioth/buttonrenderer -->
+        <dependency>
+            <groupId>org.github.legioth</groupId>
+            <artifactId>buttonrenderer</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-bom</artifactId>
+            <version>16.0.2</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
         <dependency>
             <groupId>org.vaadin.olli</groupId>
             <artifactId>file-download-wrapper</artifactId>

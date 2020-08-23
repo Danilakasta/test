@@ -1,20 +1,33 @@
 package com.roofapp.ui.views.contractors;
 
+import com.roofapp.backend.data.ContractorSubType;
 import com.roofapp.backend.data.entity.Contractor;
 
+import com.roofapp.backend.service.AccountService;
 import com.roofapp.backend.service.ContractorService;
 import com.roofapp.ui.MainLayout;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.router.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A view for performing create-read-update-delete operations on Contractors.
@@ -33,6 +46,7 @@ public class ContractorsView extends HorizontalLayout
 
 
     private final ContractorService contractorService;
+    private final AccountService accountService;
 
     private final ContractorGrid grid;
     private final ContractorsForm form;
@@ -43,12 +57,13 @@ public class ContractorsView extends HorizontalLayout
 
     private ContractorDataProvider dataProvider;
 
-    public ContractorsView(ContractorService contractorService) {
+    public ContractorsView(ContractorService contractorService, AccountService accountService) {
         this.contractorService = contractorService;
+        this.accountService = accountService;
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();
         final HorizontalLayout topLayout = createTopBar();
-        grid = new ContractorGrid();
+        grid = new ContractorGrid(accountService);
         dataProvider = new ContractorDataProvider(contractorService.findAll(), contractorService);
         grid.setDataProvider(this.dataProvider);
         // Allows user to select a single row in the grid.
@@ -57,7 +72,7 @@ public class ContractorsView extends HorizontalLayout
         form = new ContractorsForm(viewLogic, contractorService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add( new H2(this.VIEW_NAME));
+        barAndGridLayout.add(new H2(this.VIEW_NAME));
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
         barAndGridLayout.setFlexGrow(1, grid);
@@ -88,9 +103,71 @@ public class ContractorsView extends HorizontalLayout
         newContractor.addClickListener(click -> viewLogic.newContractor());
         // A shortcut to click the new Contractor button by pressing ALT + N
         newContractor.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
+
+        //Upload file
+        MemoryBuffer memoryBuffer = new MemoryBuffer();
+        Upload upload = new Upload(memoryBuffer);
+        upload.addFinishedListener(e -> {
+            InputStream inputStream = memoryBuffer.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            String st;
+            while (true) {
+
+                try {
+                    //   if (!((st=br.readLine()) != null)) break;
+                    st = br.readLine();
+                    Contractor contractor = new Contractor();
+                    String[] str = st.split(";");
+                    contractor.setName(str[0].split("\\+")[0]);
+
+                    try {
+                        contractor.setPhone(str[0].split("\\+")[1]);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    try {
+                        contractor.setInn(Integer.parseInt(str[2]));
+                    } catch (NumberFormatException ex) {
+                        ex.printStackTrace();
+                    }
+                    try {
+                        contractor.setKpp(Integer.parseInt(str[3]));
+                    } catch (NumberFormatException ex) {
+                        ex.printStackTrace();
+                    }
+                    // contractor.setOgrn();
+                    try {
+                        contractor.setOkpo(Integer.parseInt(str[4]));
+                    } catch (NumberFormatException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    try {
+                        switch (str[6]) {
+                            case "Физическое лицо":
+                                contractor.setContractorSubType(ContractorSubType.FIZ);
+                                break;
+                            case "Юридическое лицо":
+                                contractor.setContractorSubType(ContractorSubType.UR);
+                                break;
+                            case "Индивидуальный предприниматель":
+                                contractor.setContractorSubType(ContractorSubType.IP);
+                                break;
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    contractorService.save(contractor);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
         final HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidth("100%");
         topLayout.add(filter);
+        topLayout.add(upload);
         topLayout.add(newContractor);
         topLayout.setVerticalComponentAlignment(Alignment.START, filter);
         topLayout.expand(filter);

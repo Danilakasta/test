@@ -8,7 +8,6 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -46,7 +45,7 @@ public class AccountView extends HorizontalLayout
 
     private final AccountViewLogic viewLogic = new AccountViewLogic(this);
 
-    private Button newProduct;
+    private Button newAccount;
 
     private AccountDataProvider dataProvider;
 
@@ -90,18 +89,16 @@ public class AccountView extends HorizontalLayout
         // A shortcut to focus on the textField by pressing ctrl + F
         filter.addFocusShortcut(Key.KEY_F, KeyModifier.CONTROL);
 
-        newProduct = new Button("Новый");
-        // Setting theme variant of new production button to LUMO_PRIMARY that
-        // changes its background color to blue and its text color to white
-        newProduct.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newProduct.setIcon(VaadinIcon.PLUS_CIRCLE.create());
-        newProduct.addClickListener(click -> viewLogic.newMachine());
+        newAccount = new Button("Новый");
+        newAccount.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        newAccount.setIcon(VaadinIcon.PLUS_CIRCLE.create());
+        newAccount.addClickListener(click -> viewLogic.newAccount());
         // A shortcut to click the new Machine button by pressing ALT + N
-        newProduct.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
+        newAccount.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
         final HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidth("100%");
         topLayout.add(filter);
-        topLayout.add(newProduct);
+        topLayout.add(newAccount);
         topLayout.setVerticalComponentAlignment(Alignment.START, filter);
         topLayout.expand(filter);
         return topLayout;
@@ -128,7 +125,7 @@ public class AccountView extends HorizontalLayout
      */
     public void setNewProductEnabled(boolean enabled) {
 
-        newProduct.setEnabled(enabled);
+        newAccount.setEnabled(enabled);
     }
 
     /**

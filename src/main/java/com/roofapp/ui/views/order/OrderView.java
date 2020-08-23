@@ -63,7 +63,7 @@ public class OrderView extends PolymerTemplate<TemplateModel>
 		this.orderEditor = orderEditor;
 
 		searchBar.setActionText("Новый");
-		searchBar.setCheckboxText("Показать прошлые заказы");
+		searchBar.setCheckboxText("Все заказы");
 		searchBar.setPlaceHolder("Поиск заказов");
 
 		grid.setSelectionMode(Grid.SelectionMode.NONE);

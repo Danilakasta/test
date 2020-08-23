@@ -25,6 +25,11 @@ public class ContractorServiceImpl implements ContractorService {
     }
 
     @Override
+    public void saveAll(List<Contractor> contractor) {
+        contractorRepository.saveAll(contractor);
+    }
+
+    @Override
     public List<Contractor> findAll() {
         return contractorRepository.findAll();
     }

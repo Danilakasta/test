@@ -2,6 +2,8 @@ package com.roofapp.backend.data;
 
 public enum ContractorSubType {
     UR("Юр лицо"),
+    FIZ("Физ лицо"),
+    IP("ИП"),
     CT_COMPANY("Строительная компания"),
     DEALER("Дилер"),
     ROOFER("Кровельщик");

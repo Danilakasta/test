@@ -2,6 +2,7 @@ package com.roofapp.backend.service;
 
 import com.roofapp.app.security.CurrentUser;
 import com.roofapp.backend.data.entity.Account;
+import com.roofapp.backend.data.entity.Contractor;
 import com.roofapp.backend.data.entity.User;
 import com.roofapp.backend.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,5 +72,9 @@ public class AccountService implements FilterableCrudService<Account> {
 
     public List<Account> findAll() {
         return accountRepository.findAll();
+    }
+
+    public List<Account> findByContractor(Contractor contractor){
+        return accountRepository.findByContractor(contractor);
     }
 }

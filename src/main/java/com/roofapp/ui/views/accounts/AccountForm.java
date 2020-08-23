@@ -8,6 +8,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -38,7 +39,9 @@ import java.util.Locale;
 
 public class AccountForm extends Div {
 
-    private final VerticalLayout content;
+     private final VerticalLayout content;
+  //  private final Dialog content;
+
 
     AccountService service;
 
@@ -126,6 +129,11 @@ public class AccountForm extends Div {
         content.addClassName("product-form-content");
         add(content);
 
+      /*  content = new Dialog();;
+        content.setWidth("1200px");
+        content.setHeight("600px");
+        add(content);
+*/
         contractor = new Select<>();
         contractor.setLabel("Плательщик");
         contractor.setWidth("100%");

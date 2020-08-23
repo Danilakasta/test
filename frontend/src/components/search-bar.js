@@ -36,7 +36,7 @@ class SearchBar extends PolymerElement {
       .checkbox,
       .clear-btn,
       :host([show-extra-filters]) .action-btn {
-        display: none;
+      /*  display: none;*/
       }
 
       :host([show-extra-filters]) .clear-btn {
@@ -88,12 +88,13 @@ class SearchBar extends PolymerElement {
       <vaadin-text-field id="field" class="field" placeholder="[[fieldPlaceholder]]" value="{{fieldValue}}" on-focus="_onFieldFocus" 
         on-blur="_onFieldBlur" theme="white">
         <iron-icon icon\$="[[fieldIcon]]" slot="prefix"></iron-icon>
-      </vaadin-text-field>
-      <vaadin-checkbox class="checkbox desktop" checked="{{checkboxChecked}}" on-focus="_onFieldFocus" 
-        on-blur="_onFieldBlur">[[checkboxText]]</vaadin-checkbox>
+      </vaadin-text-field>      
       <vaadin-button id="clear" class="clear-btn" theme="tertiary">
         [[clearText]]
       </vaadin-button>
+      <vaadin-checkbox class="checkbox desktop" checked="{{checkboxChecked}}" on-focus="_onFieldFocus" 
+        on-blur="_onFieldBlur">[[checkboxText]]</vaadin-checkbox>
+
       <vaadin-button id="action" class="action-btn" theme="primary">
         <iron-icon icon\$="[[buttonIcon]]" slot="prefix"></iron-icon>
         [[buttonText]]

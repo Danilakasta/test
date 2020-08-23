@@ -17,11 +17,11 @@ public class AccountGrid extends Grid<Account> {
     public AccountGrid() {
 
         setSizeFull();
-        addColumn(Account::getContractor).setHeader("Плптельщик")
+      /*  addColumn(Account::getContractor).setHeader("Плптельщик")
                 .setWidth("300px")
                 .setFlexGrow(200).setSortable(true).setKey("");
-
-        addColumn(Account::getValue).setHeader("счет")
+*/
+        addColumn(Account::getValue).setHeader("Cчет")
                 .setWidth("200px")
                 .setFlexGrow(20).setSortable(true).setKey("value");
 
