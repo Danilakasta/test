@@ -1,6 +1,6 @@
 package com.roofapp.ui.crud;
 
-import com.roofapp.backend.data.entity.AbstractEntity;
+import com.roofapp.backend.dao.roofdb.entity.AbstractEntity;
 import com.roofapp.backend.service.FilterableCrudService;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.QuerySortOrder;

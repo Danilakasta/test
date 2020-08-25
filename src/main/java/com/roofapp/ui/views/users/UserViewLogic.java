@@ -2,10 +2,9 @@ package com.roofapp.ui.views.users;
 
 
 import com.roofapp.app.security.CurrentUser;
-import com.roofapp.backend.data.Role;
-import com.roofapp.backend.data.entity.User;
+import com.roofapp.backend.dao.roofdb.Role;
+import com.roofapp.backend.dao.roofdb.entity.User;
 import com.vaadin.flow.component.UI;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 

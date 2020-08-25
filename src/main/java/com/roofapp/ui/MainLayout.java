@@ -6,7 +6,7 @@ package com.roofapp.ui;
 //import com.roofapp.ui.views.deliveries.DeliveriesView;
 
 import com.roofapp.app.security.CurrentUser;
-import com.roofapp.backend.data.Role;
+import com.roofapp.backend.dao.roofdb.Role;
 import com.roofapp.ui.views.accounts.AccountView;
 import com.roofapp.ui.views.machines.MachinesView;
 import com.roofapp.ui.views.manufacture.ManufactureView;
@@ -22,28 +22,20 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
-import com.vaadin.flow.server.VaadinService;
-import com.vaadin.flow.server.VaadinServlet;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import com.roofapp.ui.about.AboutView;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static com.roofapp.ui.utils.AppConst.TITLE_LOGOUT;
 
 /**
  * The main layout. Contains the navigation menu.

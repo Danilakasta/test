@@ -1,12 +1,11 @@
 package com.roofapp.ui.dataproviders;
 
-import com.roofapp.backend.data.entity.AbstractEntity;
-import com.roofapp.backend.data.entity.Machine;
+import com.roofapp.backend.dao.roofdb.entity.AbstractEntity;
+import com.roofapp.backend.dao.roofdb.entity.Machine;
 import com.roofapp.backend.service.FilterableCrudService;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 

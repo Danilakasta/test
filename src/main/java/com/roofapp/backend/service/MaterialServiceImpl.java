@@ -1,7 +1,7 @@
 package com.roofapp.backend.service;
 
-import com.roofapp.backend.data.entity.Material;
-import com.roofapp.backend.repositories.MaterialRepository;
+import com.roofapp.backend.dao.roofdb.entity.Material;
+import com.roofapp.backend.dao.roofdb.repositories.MaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

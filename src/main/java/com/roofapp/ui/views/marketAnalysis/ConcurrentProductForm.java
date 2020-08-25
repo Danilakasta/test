@@ -1,10 +1,9 @@
 package com.roofapp.ui.views.marketAnalysis;
 
-import com.roofapp.backend.data.MaterialColor;
-import com.roofapp.backend.data.ProductType;
-import com.roofapp.backend.data.Width;
-import com.roofapp.backend.data.entity.Product;
-import com.roofapp.backend.data.entity.parser.SiteProduct;
+import com.roofapp.backend.dao.roofdb.MaterialColor;
+import com.roofapp.backend.dao.roofdb.ProductType;
+import com.roofapp.backend.dao.roofdb.Width;
+import com.roofapp.backend.dao.roofdb.entity.parser.SiteProduct;
 import com.roofapp.backend.service.SiteProductService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;

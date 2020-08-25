@@ -1,8 +1,8 @@
 package com.roofapp.backend.service;
 
-import com.roofapp.backend.data.entity.PickupLocation;
-import com.roofapp.backend.data.entity.User;
-import com.roofapp.backend.repositories.PickupLocationRepository;
+import com.roofapp.backend.dao.roofdb.entity.PickupLocation;
+import com.roofapp.backend.dao.roofdb.entity.User;
+import com.roofapp.backend.dao.roofdb.repositories.PickupLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

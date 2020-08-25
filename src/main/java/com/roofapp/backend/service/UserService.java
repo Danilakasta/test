@@ -1,8 +1,7 @@
 package com.roofapp.backend.service;
 
-import com.roofapp.app.security.CurrentUser;
-import com.roofapp.backend.data.entity.User;
-import com.roofapp.backend.repositories.UserRepository;
+import com.roofapp.backend.dao.roofdb.entity.User;
+import com.roofapp.backend.dao.roofdb.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.PrimitiveIterator;
 
 @Service
 public class UserService implements FilterableCrudService<User> {

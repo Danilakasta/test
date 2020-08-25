@@ -1,6 +1,6 @@
 package com.roofapp.ui.views.order;
 
-import com.roofapp.backend.data.entity.Order;
+import com.roofapp.backend.dao.roofdb.entity.Order;
 import com.roofapp.ui.views.order.beans.OrderCardHeader;
 
 import java.time.LocalDate;

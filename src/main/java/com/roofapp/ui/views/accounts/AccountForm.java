@@ -1,27 +1,23 @@
 package com.roofapp.ui.views.accounts;
 
 
-import com.roofapp.backend.data.entity.Account;
-import com.roofapp.backend.data.entity.Contractor;
+import com.roofapp.backend.dao.roofdb.entity.Account;
+import com.roofapp.backend.dao.roofdb.entity.Contractor;
 import com.roofapp.backend.service.AccountService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
-import com.vaadin.flow.data.converter.StringToLongConverter;
-import com.vaadin.flow.data.validator.RegexpValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.roofapp.backend.service.ContractorService;
@@ -29,8 +25,6 @@ import com.roofapp.backend.service.ContractorService;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**

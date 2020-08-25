@@ -1,7 +1,6 @@
 package com.roofapp.backend.service;
 
-import com.roofapp.backend.data.entity.AbstractEntity;
-import com.roofapp.backend.data.entity.User;
+import com.roofapp.backend.dao.roofdb.entity.AbstractEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

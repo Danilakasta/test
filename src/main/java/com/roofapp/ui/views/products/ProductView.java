@@ -1,8 +1,6 @@
 package com.roofapp.ui.views.products;
 
 import com.roofapp.backend.service.ProductService;
-import com.roofapp.backend.service.SiteProductService;
-import com.roofapp.ui.views.marketAnalysis.ConcurrentProductDataProvider;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -17,7 +15,7 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.ui.MainLayout;
 
 /**

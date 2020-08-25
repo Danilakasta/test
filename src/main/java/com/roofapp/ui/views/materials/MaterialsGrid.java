@@ -1,8 +1,6 @@
 package com.roofapp.ui.views.materials;
 
-import com.roofapp.backend.data.entity.Material;
-import com.roofapp.backend.data.entity.Material;
-import com.roofapp.ui.utils.FormattingUtils;
+import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
@@ -10,7 +8,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
 
-import java.text.DecimalFormat;
 import java.util.Comparator;
 
 /**

@@ -1,6 +1,6 @@
 package com.roofapp.ui.views.accounts;
 
-import com.roofapp.backend.data.entity.Account;
+import com.roofapp.backend.dao.roofdb.entity.Account;
 import com.vaadin.flow.component.UI;
 
 import java.io.Serializable;

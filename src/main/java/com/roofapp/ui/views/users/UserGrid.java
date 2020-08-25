@@ -1,6 +1,6 @@
 package com.roofapp.ui.views.users;
 
-import com.roofapp.backend.data.entity.User;
+import com.roofapp.backend.dao.roofdb.entity.User;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;

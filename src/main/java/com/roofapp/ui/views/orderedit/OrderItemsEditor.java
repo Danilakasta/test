@@ -1,7 +1,7 @@
 package com.roofapp.ui.views.orderedit;
 
-import com.roofapp.backend.data.entity.OrderItem;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.OrderItem;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.ui.views.order.events.TotalPriceChangeEvent;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.ComponentEventListener;

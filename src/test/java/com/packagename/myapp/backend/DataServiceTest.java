@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.roofapp.backend.DataService;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

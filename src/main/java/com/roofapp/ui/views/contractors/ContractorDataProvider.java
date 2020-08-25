@@ -1,7 +1,7 @@
 package com.roofapp.ui.views.contractors;
 
-import com.roofapp.backend.data.entity.Contractor;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Contractor;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.service.ContractorService;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;

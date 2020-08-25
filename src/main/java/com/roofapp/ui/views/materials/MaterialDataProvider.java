@@ -1,6 +1,6 @@
 package com.roofapp.ui.views.materials;
 
-import com.roofapp.backend.data.entity.Material;
+import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.service.MaterialService;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package com.roofapp.backend.service;
 
-import com.roofapp.backend.data.entity.Product;
-import com.roofapp.backend.data.entity.User;
-import com.roofapp.backend.repositories.ProductRepository;
+import com.roofapp.backend.dao.roofdb.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.User;
+import com.roofapp.backend.dao.roofdb.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -85,7 +85,7 @@ public class ProductService implements FilterableCrudService<Product>  {
 
     @Override
     public Product createNew(User currentUser) {
-        return new Product();
+        return Product.builder().build();
     }
 
     @Override

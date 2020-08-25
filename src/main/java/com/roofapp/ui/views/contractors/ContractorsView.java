@@ -1,17 +1,15 @@
 package com.roofapp.ui.views.contractors;
 
-import com.roofapp.backend.data.ContractorSubType;
-import com.roofapp.backend.data.entity.Contractor;
+import com.roofapp.backend.dao.roofdb.ContractorSubType;
+import com.roofapp.backend.dao.roofdb.entity.Contractor;
 
 import com.roofapp.backend.service.AccountService;
 import com.roofapp.backend.service.ContractorService;
 import com.roofapp.ui.MainLayout;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -23,11 +21,8 @@ import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.router.*;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A view for performing create-read-update-delete operations on Contractors.

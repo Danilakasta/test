@@ -1,8 +1,8 @@
 package com.roofapp.ui.views.order;
 
 import com.roofapp.app.HasLogger;
-import com.roofapp.backend.data.entity.Order;
-import com.roofapp.backend.data.entity.util.EntityUtil;
+import com.roofapp.backend.dao.roofdb.entity.Order;
+import com.roofapp.backend.dao.roofdb.entity.util.EntityUtil;
 import com.roofapp.ui.ConfirmDialog;
 import com.roofapp.ui.MainLayout;
 //import com.roofapp.ui.MainView;

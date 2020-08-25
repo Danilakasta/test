@@ -1,6 +1,6 @@
 package com.roofapp.ui.dataproviders;
 
-import com.roofapp.backend.data.entity.Order;
+import com.roofapp.backend.dao.roofdb.entity.Order;
 import com.roofapp.backend.service.OrderService;
 import com.roofapp.ui.utils.AppConst;
 import com.vaadin.flow.data.provider.Query;

@@ -1,7 +1,7 @@
 package com.roofapp.backend.service.siteParser;
 
-import com.roofapp.backend.data.entity.parser.SiteCategory;
-import com.roofapp.backend.data.entity.parser.SiteProduct;
+import com.roofapp.backend.dao.roofdb.entity.parser.SiteCategory;
+import com.roofapp.backend.dao.roofdb.entity.parser.SiteProduct;
 import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

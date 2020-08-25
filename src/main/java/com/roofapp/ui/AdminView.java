@@ -1,9 +1,6 @@
 package com.roofapp.ui;
 
-import java.util.ArrayList;
-
-import com.roofapp.backend.DataService;
-import com.roofapp.backend.data.entity.Category;
+import com.roofapp.backend.dao.roofdb.entity.Category;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -16,7 +13,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 
 /**

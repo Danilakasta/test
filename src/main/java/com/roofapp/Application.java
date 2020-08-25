@@ -1,8 +1,8 @@
 package com.roofapp;
 
 import com.roofapp.app.security.SecurityConfiguration;
-import com.roofapp.backend.data.entity.User;
-import com.roofapp.backend.repositories.UserRepository;
+import com.roofapp.backend.dao.roofdb.entity.User;
+import com.roofapp.backend.dao.roofdb.repositories.UserRepository;
 import com.roofapp.backend.service.UserService;
 import com.roofapp.ui.MainLayout;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +21,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackageClasses = {SecurityConfiguration.class, MainLayout.class, Application.class,
         UserService.class }, exclude = ErrorMvcAutoConfiguration.class)
-@EnableJpaRepositories(basePackageClasses = { UserRepository.class })
+/*@EnableJpaRepositories(basePackageClasses = { UserRepository.class })*/
 @EntityScan(basePackageClasses = { User.class })
 public class Application extends SpringBootServletInitializer {
 

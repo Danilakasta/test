@@ -2,8 +2,8 @@ package com.roofapp.ui.views.machines;
 
 //import com.roofapp.authentication.AccessControl;
 //import com.roofapp.authentication.AccessControlFactory;
-import com.roofapp.backend.data.entity.Machine;
-import com.roofapp.backend.data.entity.AbstractEntity;
+import com.roofapp.backend.dao.roofdb.entity.Machine;
+import com.roofapp.backend.dao.roofdb.entity.AbstractEntity;
 import com.vaadin.flow.component.UI;
 
 import java.io.Serializable;

@@ -6,9 +6,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 import com.roofapp.backend.service.ProductService;
-import com.roofapp.backend.service.SiteProductService;
 import com.vaadin.flow.data.provider.ListDataProvider;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

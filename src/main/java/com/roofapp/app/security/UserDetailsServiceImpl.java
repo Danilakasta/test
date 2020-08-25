@@ -1,8 +1,7 @@
 package com.roofapp.app.security;
 
-import com.roofapp.backend.data.entity.User;
-import com.roofapp.backend.repositories.UserRepository;
-import com.vaadin.flow.component.textfield.IntegerField;
+import com.roofapp.backend.dao.roofdb.entity.User;
+import com.roofapp.backend.dao.roofdb.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,7 +1,7 @@
 package com.roofapp.ui.views.order;
 
 //import com.roofapp.app.security.CurrentUser;
-import com.roofapp.backend.data.entity.Order;
+import com.roofapp.backend.dao.roofdb.entity.Order;
 import com.roofapp.backend.service.OrderService;
 import com.roofapp.ui.crud.EntityPresenter;
 import com.roofapp.ui.dataproviders.OrdersGridDataProvider;

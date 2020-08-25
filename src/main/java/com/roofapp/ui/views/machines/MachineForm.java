@@ -1,9 +1,9 @@
 package com.roofapp.ui.views.machines;
 
-import com.roofapp.backend.data.MachineType;
-import com.roofapp.backend.data.WaveHeight;
-import com.roofapp.backend.data.Width;
-import com.roofapp.backend.data.entity.Machine;
+import com.roofapp.backend.dao.roofdb.MachineType;
+import com.roofapp.backend.dao.roofdb.WaveHeight;
+import com.roofapp.backend.dao.roofdb.Width;
+import com.roofapp.backend.dao.roofdb.entity.Machine;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;

@@ -1,6 +1,6 @@
 package com.roofapp.ui.views.users;
 
-import com.roofapp.backend.data.entity.User;
+import com.roofapp.backend.dao.roofdb.entity.User;
 import com.roofapp.backend.service.UserService;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;

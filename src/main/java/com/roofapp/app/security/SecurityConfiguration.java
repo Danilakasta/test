@@ -1,8 +1,8 @@
 package com.roofapp.app.security;
 
-import com.roofapp.backend.data.Role;
-import com.roofapp.backend.data.entity.User;
-import com.roofapp.backend.repositories.UserRepository;
+import com.roofapp.backend.dao.roofdb.Role;
+import com.roofapp.backend.dao.roofdb.entity.User;
+import com.roofapp.backend.dao.roofdb.repositories.UserRepository;
 import com.roofapp.ui.utils.AppConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;

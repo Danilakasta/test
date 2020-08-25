@@ -3,8 +3,8 @@ package com.roofapp.backend;
 import java.io.Serializable;
 import java.util.Collection;
 
-import com.roofapp.backend.data.entity.Category;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Category;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 
 /**
  * Back-end service interface for retrieving and updating product data.

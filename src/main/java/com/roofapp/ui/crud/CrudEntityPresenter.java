@@ -2,7 +2,7 @@ package com.roofapp.ui.crud;
 
 import com.roofapp.app.HasLogger;
 //import com.roofapp.app.security.CurrentUser;
-import com.roofapp.backend.data.entity.AbstractEntity;
+import com.roofapp.backend.dao.roofdb.entity.AbstractEntity;
 import com.roofapp.backend.service.CrudService;
 import com.roofapp.backend.service.UserFriendlyDataException;
 import com.roofapp.ui.utils.messages.CrudErrorMessage;

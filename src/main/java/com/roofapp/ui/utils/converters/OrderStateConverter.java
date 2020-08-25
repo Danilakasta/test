@@ -1,6 +1,6 @@
 package com.roofapp.ui.utils.converters;
 
-import com.roofapp.backend.data.OrderState;
+import com.roofapp.backend.dao.roofdb.OrderState;
 import com.vaadin.flow.templatemodel.ModelEncoder;
 
 import java.util.Arrays;

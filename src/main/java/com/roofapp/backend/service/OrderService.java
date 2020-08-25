@@ -2,11 +2,11 @@ package com.roofapp.backend.service;
 
 //import com.roofapp.backend.data.DashboardData;
 //import com.roofapp.backend.data.DeliveryStats;
-import com.roofapp.backend.data.OrderState;
-import com.roofapp.backend.data.entity.Order;
-import com.roofapp.backend.data.entity.OrderSummary;
-import com.roofapp.backend.data.entity.User;
-import com.roofapp.backend.repositories.OrderRepository;
+import com.roofapp.backend.dao.roofdb.OrderState;
+import com.roofapp.backend.dao.roofdb.entity.Order;
+import com.roofapp.backend.dao.roofdb.entity.OrderSummary;
+import com.roofapp.backend.dao.roofdb.entity.User;
+import com.roofapp.backend.dao.roofdb.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

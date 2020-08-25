@@ -1,13 +1,12 @@
 package com.roofapp.ui.views.orderedit;
 
-import com.roofapp.backend.data.OrderState;
-import com.roofapp.backend.data.entity.Order;
-import com.roofapp.backend.data.entity.PickupLocation;
-import com.roofapp.backend.data.entity.Product;
-import com.roofapp.backend.data.entity.User;
+import com.roofapp.backend.dao.roofdb.OrderState;
+import com.roofapp.backend.dao.roofdb.entity.Order;
+import com.roofapp.backend.dao.roofdb.entity.PickupLocation;
+import com.roofapp.backend.dao.roofdb.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.User;
 import com.roofapp.backend.service.PickupLocationService;
 import com.roofapp.backend.service.ProductService;
-import com.roofapp.backend.service.SiteProductService;
 import com.roofapp.ui.crud.CrudEntityDataProvider;
 import com.roofapp.ui.dataproviders.DataProviderUtil;
 import com.roofapp.ui.events.CancelEvent;

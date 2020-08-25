@@ -1,7 +1,6 @@
 package com.roofapp.ui.views.marketAnalysis;
 
-import com.roofapp.backend.data.entity.Product;
-import com.roofapp.backend.data.entity.parser.SiteProduct;
+import com.roofapp.backend.dao.roofdb.entity.parser.SiteProduct;
 import com.vaadin.flow.component.UI;
 
 import java.io.Serializable;

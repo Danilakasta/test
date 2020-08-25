@@ -1,7 +1,7 @@
 package com.roofapp.backend.service;
 
-import com.roofapp.backend.data.entity.Contractor;
-import com.roofapp.backend.repositories.ContractorRepository;
+import com.roofapp.backend.dao.roofdb.entity.Contractor;
+import com.roofapp.backend.dao.roofdb.repositories.ContractorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

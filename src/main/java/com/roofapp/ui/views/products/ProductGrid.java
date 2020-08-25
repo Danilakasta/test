@@ -9,7 +9,7 @@ import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 
 /**
  * Grid of products, handling the visual presentation and filtering of a set of
@@ -38,15 +38,15 @@ public class ProductGrid extends Grid<Product> {
 
         //final String availabilityTemplate = "<iron-icon icon=\"vaadin:circle\" class-name=\"[[item.type]]\"></iron-icon> [[item.type]]";
         final String materialColorTemplate = "<iron-icon icon=\"vaadin:circle\" class-name=\"[[item.materialColor]]\"></iron-icon> [[item.materialColor]]";
-        addColumn(TemplateRenderer.<Product>of(materialColorTemplate)
+      /*  addColumn(TemplateRenderer.<Product>of(materialColorTemplate)
                 .withProperty("materialColor",
                         product -> product.getMaterialColor().toString()))
                 .setHeader("Цвет материала")
                 .setComparator(Comparator
                         .comparing(Product::getMaterialColor))
                 .setFlexGrow(5).setKey("materialColor");
-
-        final String typeTemplate = "[[item.type]]";
+*/
+       /* final String typeTemplate = "[[item.type]]";
         addColumn(TemplateRenderer.<Product>of(typeTemplate)
                 .withProperty("type",
                         product -> product.getType().toString()))
@@ -63,11 +63,21 @@ public class ProductGrid extends Grid<Product> {
                 .setComparator(Comparator
                         .comparing(Product::getWidth))
                 .setFlexGrow(5).setKey("width");
-
+*/
         addColumn(product -> decimalFormat.format(product.getPrice()) + " р")
                 .setHeader("Цена ").setTextAlign(ColumnTextAlign.END)
                 .setComparator(Comparator.comparing(Product::getPrice))
                 .setFlexGrow(3).setKey("price");
+
+
+        addColumn(Product::getTitle).setHeader("Описание")
+                .setFlexGrow(20).setSortable(true).setKey("title");
+
+        addColumn(Product::getSecondTitle).setHeader("Доп. описание")
+                .setFlexGrow(20).setSortable(true).setKey("second_title");
+
+        addColumn(Product::getCategory).setHeader("Категория")
+                .setFlexGrow(20).setSortable(true).setKey("category");
 
         addColumn(product -> product.getWeight() == 0 ? "-"
                 : Integer.toString(product.getWeight()))
@@ -77,14 +87,14 @@ public class ProductGrid extends Grid<Product> {
                                 Comparator.comparingInt(Product::getWeight))
                         .setFlexGrow(3).setKey("stock");
 
-        addColumn(product -> product.getLength() == 0 ? "-"
+    /*    addColumn(product -> product.getLength() == 0 ? "-"
                 : Integer.toString(product.getLength()))
                 .setHeader("Длина м.")
                 .setTextAlign(ColumnTextAlign.END)
                 .setComparator(
                         Comparator.comparingInt(Product::getLength))
                 .setFlexGrow(3).setKey("length");
-
+*/
         // Show all categories the product is in, separated by commas
       //  addColumn(this::formatCategories).setHeader("Category").setFlexGrow(12)
          //       .setKey("category");
@@ -100,19 +110,19 @@ public class ProductGrid extends Grid<Product> {
         if (width > 800) {
             getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
-            getColumnByKey("type").setVisible(true);
+       //     getColumnByKey("type").setVisible(true);
             getColumnByKey("stock").setVisible(true);
           //  getColumnByKey("category").setVisible(true);
         } else if (width > 550) {
             getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
-            getColumnByKey("type").setVisible(false);
+         //   getColumnByKey("type").setVisible(false);
             getColumnByKey("stock").setVisible(false);
          //   getColumnByKey("category").setVisible(true);
         } else {
             getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
-            getColumnByKey("type").setVisible(false);
+          //  getColumnByKey("type").setVisible(false);
             getColumnByKey("stock").setVisible(false);
           //  getColumnByKey("category").setVisible(false);
         }

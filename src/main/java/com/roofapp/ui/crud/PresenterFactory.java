@@ -4,7 +4,7 @@
 package com.roofapp.ui.crud;
 
 //import com.roofapp.app.security.CurrentUser;
-import com.roofapp.backend.data.entity.Order;
+import com.roofapp.backend.dao.roofdb.entity.Order;
 import com.roofapp.backend.service.OrderService;
 import com.roofapp.ui.views.order.OrderView;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;

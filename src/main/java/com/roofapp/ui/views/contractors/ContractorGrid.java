@@ -1,11 +1,10 @@
 package com.roofapp.ui.views.contractors;
 
-import com.roofapp.backend.data.entity.Contractor;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Contractor;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.service.AccountService;
 import com.roofapp.ui.views.accounts.AccountDataProvider;
 import com.roofapp.ui.views.accounts.AccountGrid;
-import com.roofapp.ui.views.accounts.AccountViewLogic;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;

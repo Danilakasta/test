@@ -2,7 +2,7 @@ package com.roofapp.ui.views.contractors;
 
 ///import com.roofapp.authentication.AccessControl;
 //import com.roofapp.authentication.AccessControlFactory;
-import com.roofapp.backend.data.entity.Contractor;
+import com.roofapp.backend.dao.roofdb.entity.Contractor;
 import com.vaadin.flow.component.UI;
 
 import java.io.Serializable;

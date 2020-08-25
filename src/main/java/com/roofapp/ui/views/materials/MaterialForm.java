@@ -1,9 +1,9 @@
 package com.roofapp.ui.views.materials;
 
-import com.roofapp.backend.data.CoverType;
-import com.roofapp.backend.data.MaterialColor;
-import com.roofapp.backend.data.Width;
-import com.roofapp.backend.data.entity.Material;
+import com.roofapp.backend.dao.roofdb.CoverType;
+import com.roofapp.backend.dao.roofdb.MaterialColor;
+import com.roofapp.backend.dao.roofdb.Width;
+import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.service.MaterialService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
@@ -24,7 +24,6 @@ import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.swing.plaf.multi.MultiMenuBarUI;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;

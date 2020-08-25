@@ -1,15 +1,12 @@
 package com.roofapp.ui.views.marketAnalysis;
 
-import com.roofapp.backend.data.ProductType;
-import com.roofapp.backend.data.SiteNameEnum;
-import com.roofapp.backend.data.entity.parser.SiteProduct;
+import com.roofapp.backend.dao.roofdb.SiteNameEnum;
+import com.roofapp.backend.dao.roofdb.entity.parser.SiteProduct;
 import com.roofapp.backend.service.SiteProductService;
 import com.roofapp.ui.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -29,9 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.vaadin.olli.FileDownloadWrapper;
 
 
-import javax.swing.text.DateFormatter;
 import java.io.*;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

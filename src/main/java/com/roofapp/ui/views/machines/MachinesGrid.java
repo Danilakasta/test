@@ -1,11 +1,10 @@
 package com.roofapp.ui.views.machines;
 
-import com.roofapp.backend.data.entity.Machine;
+import com.roofapp.backend.dao.roofdb.entity.Machine;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
 
 import java.util.Comparator;

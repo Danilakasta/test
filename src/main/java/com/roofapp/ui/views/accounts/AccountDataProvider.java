@@ -1,6 +1,6 @@
 package com.roofapp.ui.views.accounts;
 
-import com.roofapp.backend.data.entity.Account;
+import com.roofapp.backend.dao.roofdb.entity.Account;
 import com.roofapp.backend.service.AccountService;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;

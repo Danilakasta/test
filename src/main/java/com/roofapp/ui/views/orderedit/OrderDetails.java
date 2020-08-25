@@ -3,7 +3,7 @@
  */
 package com.roofapp.ui.views.orderedit;
 
-import com.roofapp.backend.data.entity.Order;
+import com.roofapp.backend.dao.roofdb.entity.Order;
 import com.roofapp.ui.events.CancelEvent;
 import com.roofapp.ui.events.SaveEvent;
 import com.roofapp.ui.utils.converters.*;

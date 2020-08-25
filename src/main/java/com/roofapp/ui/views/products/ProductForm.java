@@ -5,11 +5,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import com.roofapp.backend.data.MaterialColor;
-import com.roofapp.backend.data.ProductType;
-import com.roofapp.backend.data.Width;
+import com.roofapp.backend.dao.roofdb.MaterialColor;
+import com.roofapp.backend.dao.roofdb.ProductType;
+import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.service.ProductService;
-import com.roofapp.backend.service.SiteProductService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -27,7 +26,7 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 //import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -235,7 +234,7 @@ public class ProductForm extends Div {
 
     public void editProduct(Product product) {
         if (product == null) {
-            product = new Product();
+            product = Product.builder().build();
         }
         delete.setVisible(!product.isNew());
         currentProduct = product;

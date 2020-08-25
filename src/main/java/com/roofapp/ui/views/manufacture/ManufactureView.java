@@ -1,8 +1,7 @@
 package com.roofapp.ui.views.manufacture;
 
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.service.ProductService;
-import com.roofapp.backend.service.SiteProductService;
 import com.roofapp.ui.MainLayout;
 import com.roofapp.ui.views.products.ProductDataProvider;
 import com.roofapp.ui.views.products.ProductGrid;

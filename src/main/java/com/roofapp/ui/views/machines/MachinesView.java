@@ -1,6 +1,6 @@
 package com.roofapp.ui.views.machines;
 
-import com.roofapp.backend.data.entity.Machine;
+import com.roofapp.backend.dao.roofdb.entity.Machine;
 import com.roofapp.backend.service.MachineService;
 import com.roofapp.ui.MainLayout;
 import com.roofapp.ui.dataproviders.GridDataProvider;
@@ -19,7 +19,6 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * A view for performing create-read-update-delete operations on products.

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 //import com.roofapp.authentication.AccessControl;
 //import com.roofapp.authentication.AccessControlFactory;
-import com.roofapp.backend.data.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.vaadin.flow.component.UI;
 
 /**
@@ -120,7 +120,7 @@ public class ProductViewLogic implements Serializable {
     public void newProduct() {
         view.clearSelection();
         setFragmentParameter("new");
-        view.editProduct(new Product());
+        view.editProduct(Product.builder().build());
     }
 
     public void rowSelected(Product product) {

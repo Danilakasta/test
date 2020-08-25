@@ -1,16 +1,15 @@
 package com.roofapp.backend.task;
 
 
-import com.roofapp.backend.data.entity.parser.SiteProduct;
-import com.roofapp.backend.repositories.SiteCategoryRepository;
-import com.roofapp.backend.repositories.SiteProductRepository;
+import com.roofapp.backend.dao.roofdb.entity.parser.SiteProduct;
+import com.roofapp.backend.dao.roofdb.repositories.SiteCategoryRepository;
+import com.roofapp.backend.dao.roofdb.repositories.SiteProductRepository;
 import com.roofapp.backend.service.siteParser.ParserCrimProfStalervice;
 import com.roofapp.backend.service.siteParser.ParserKrovelnuyMirStalervice;
 import com.roofapp.backend.service.siteParser.ParserRichStoneService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

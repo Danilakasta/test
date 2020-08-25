@@ -1,6 +1,6 @@
 package com.roofapp.backend.service;
 
-import com.roofapp.backend.data.entity.Contractor;
+import com.roofapp.backend.dao.roofdb.entity.Contractor;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.roofapp.ui.views.marketAnalysis;
 
-import com.roofapp.backend.data.entity.Product;
-import com.roofapp.backend.data.entity.parser.SiteProduct;
+import com.roofapp.backend.dao.roofdb.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.parser.SiteProduct;
 import com.roofapp.backend.service.SiteProductService;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;
