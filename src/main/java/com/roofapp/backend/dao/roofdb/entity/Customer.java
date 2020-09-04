@@ -9,12 +9,12 @@ import javax.validation.constraints.Size;
 @Entity
 public class Customer extends AbstractEntity {
 
-	@NotBlank
+	//@NotBlank
 	@Size(max = 255)
 	@Column(name = "full_name")
 	private String fullName;
 
-	@NotBlank
+	//@NotBlank
 	//@Size(max = 20, message = "{bakery.phone.number.invalid}")
 	// A simple phone number checker, allowing an optional international prefix
 	// plus a variable number of digits that could be separated by dashes or

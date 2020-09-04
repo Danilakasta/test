@@ -14,11 +14,13 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.util.function.UnaryOperator;
 
+@Transactional("roofTransactionManager")
 public class EntityPresenter<T extends AbstractEntity, V extends EntityView<T>>
 	implements HasLogger {
 

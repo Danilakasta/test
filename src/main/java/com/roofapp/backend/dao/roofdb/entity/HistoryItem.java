@@ -4,14 +4,16 @@ import com.roofapp.backend.dao.roofdb.OrderState;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name="history_item")
 public class HistoryItem extends AbstractEntity {
 
+	@Column(name = "new_state")
 	private OrderState newState;
 
 	@NotBlank
@@ -21,7 +23,7 @@ public class HistoryItem extends AbstractEntity {
 	//@NotNull
 	private LocalDateTime timestamp;
 	@ManyToOne
-//	@NotNull
+	@JoinColumn(name="created_by_id",referencedColumnName = "id")
 	private User createdBy = new User();
 
 	HistoryItem() {

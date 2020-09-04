@@ -7,12 +7,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @MappedSuperclass
-@Data
 @EqualsAndHashCode
+//@Data
 public abstract class AbstractEntity implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.SEQUENCE)
+	@GeneratedValue(strategy= GenerationType.AUTO)
+	@Column(name="id", unique = true, nullable = false)
 	private Long id;
 
 //	@Version
@@ -20,5 +21,21 @@ public abstract class AbstractEntity implements Serializable {
 
 	public boolean isNew() {
 		return id == null;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public AbstractEntity(Long id) {
+		this.id = id;
+	}
+
+	public AbstractEntity() {
 	}
 }

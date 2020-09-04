@@ -12,20 +12,21 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+//@Builder
+//@AllArgsConstructor
+//@NoArgsConstructor
 public class Product extends AbstractEntity {
+
 
 //	@Version
     //private int version;
 
     // @Size(min = 2, message = "Product name must have at least two characters")
-  //  @NotBlank(message = "{bakery.name.required}")
+    //  @NotBlank(message = "{bakery.name.required}")
     private String name;
     //  @Min(0)
- //   @Min(value = 0, message = "{bakery.price.limits}")
-  //  @Max(value = 100000, message = "{bakery.price.limits}")
+    //   @Min(value = 0, message = "{bakery.price.limits}")
+    //  @Max(value = 100000, message = "{bakery.price.limits}")
     private Double price;
 
     private int weight = 0;
@@ -41,13 +42,26 @@ public class Product extends AbstractEntity {
 
     private String title;
 
-    @Column(name= "second_title")
+    @Column(name = "second_title")
     private String secondTitle;
 
     private String category;
 
     @Override
     public String toString() {
-        return name +" "+width+" "+materialColor;
+        return name + " " + width + " " + materialColor;
     }
+
+
+    public Product(Long id, String name, Double price,  String title, String secondTitle, String category) {
+        super(id);
+        this.name = name;
+        this.price = price;
+        this.title = title;
+        this.secondTitle = secondTitle;
+        this.category = category;
+    }
+
+    public Product() { }
+
 }

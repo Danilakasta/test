@@ -24,7 +24,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.name ,\n" +
             "p.type ,\n" +
             "p.weight,\n" +
-            "p.width \n" +
+            "p.width, \n" +
+            "p.title, \n" +
+            "p.second_title, \n" +
+            "p.category\n" +
             "from order_item oi \n" +
             "right join product p on oi.product_id  = p.id \n" +
             "order by material_color, width desc",nativeQuery = true)

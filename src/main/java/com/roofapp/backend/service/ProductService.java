@@ -85,7 +85,7 @@ public class ProductService implements FilterableCrudService<Product>  {
 
     @Override
     public Product createNew(User currentUser) {
-        return Product.builder().build();
+        return new Product();
     }
 
     @Override

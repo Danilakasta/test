@@ -120,7 +120,7 @@ public class ProductViewLogic implements Serializable {
     public void newProduct() {
         view.clearSelection();
         setFragmentParameter("new");
-        view.editProduct(Product.builder().build());
+        view.editProduct(new Product());
     }
 
     public void rowSelected(Product product) {

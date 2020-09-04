@@ -25,6 +25,17 @@ import java.util.List;
 @Table(indexes = @Index(columnList = "due_date"))
 public class Order extends AbstractEntity implements OrderSummary {
 
+    @Column(name = "wp_order_id")
+    public Long wpOrderId;
+
+    public Long getWpOrderId() {
+        return wpOrderId;
+    }
+
+    public void setWpOrderId(Long wpOrderId) {
+        this.wpOrderId = wpOrderId;
+    }
+
     public static final String ENTITY_GRAPTH_BRIEF = "Order.brief";
     public static final String ENTITY_GRAPTH_FULL = "Order.full";
 
@@ -38,6 +49,7 @@ public class Order extends AbstractEntity implements OrderSummary {
 
     //	@NotNull(message = "{bakery.pickup.location.required}")
     @ManyToOne
+    @JoinColumn(name="pickup_location_id",referencedColumnName = "id")
     private PickupLocation pickupLocation;
 
     //@NotNull
@@ -55,9 +67,8 @@ public class Order extends AbstractEntity implements OrderSummary {
     private OrderState state;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "id")
     @OrderColumn
-    @JoinColumn
     private List<HistoryItem> history;
 
     public Order(User createdBy) {

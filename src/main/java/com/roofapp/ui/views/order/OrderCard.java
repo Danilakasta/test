@@ -50,7 +50,7 @@ public class OrderCard {
 	}
 
 	public String getPlace() {
-		return recent || inWeek ? order.getPickupLocation().getName() : null;
+		return order.getPickupLocation() !=null && (recent || inWeek )?  order.getPickupLocation().getName() : null;
 	}
 
 	public String getTime() {

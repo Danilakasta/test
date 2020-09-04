@@ -15,12 +15,14 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Transactional("roofTransactionManager")
 public class OrderPresenter {
 
 	private OrderCardHeaderGenerator headersGenerator;

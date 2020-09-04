@@ -65,4 +65,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	@Query("SELECT sum(oi.quantity), p FROM order_info o JOIN o.items oi JOIN oi.product p WHERE o.state=?1 AND year(o.dueDate)=?2 AND month(o.dueDate)=?3 GROUP BY p.id ORDER BY p.id")
 	List<Object[]> countPerProduct(OrderState orderState, int year, int month);
 
+	Order findByWpOrderId(Long orderId);
+
 }

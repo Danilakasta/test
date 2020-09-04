@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
-@Entity
+@Entity(name = "order_item ")
 @Data
 public class OrderItem extends AbstractEntity {
 

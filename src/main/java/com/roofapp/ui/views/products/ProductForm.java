@@ -234,7 +234,7 @@ public class ProductForm extends Div {
 
     public void editProduct(Product product) {
         if (product == null) {
-            product = Product.builder().build();
+            product = new Product();
         }
         delete.setVisible(!product.isNew());
         currentProduct = product;

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Entity
+@Entity(name = "pickup_location")
 public class PickupLocation extends AbstractEntity {
 
 	@Size(max = 255)

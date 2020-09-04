@@ -41,10 +41,10 @@ public class RoofZavodSiteDB extends DBConf {
         return getEntityManager(dataSource(), SERVICE_NAME);
     }
 
-    @Bean(name = "roofZavodSiteTransactionManager")
+   /* @Bean(name = "roofZavodSiteTransactionManager")
     public PlatformTransactionManager armTransactionManager() {
         return getTransactionManager(armEntityManagerFactory());
-    }
+    }*/
 
     @Override
     String getDbPrefix() {

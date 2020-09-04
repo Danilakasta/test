@@ -1,7 +1,7 @@
 package com.roofapp.backend.dao.roofdb;
 
 public enum OrderState {
-	NEW("Новый"), CONFIRMED("Подтвержден"), READY("Готов"), DELIVERED("Доставлен"), PROBLEM("Проблемный"), CANCELLED("Отменен");
+	NEW("В ожидании оплаты"), CONFIRMED("Обработка"), READY("Выполнен"), DELIVERED("Доставлен"), PROBLEM("Не удался"), CANCELLED("Отменен");
 
 	private final String name;
 

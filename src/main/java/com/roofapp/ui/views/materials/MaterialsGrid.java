@@ -82,7 +82,7 @@ public class MaterialsGrid extends Grid<Material> {
                 .setComparator(Comparator.comparing(Material::getPriceOneMetre))
                 .setFlexGrow(3).setKey("weightOfBay");
 
-        addColumn(Material -> Material.getLength() == 0 ? "-"
+        addColumn(Material -> Material != null && Material.getLength() == 0 ? "-"
                 : Integer.toString(Material.getLength()))
                 .setHeader("Длина м.")
                 .setTextAlign(ColumnTextAlign.END)
