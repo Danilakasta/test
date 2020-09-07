@@ -95,7 +95,7 @@ class OrderDetails extends window.ScrollShadowMixin(PolymerElement) {
       }
 
       .products .td.money {
-        text-align: right;
+       /* text-align: right;*/
         padding-right: 0;
       }
 

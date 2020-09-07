@@ -74,7 +74,7 @@ public class WpLoadTask {
     }
 
     @ConditionalOnProperty(value = "scheduling.enabled")
-    @Scheduled(fixedDelay = 15000)
+   // @Scheduled(fixedDelay = 15000)
     public void syncOrdersFromWP() throws Exception {
         List<WpOrder> wpProducts = wpOrdertRepository.getAllOrders();
 

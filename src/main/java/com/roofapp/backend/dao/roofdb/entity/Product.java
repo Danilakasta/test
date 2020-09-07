@@ -29,16 +29,22 @@ public class Product extends AbstractEntity {
     //  @Max(value = 100000, message = "{bakery.price.limits}")
     private Double price;
 
-    private int weight = 0;
+  //  private int weight = 0;
 
-    private int length = 0;
+  //  private int length = 0;
 
     private ProductType type;
-    @Column(name = "material_color")
-    private MaterialColor materialColor = MaterialColor.RAL9016;
 
-    private Width width = Width.W28;
+    //@Column(name = "material_color")
+   // private MaterialColor materialColor = MaterialColor.RAL9016;
 
+    //private Width width = Width.W28;
+
+    private Double width;
+
+   // м2 в 1п.м.
+   @Column(name = "square_meters")
+    private Double squareMeters;
 
     private String title;
 
@@ -49,7 +55,7 @@ public class Product extends AbstractEntity {
 
     @Override
     public String toString() {
-        return name + " " + width + " " + materialColor;
+        return name ;/*++ " " + width;  " " + materialColor;*/
     }
 
 

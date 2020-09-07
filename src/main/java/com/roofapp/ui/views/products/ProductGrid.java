@@ -79,14 +79,14 @@ public class ProductGrid extends Grid<Product> {
         addColumn(Product::getCategory).setHeader("Категория")
                 .setFlexGrow(20).setSortable(true).setKey("category");
 
-        addColumn(product -> product.getWeight() == 0 ? "-"
+       /* addColumn(product -> product.getWeight() == 0 ? "-"
                 : Integer.toString(product.getWeight()))
                         .setHeader("Вес")
                         .setTextAlign(ColumnTextAlign.END)
                         .setComparator(
                                 Comparator.comparingInt(Product::getWeight))
                         .setFlexGrow(3).setKey("stock");
-
+*/
     /*    addColumn(product -> product.getLength() == 0 ? "-"
                 : Integer.toString(product.getLength()))
                 .setHeader("Длина м.")
@@ -111,19 +111,19 @@ public class ProductGrid extends Grid<Product> {
             getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
        //     getColumnByKey("type").setVisible(true);
-            getColumnByKey("stock").setVisible(true);
+//            getColumnByKey("stock").setVisible(true);
           //  getColumnByKey("category").setVisible(true);
         } else if (width > 550) {
             getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
          //   getColumnByKey("type").setVisible(false);
-            getColumnByKey("stock").setVisible(false);
+         //   getColumnByKey("stock").setVisible(false);
          //   getColumnByKey("category").setVisible(true);
         } else {
             getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
           //  getColumnByKey("type").setVisible(false);
-            getColumnByKey("stock").setVisible(false);
+      //      getColumnByKey("stock").setVisible(false);
           //  getColumnByKey("category").setVisible(false);
         }
     }

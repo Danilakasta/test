@@ -6,6 +6,7 @@ import com.roofapp.backend.dao.roofdb.entity.PickupLocation;
 import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.dao.roofdb.entity.User;
 import com.roofapp.backend.service.PickupLocationService;
+import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
 import com.roofapp.ui.crud.CrudEntityDataProvider;
 import com.roofapp.ui.dataproviders.DataProviderUtil;
@@ -109,15 +110,18 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
 	private final LocalTimeConverter localTimeConverter = new LocalTimeConverter();
 
+	private final ProductAmountService productAmountService;
+
 	@Autowired
-	public OrderEditor(PickupLocationService locationService, ProductService productService) {
+	public OrderEditor(PickupLocationService locationService, ProductService productService, ProductAmountService productAmountService) {
+		this.productAmountService = productAmountService;
 		DataProvider<PickupLocation, String> locationDataProvider = new CrudEntityDataProvider<>(locationService);
 		DataProvider<Product, String> productDataProvider = new CrudEntityDataProvider<>(productService);
-		itemsEditor = new OrderItemsEditor(productDataProvider);
+		itemsEditor = new OrderItemsEditor(productDataProvider, this.productAmountService);
 
 		itemsContainer.add(itemsEditor);
 
-		cancel.addClickListener(e -> fireEvent(new CancelEvent(this, false)));
+		cancel.addClickListener(e -> fireEvent(new CancelEvent(this, true)));
 		review.addClickListener(e -> fireEvent(new ReviewEvent(this)));
 
 		status.setItemLabelGenerator(createItemLabelGenerator(OrderState::getDisplayName));

@@ -1,13 +1,12 @@
-package com.roofapp.ui.views.products;
+package com.roofapp.ui.views.ProductAmount;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
-
-import com.roofapp.backend.dao.roofdb.MaterialColor;
+import com.roofapp.backend.dao.roofdb.MaterialClass;
+import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.ProductType;
 import com.roofapp.backend.dao.roofdb.Width;
+import com.roofapp.backend.dao.roofdb.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.ProductAmount;
+import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
@@ -19,39 +18,48 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.roofapp.backend.dao.roofdb.entity.Product;
-//import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
+
+//import io.swagger.models.auth.In;
 
 /**
  * A form for editing a single product.
  */
 
-public class ProductForm extends Div {
+public class ProductAmountForm extends Div {
 
     private final VerticalLayout content;
 
-    ProductService productService;
+    ProductAmountService productService;
 
-    private final TextField name;
+    private final Select<Product> product;
     private final NumberField price;
 
-    private final NumberField width;
+   // private final NumberField width;
 
-    private final NumberField squareMeters;
+   // private final NumberField squareMeters;
 
     // private final TextField weight;
 
    // private final TextField length;
 
-    private final Select<ProductType> type;
+    private final Select<Width> width;
+
+    private final Select<MaterialClass>  materialClass;
+    private final Select<MaterialCover> materialCover;
 
    // private final Select<MaterialColor> materialColor;
 
@@ -62,14 +70,14 @@ public class ProductForm extends Div {
     private Button cancel;
     private final Button delete;
 
-    private ProductViewLogic viewLogic;
+    private ProductAmountViewLogic viewLogic;
 
-    public void setViewLogic(ProductViewLogic viewLogic) {
+    public void setViewLogic(ProductAmountViewLogic viewLogic) {
         this.viewLogic = viewLogic;
     }
 
-    private final Binder<Product> binder;
-    private Product currentProduct;
+    private final Binder<ProductAmount> binder;
+    private ProductAmount currentProduct;
 
     private static class PriceConverter extends StringToBigDecimalConverter {
 
@@ -112,8 +120,8 @@ public class ProductForm extends Div {
     }
 
     @Autowired
-    public ProductForm(ProductViewLogic viewLogic, ProductService productService) {
-        this.productService = productService;
+    public ProductAmountForm(ProductAmountViewLogic viewLogic, ProductAmountService productAmountService, ProductService productService) {
+        this.productService = productAmountService;
         setClassName("product-form");
 
         content = new VerticalLayout();
@@ -123,79 +131,48 @@ public class ProductForm extends Div {
 
      //   viewLogic = sampleCrudLogic;
 
-        name = new TextField("Наименование");
-        name.setWidth("100%");
-        name.setRequired(true);
-        name.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(name);
+        product = new Select<>();
+        product.setLabel("Продуст");
+        product.setWidth("100%");
+        product.setItemLabelGenerator(Product::toString);
+        product.setItems(productService.findByType(new ArrayList<ProductType>(Arrays.asList(ProductType.PROFILED,ProductType.METAL_TILE))));
 
-        type = new Select<>();
-        type.setLabel("Катогория товара");
-        type.setWidth("100%");
-        type.setItems(ProductType.values());
-
-
-        //  content.add(type);
-
-       /* materialColor = new Select<>();
-        materialColor.setLabel("Цвет");
-        materialColor.setWidth("100%");
-        materialColor.setItems(MaterialColor.values());
-        // content.add(materialColor);
-
-        width = new Select<>();
-        width.setLabel("Толщина");
+        width= new Select<>();
         width.setWidth("100%");
+        width.setLabel("Толщина метала");
         width.setItems(Width.values());
-        // content.add(materialColor);
 
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(type,
-                materialColor,width);
-        horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(1, type,materialColor);
-        content.add(horizontalLayout2);
-*/
+        materialClass = new Select<>();
+        materialClass.setWidth("100%");
+        materialClass.setLabel("Класс");
+        materialClass.setItems(MaterialClass.values());
+
+        materialCover = new Select<>();
+        materialCover.setWidth("100%");
+        materialCover.setLabel("Покрытие");
+        materialCover.setItems(MaterialCover.values());
+
         price = new NumberField("Цена");
+        price.setWidth("100%");
         price.setSuffixComponent(new Span("р"));
         price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         price.setValueChangeMode(ValueChangeMode.EAGER);
 
-      /*  weight = new TextField("Вес кг.");
-        weight.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        weight.setValueChangeMode(ValueChangeMode.EAGER);
 
-        length = new TextField("Длинна м.");
-        length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        length.setValueChangeMode(ValueChangeMode.EAGER);
-*/
-        final HorizontalLayout horizontalLayout = new HorizontalLayout(type,price
-                /*weight, length*/);
+
+        final HorizontalLayout horizontalLayout = new HorizontalLayout(product,width );
         horizontalLayout.setWidth("100%");
-        horizontalLayout.setFlexGrow(1, type,price/*, weight*/);
+        horizontalLayout.setFlexGrow(3, product,width);
         content.add(horizontalLayout);
 
-
-        width = new NumberField("Ширина листа");
-        width.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        width.setValueChangeMode(ValueChangeMode.EAGER);
-
-        squareMeters = new NumberField("м2 в 1п.м.");
-        squareMeters.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        squareMeters.setValueChangeMode(ValueChangeMode.EAGER);
-
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(width,squareMeters
-                /*weight, length*/);
+        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(materialClass,materialCover,price);
         horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(1,width,squareMeters);
+        horizontalLayout2.setFlexGrow(3,materialClass, materialCover,price);
         content.add(horizontalLayout2);
 
-      /*  category = new CheckboxGroup<>();
-        category.setLabel("Categories");
-        category.setId("category");
-        category.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
-        content.add(category);
-*/
-        binder = new BeanValidationBinder<>(Product.class);
+
+
+        binder = new BeanValidationBinder<>(ProductAmount.class);
       //  binder.forField(price).withConverter(new PriceConverter())
            //    .bind("price");
       //  binder.forField(weight).withConverter(new StockCountConverter())
@@ -253,9 +230,9 @@ public class ProductForm extends Div {
     //    category.setItems(categories);
   //  }
 
-    public void editProduct(Product product) {
+    public void editProduct(ProductAmount product) {
         if (product == null) {
-            product = new Product();
+            product = ProductAmount.builder().build();
         }
         delete.setVisible(!product.isNew());
         currentProduct = product;

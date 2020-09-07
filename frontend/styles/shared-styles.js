@@ -115,7 +115,7 @@ $_documentContainer.innerHTML = `<dom-module id="bakery-app-layout-theme" theme-
 
       :host([theme~="orders"]) [part="content"],
       :host([theme~="orders"]) [part="overlay"] {
-        max-width: 65em;
+        max-width: 100em;
         width: 100%;
       }
 

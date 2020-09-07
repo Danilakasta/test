@@ -1,7 +1,9 @@
 package com.roofapp.ui.views.orderedit;
 
+import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.OrderItem;
 import com.roofapp.backend.dao.roofdb.entity.Product;
+import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.ui.views.order.events.TotalPriceChangeEvent;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -29,9 +31,12 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 	private boolean hasChanges = false;
 
 	private final AbstractFieldSupport<OrderItemsEditor,List<OrderItem>> fieldSupport;
+
+	private final ProductAmountService productAmountService;
 	
-	public OrderItemsEditor(DataProvider<Product, String> productDataProvider) {
+	public OrderItemsEditor(DataProvider<Product, String> productDataProvider, ProductAmountService productAmountService) {
 		this.productDataProvider = productDataProvider;
+		this.productAmountService = productAmountService;
 		this.fieldSupport = new AbstractFieldSupport<>(this, Collections.emptyList(),
 				Objects::equals, c ->  {}); 
 	}
@@ -51,10 +56,11 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 	}
 
 	private OrderItemEditor createEditor(OrderItem value) {
-		OrderItemEditor editor = new OrderItemEditor(productDataProvider);
+		OrderItemEditor editor = new OrderItemEditor(productDataProvider, productAmountService);
 		getElement().appendChild(editor.getElement());
 		editor.addPriceChangeListener(e -> updateTotalPriceOnItemPriceChange(e.getOldValue(), e.getNewValue()));
 		editor.addProductChangeListener(e -> productChanged(e.getSource(), e.getProduct()));
+	//	editor.addWidthChangeListener(e-> widthChanged(e.getSource(), e.getWidth()));
 		editor.addCommentChangeListener(e -> setHasChanges(true));
 		editor.addDeleteListener(e -> {
 			OrderItemEditor orderItemEditor = e.getSource();
@@ -92,6 +98,19 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 			setValue(Stream.concat(getValue().stream(),Stream.of(orderItem)).collect(Collectors.toList()));
 		}
 	}
+
+	/*private void widthChanged(OrderItemEditor item, Width width) {
+		setHasChanges(true);
+		if (empty == item) {
+			createEmptyElement();
+			OrderItem orderItem = new OrderItem();
+			orderItem.setWidth(width);
+			item.setValue(orderItem);
+			setValue(Stream.concat(getValue().stream(),Stream.of(orderItem)).collect(Collectors.toList()));
+		}
+	}
+	*/
+
 
 	private void updateTotalPriceOnItemPriceChange(Double oldItemPrice, Double newItemPrice) {
 		final Double delta = newItemPrice - oldItemPrice;

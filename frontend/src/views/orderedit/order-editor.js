@@ -1,4 +1,4 @@
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import {PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@vaadin/vaadin-icons/vaadin-icons.js';
 import '@vaadin/vaadin-text-field/src/vaadin-text-field.js';
@@ -11,10 +11,11 @@ import '../../components/buttons-bar.js';
 import '../../components/utils-mixin.js';
 import './order-item-editor.js';
 import '../../../styles/shared-styles.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+
 class OrderEditor extends window.ScrollShadowMixin(PolymerElement) {
-  static get template() {
-    return html`
+    static get template() {
+        return html`
     <style include="shared-styles">
       :host {
         display: flex;
@@ -72,9 +73,6 @@ class OrderEditor extends window.ScrollShadowMixin(PolymerElement) {
 
           <vaadin-text-field id="customerDetails" label="Подробности" colspan="2"></vaadin-text-field>
 
-          <vaadin-form-item colspan="3">
-            <label slot="label">Продукт</label>
-          </vaadin-form-item>
           <div id="itemsContainer" colspan="3"></div>
         </vaadin-form-layout>
 
@@ -90,43 +88,43 @@ class OrderEditor extends window.ScrollShadowMixin(PolymerElement) {
       </vaadin-button>
     </buttons-bar>
 `;
-  }
+    }
 
-  static get is() {
-    return 'order-editor';
-  }
+    static get is() {
+        return 'order-editor';
+    }
 
-  static get properties() {
-    return {
-      status: {
-        type: String,
-        observer: '_onStatusChange'
-      }
-    };
-  }
+    static get properties() {
+        return {
+            status: {
+                type: String,
+                observer: '_onStatusChange'
+            }
+        };
+    }
 
-  ready() {
-    super.ready();
+    ready() {
+        super.ready();
 
-    // Not using attributes since Designer does not suppor single-quote attributes
-    this.$.form1.responsiveSteps = [
-      {columns: 1, labelsPosition: 'top'},
-      {minWidth: '600px', columns: 4, labelsPosition: 'top'}
-    ];
-    this.$.form2.responsiveSteps = [
-      {columns: 1, labelsPosition: 'top'},
-      {minWidth: '360px', columns: 2, labelsPosition: 'top'}
-    ];
-    this.$.form3.responsiveSteps = [
-      {columns: 1, labelsPosition: 'top'},
-      {minWidth: '500px', columns: 3, labelsPosition: 'top'}
-    ];
-  }
+        // Not using attributes since Designer does not suppor single-quote attributes
+        this.$.form1.responsiveSteps = [
+            {columns: 1, labelsPosition: 'top'},
+            {minWidth: '600px', columns: 4, labelsPosition: 'top'}
+        ];
+        this.$.form2.responsiveSteps = [
+            {columns: 1, labelsPosition: 'top'},
+            {minWidth: '360px', columns: 2, labelsPosition: 'top'}
+        ];
+        this.$.form3.responsiveSteps = [
+            {columns: 1, labelsPosition: 'top'},
+            {minWidth: '500px', columns: 3, labelsPosition: 'top'}
+        ];
+    }
 
-  _onStatusChange() {
-    const status = this.status ? this.status.toLowerCase() : this.status;
-    this.$.status.$.input.setAttribute('status', status);
-  }
+    _onStatusChange() {
+        const status = this.status ? this.status.toLowerCase() : this.status;
+        this.$.status.$.input.setAttribute('status', status);
+    }
 }
 
 window.customElements.define(OrderEditor.is, OrderEditor);

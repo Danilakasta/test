@@ -79,17 +79,17 @@ public abstract class DBConf {
       //  properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
         properties.put("hibernate.dialect", env.getProperty(optPrefix + ".hibernate.dialect"));
 
-        properties.put("hibernate.connection.handling_mode", env.getProperty("hibernate.connection.handling_mode"));
+      //  properties.put("hibernate.connection.handling_mode", env.getProperty("hibernate.connection.handling_mode"));
       //  properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-       properties.put("hibernate.current_session_context_class", env
-               .getProperty("hibernate.current_session_context_class"));
-        properties.put("hibernate.enable_lazy_load_no_trans", env
-                .getProperty("hibernate.enable_lazy_load_no_trans"));
-        properties.put("hibernate.jdbc.lob.non_contextual_creation", env
-                .getProperty("hibernate.jdbc.lob.non_contextual_creation"));
+      // properties.put("hibernate.current_session_context_class", env
+         //      .getProperty("hibernate.current_session_context_class"));
+      //  properties.put("hibernate.enable_lazy_load_no_trans", env
+      //          .getProperty("hibernate.enable_lazy_load_no_trans"));
+      //  properties.put("hibernate.jdbc.lob.non_contextual_creation", env
+         //       .getProperty("hibernate.jdbc.lob.non_contextual_creation"));
 
-        properties.put("hibernate.jpa.properties.javax.persistence.validation.mode", env
-                .getProperty("hibernate.jpa.properties.javax.persistence.validation.mode"));
+     //   properties.put("hibernate.jpa.properties.javax.persistence.validation.mode", env
+        //        .getProperty("hibernate.jpa.properties.javax.persistence.validation.mode"));
 
         properties.put("hibernate.c3p0.min_size", env
                 .getProperty("hibernate.c3p0.min_size"));
@@ -104,8 +104,8 @@ public abstract class DBConf {
 
 
         // switch fast or slow hibernate initialization. for production must be true
-        properties.put("hibernate.temp.use_jdbc_metadata_defaults", env
-               .getProperty("hibernate.temp.use_jdbc_metadata_defaults"));
+     //   properties.put("hibernate.temp.use_jdbc_metadata_defaults", env
+        //       .getProperty("hibernate.temp.use_jdbc_metadata_defaults"));
 
         properties.put("database.driverClassName", env.getProperty(optPrefix +".database.driverClassName"));
 
@@ -115,7 +115,7 @@ public abstract class DBConf {
         properties.put("hibernate.c3p0.testConnectionOnCheckin", env.getProperty("hibernate.c3p0.testConnectionOnCheckin"));
         properties.put("hibernate.c3p0.testConnectionOnCheckout", env.getProperty("hibernate.c3p0.testConnectionOnCheckout"));
 
-        properties.put("hibernate.prepareConnection",false);
+     //   properties.put("hibernate.prepareConnection",false);
 
         /*
          *  Adjust timezone if needed
