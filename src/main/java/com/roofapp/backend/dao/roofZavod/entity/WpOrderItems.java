@@ -19,5 +19,5 @@ public class WpOrderItems {
 
     private Double quantity;
 
-
+    private Double price;
 }

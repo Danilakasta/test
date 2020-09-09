@@ -45,9 +45,9 @@ class OrderItemEditor extends PolymerElement {
         <vaadin-combo-box id="products" colspan="8" index="[[index]]"></vaadin-combo-box>
         <vaadin-number-field id="amount" colspan="4" index="[[index]]" class="self-start"
           min="1" max="15" has-controls prevent-invalid-input></vaadin-number-field>
-        <div id="price" colspan="4" class="money">[[price]]</div>
+        <vaadin-number-field  id="price" colspan="4" class="money">[[price]]</vaadin-number-field>
         <!--<vaadin-text-field id="comment" colspan="12" placeholder="Details" index="[[index]]"></vaadin-text-field>-->
-        <vaadin-horizontal-layout id="layWithParams" colspan="10">
+        <vaadin-horizontal-layout id="layWithParams" colspan="16">
             <vaadin-combo-box id="width" colspan="2" index="[[index]]" style="padding-right: 10px" ></vaadin-combo-box>  
             <vaadin-combo-box id="materialClass" colspan="2" index="[[index]]" style="padding-right: 10px"></vaadin-combo-box>
             <vaadin-combo-box id="materialCover" colspan="2" index="[[index]]" style="padding-right: 10px"></vaadin-combo-box>

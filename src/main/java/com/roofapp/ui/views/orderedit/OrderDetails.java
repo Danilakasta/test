@@ -3,6 +3,8 @@
  */
 package com.roofapp.ui.views.orderedit;
 
+import com.roofapp.backend.dao.roofdb.MaterialColor;
+import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.entity.Order;
 import com.roofapp.ui.events.CancelEvent;
 import com.roofapp.ui.events.SaveEvent;
@@ -95,16 +97,21 @@ public class OrderDetails extends PolymerTemplate<OrderDetails.Model> {
 	public interface Model extends TemplateModel {
 		@Include({ "id", "dueDate.day", "dueDate.weekday", "dueDate.date", "dueTime", "state", "pickupLocation.name",
 			"customer.fullName", "customer.phoneNumber", "customer.details", "items.product.name", "items.comment",
-			"items.quantity", "items.product.price", "history.message", "history.createdBy.firstName",
+			"items.quantity", "items.materialClass","items.materialCover" ,"items.materialColor","items.height","items.price", "history.message", "history.createdBy.firstName",
 			"history.timestamp", "history.newState", "totalPrice" })
 		@Encode(value = LongToStringConverter.class, path = "id")
 		@Encode(value = StorefrontLocalDateConverter.class, path = "dueDate")
 		@Encode(value = LocalTimeConverter.class, path = "dueTime")
 		@Encode(value = OrderStateConverter.class, path = "state")
+
+		@Encode(value = MaterialClassToStringConverter.class, path = "items.materialClass")
+		@Encode(value = MaterialCoverToStringConverter.class, path = "items.materialCover")
+		@Encode(value = MaterialColorToStringConverter.class, path = "items.materialColor")
+
 		//@Encode(value = CurrencyFormatter.class, path = "items.product.price")
 		@Encode(value = LocalDateTimeConverter.class, path = "history.timestamp")
 		@Encode(value = OrderStateConverter.class, path = "history.newState")
-		//@Encode(value = CurrencyFormatter.class, path = "totalPrice")
+	//	@Encode(value = CurrencyFormatter.class, path = "totalPrice")
 		void setItem(Order order);
 
 		void setReview(boolean review);

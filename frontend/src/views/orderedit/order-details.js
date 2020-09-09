@@ -174,7 +174,8 @@ class OrderDetails extends window.ScrollShadowMixin(PolymerElement) {
                   <template>
                     <div class="tr">
                       <div class="td product-name">
-                        <div class="bold">[[item.product.name]]</div>
+                        <div class="bold">[[item.product.name]] [[item.materialClass]] [[item.materialCover]] [[item.materialColor]] [[item.height]]
+                        </div>
                         <div class="secondary">[[item.comment]]</div>
                       </div>
                       <div class="td number">
@@ -182,7 +183,7 @@ class OrderDetails extends window.ScrollShadowMixin(PolymerElement) {
                       </div>
                       <div class="td dim">×</div>
                       <div class="td money">
-                        [[item.product.price]]
+                        [[item.price]]
                       </div>
                     </div>
                   </template>

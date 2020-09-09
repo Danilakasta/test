@@ -66,7 +66,8 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
     private NumberField amount;
 
     @Id("price")
-    private Div price;
+    private NumberField price;
+
 
     //@Id("comment")
 //	private TextField comment;
@@ -142,7 +143,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
 
         height.setLabel("Высота");
-        height.addValueChangeListener(e -> {
+        height.addKeyUpListener(e -> {
             setPrice();
         });
         binder.forField( height).bind("height");
@@ -150,6 +151,10 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         //	binder.forField(comment).bind("comment");
         binder.forField(products).bind("product");
         products.setRequired(true);
+
+
+        price.setEnabled(false);
+        binder.forField(price).bind("price");
 
         layWithParams.setVisible(false);
 
@@ -182,14 +187,19 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         if (selectedAmount != null && product != null) {
             if (product.getType() != null) {
                 if (product.getType().equals(ProductType.PROFILED) || product.getType().equals(ProductType.METAL_TILE)) {
-                    if (!ObjectUtils.isEmpty(height.getValue()) && !ObjectUtils.isEmpty(product.getSquareMeters()))
-                        totalPrice = new BigDecimal(selectedAmount * (product.getPrice() + findProductPrice()) * product.getSquareMeters() * height.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+                    if (!ObjectUtils.isEmpty(height.getValue()) && !ObjectUtils.isEmpty(product.getSquareMeters())) {
+                        totalPrice = new BigDecimal(selectedAmount * (findProductPrice()) * product.getSquareMeters() * height.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+                     //   product.setPrice(totalPrice);
+                    }
                 }
             } else {
                 totalPrice = new BigDecimal(selectedAmount * product.getPrice()).setScale(2, RoundingMode.HALF_UP).doubleValue();
             }
+
         }
-        price.setText(/*FormattingUtils.formatAsCurrency(*/totalPrice.toString()/*)*/);
+        price.setValue(/*FormattingUtils.formatAsCurrency(*/totalPrice/*)*/);
+
+
         if (oldValue != totalPrice) {
             fireEvent(new PriceChangeEvent(this, oldValue, totalPrice));
         }

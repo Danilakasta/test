@@ -44,4 +44,7 @@ public class OrderItem extends AbstractEntity {
 	private MaterialColor materialColor;
 
 	private Double height;
+
+	@Column(name = "total_price")
+	private Double price;
 }
