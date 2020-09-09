@@ -121,6 +121,7 @@ public class WpLoadTask {
                 List<OrderItem> orderItems = new ArrayList<>();
                 wpOrderItems.forEach(wpOrderItem -> {
 
+
                     Optional<Product> product = productRepository.findById(wpOrderItem.getProductId());
                     OrderItem orderItem = new OrderItem();
                     orderItem.setProduct(product.isPresent() ? product.get() : null);
