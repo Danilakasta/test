@@ -22,7 +22,7 @@ class SearchBar extends PolymerElement {
         background-image: linear-gradient(var(--lumo-shade-20pct), var(--lumo-shade-20pct));
         background-color: var(--lumo-base-color);
         box-shadow: 0 0 16px 2px var(--lumo-shade-20pct);
-      #  order: 1;
+      /*  order: 1;*/
         width: 100%;
         height: 48px;
       }
