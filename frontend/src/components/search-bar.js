@@ -18,10 +18,10 @@ class SearchBar extends PolymerElement {
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        padding: 0 var(--lumo-space-s);
+      /*  padding: 0 var(--lumo-space-s);
         background-image: linear-gradient(var(--lumo-shade-20pct), var(--lumo-shade-20pct));
         background-color: var(--lumo-base-color);
-        box-shadow: 0 0 16px 2px var(--lumo-shade-20pct);
+        box-shadow: 0 0 16px 2px var(--lumo-shade-20pct);*/
       /*  order: 1;*/
         width: 100%;
         height: 48px;
@@ -56,7 +56,7 @@ class SearchBar extends PolymerElement {
       .field {
         flex: 1;
         width: auto;
-        padding-right: var(--lumo-space-s);
+    /*    padding-right: var(--lumo-space-s);*/
       }
 
       @media (min-width: 700px) {
@@ -66,12 +66,12 @@ class SearchBar extends PolymerElement {
 
         .row {
           width: 100%;
-        #  max-width: 964px;
+        /*  max-width: 964px;*/
           margin: 0 auto;
         }
 
         .field {
-          padding-right: var(--lumo-space-m);
+        /*  padding-right: var(--lumo-space-m);*/
         }
 
         :host([show-checkbox][show-extra-filters]) .checkbox.desktop {
