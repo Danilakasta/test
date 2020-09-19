@@ -39,9 +39,7 @@ public class ProductService implements FilterableCrudService<Product>  {
         return productRepository.findByTypeIn(productType);
     }
 
-    public List<Product> findAllSortedOrders() {
-        return productRepository.findOrdersOrder();
-    }
+
 
 
     public Product findById(Long id) {

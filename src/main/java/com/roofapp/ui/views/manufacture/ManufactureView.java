@@ -1,11 +1,8 @@
 package com.roofapp.ui.views.manufacture;
 
-import com.roofapp.backend.dao.roofdb.entity.Product;
-import com.roofapp.backend.service.ProductService;
+import com.roofapp.backend.dao.roofdb.entity.Manufacturers;
+import com.roofapp.backend.service.ManufacturerService;
 import com.roofapp.ui.MainLayout;
-import com.roofapp.ui.views.products.ProductDataProvider;
-import com.roofapp.ui.views.products.ProductGrid;
-import com.roofapp.ui.views.products.ProductViewLogic;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -22,9 +19,9 @@ import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
 
 /**
- * A view for performing create-read-update-delete operations on products.
+ * A view for performing create-read-update-delete operations on Manufacturerss.
  *
- * See also {@link ProductViewLogic} for fetching the data, the actual CRUD
+ * See also {@link } for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
 @Route(value = "manufacture", layout = MainLayout.class)
@@ -35,30 +32,30 @@ public class ManufactureView extends HorizontalLayout
     public static final String VIEW_NAME = "Производство";
 
 
-   private final ProductService productService;
+   private final ManufacturerService manufacturerService;
 
-    private final ProductGrid grid;
-   //private final ProductForm form;
+    private final ManufacturerGrid grid;
+   //private final ManufacturersForm form;
     private TextField filter;
 
-  //  private final ProductViewLogic viewLogic = new ProductViewLogic(this);
-    private Button newProduct;
+  //  private final ManufacturersViewLogic viewLogic = new ManufacturersViewLogic(this);
+    private Button newManufacturers;
 
-    private ProductDataProvider dataProvider;
+    private ManufacturerDataProvider dataProvider;
 
-    public ManufactureView(ProductService productService) {
+    public ManufactureView(ManufacturerService manufacturerService) {
 
-        this.productService = productService;
+        this.manufacturerService= manufacturerService;
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();
         final HorizontalLayout topLayout = createTopBar();
-        grid = new ProductGrid();
-        dataProvider = new ProductDataProvider(productService.findAllSortedOrders(), productService);
+        grid = new ManufacturerGrid();
+        dataProvider = new ManufacturerDataProvider(manufacturerService.findAllSortedOrders(), manufacturerService);
         grid.setDataProvider(this.dataProvider);
         // Allows user to select a single row in the grid.
         //grid.asSingleSelect().addValueChangeListener(
             //    event -> viewLogic.rowSelected(event.getValue()));
-       //form = new ProductForm(viewLogic,productService);
+       //form = new ManufacturersForm(viewLogic,ManufacturersService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add( new H2(this.VIEW_NAME));
@@ -84,18 +81,18 @@ public class ManufactureView extends HorizontalLayout
         // A shortcut to focus on the textField by pressing ctrl + F
         filter.addFocusShortcut(Key.KEY_F, KeyModifier.CONTROL);
 
-        newProduct = new Button("Новый");
-        // Setting theme variant of new production button to LUMO_PRIMARY that
+        newManufacturers = new Button("Новый");
+        // Setting theme variant of new Manufacturersion button to LUMO_PRIMARY that
         // changes its background color to blue and its text color to white
-        newProduct.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newProduct.setIcon(VaadinIcon.PLUS_CIRCLE.create());
-       // newProduct.addClickListener(click -> viewLogic.newProduct());
-        // A shortcut to click the new product button by pressing ALT + N
-        newProduct.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
+        newManufacturers.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        newManufacturers.setIcon(VaadinIcon.PLUS_CIRCLE.create());
+       // newManufacturers.addClickListener(click -> viewLogic.newManufacturers());
+        // A shortcut to click the new Manufacturers button by pressing ALT + N
+        newManufacturers.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
         final HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidth("100%");
         topLayout.add(filter);
-        topLayout.add(newProduct);
+        topLayout.add(newManufacturers);
         topLayout.setVerticalComponentAlignment(Alignment.START, filter);
         topLayout.expand(filter);
         return topLayout;
@@ -116,13 +113,13 @@ public class ManufactureView extends HorizontalLayout
     }
 
     /**
-     * Enables/Disables the new product button.
+     * Enables/Disables the new Manufacturers button.
      * 
      * @param enabled
      */
-    public void setNewProductEnabled(boolean enabled) {
+    public void setNewManufacturersEnabled(boolean enabled) {
 
-        newProduct.setEnabled(enabled);
+        newManufacturers.setEnabled(enabled);
     }
 
     /**
@@ -137,40 +134,40 @@ public class ManufactureView extends HorizontalLayout
      * 
      * @param row
      */
-    public void selectRow(Product row) {
+    public void selectRow(Manufacturers row) {
         grid.getSelectionModel().select(row);
     }
 
     /**
-     * Updates a product in the list of products.
+     * Updates a Manufacturers in the list of Manufacturerss.
      * 
-     * @param product
+     * @param Manufacturers
      */
-    public void updateProduct(Product product) {
-        dataProvider.save(product);
+    public void updateManufacturers(Manufacturers Manufacturers) {
+        dataProvider.save(Manufacturers);
     }
 
     /**
-     * Removes a product from the list of products.
+     * Removes a Manufacturers from the list of Manufacturerss.
      * 
-     * @param product
+     * @param Manufacturers
      */
-    public void removeProduct(Product product) {
-        dataProvider.delete(product);
+    public void removeManufacturers(Manufacturers Manufacturers) {
+        dataProvider.delete(Manufacturers);
     }
 
     /**
-     * Displays user a form to edit a Product.
+     * Displays user a form to edit a Manufacturers.
      * 
-     * @param product
+     * @param Manufacturers
      */
-    public void editProduct(Product product) {
-        showForm(product != null);
-     //   form.editProduct(product);
+    public void editManufacturers(Manufacturers Manufacturers) {
+        showForm(Manufacturers != null);
+     //   form.editManufacturers(Manufacturers);
     }
 
     /**
-     * Shows and hides the new product form
+     * Shows and hides the new Manufacturers form
      * 
      * @param show
      */
