@@ -10,12 +10,14 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.roofapp.backend.dao.roofdb.entity.Product;
+import lombok.extern.java.Log;
 
 /**
  * Grid of products, handling the visual presentation and filtering of a set of
  * items. This version uses an in-memory data source that is suitable for small
  * data sets.
  */
+@Log
 public class ProductGrid extends Grid<Product> {
 
     public ProductGrid() {
@@ -64,11 +66,14 @@ public class ProductGrid extends Grid<Product> {
                         .comparing(Product::getWidth))
                 .setFlexGrow(5).setKey("width");
 */
-        addColumn(product -> decimalFormat.format(product.getPrice()) + " р")
-                .setHeader("Цена ").setTextAlign(ColumnTextAlign.END)
-                .setComparator(Comparator.comparing(Product::getPrice))
-                .setFlexGrow(3).setKey("price");
 
+     /*  addColumn(product -> decimalFormat.format(product.getPrice()) + " р")
+                   .setHeader("Цена ").setTextAlign(ColumnTextAlign.END)
+                   .setComparator(Comparator.comparing(Product::getPrice))
+                   .setFlexGrow(3).setKey("price");
+*/
+        addColumn(Product::getPrice).setHeader("Цена")
+                .setFlexGrow(20).setSortable(true).setKey("price");
 
         addColumn(Product::getTitle).setHeader("Описание")
                 .setFlexGrow(20).setSortable(true).setKey("title");

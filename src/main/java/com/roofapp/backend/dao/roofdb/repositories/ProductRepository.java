@@ -18,11 +18,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     int countByNameLikeIgnoreCase(String name);
 
     @Query(value = "select row_number() over() as id,\n" +
+            "p.length ,\n" +
+            "p.material_color ,\n" +
             "concat(concat(concat('Заказ # ', oi.items_id),' '),p.name) as name,\n" +
-            "p.*" +
+            "p.price ,\n" +
+            "p.name ,\n" +
+            "p.type ,\n" +
+            "p.weight,\n" +
+            "p.width, \n" +
+            "p.title, \n" +
+            "p.second_title, \n" +
+            "p.category,\n" +
+            "p.square_meters\n" +
             "from order_item oi \n" +
-            "right join product p on oi.product_id  = p.id \n" +
-            "order by material_color, width desc", nativeQuery = true)
+            "left join product p on oi.product_id  = p.id\n " +
+            "where p.type in (0,1,2)\n" +
+            "order by material_color, width desc",nativeQuery = true)
     List<Product> findOrdersOrder();
 
     List<Product> findByTypeIn(List<ProductType> productTypes);
