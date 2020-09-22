@@ -170,8 +170,8 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
         layWithParams.setVisible(false);
 
-      ///  materialSquaring.setLabel("Квадратура");
-      //  materialSquaring.setEnabled(false);
+        materialSquaring.setLabel("Квадратура");
+        materialSquaring.setEnabled(false);
 
 
 
