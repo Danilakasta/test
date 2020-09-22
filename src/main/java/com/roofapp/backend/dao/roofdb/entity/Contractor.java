@@ -56,7 +56,7 @@ public class Contractor {
 
     @Override
     public String toString() {
-        return type + " " + name;
+        return  name;
     }
 
 }
