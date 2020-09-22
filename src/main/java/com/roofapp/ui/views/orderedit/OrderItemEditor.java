@@ -6,11 +6,8 @@ import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.dao.roofdb.entity.ProductAmount;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.ui.views.order.events.*;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.HasValue;
-import com.vaadin.flow.component.HasValueAndElement;
-import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.JsModule;
@@ -20,12 +17,14 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.templatemodel.TemplateModel;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -67,6 +66,9 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
     @Id("price")
     private NumberField price;
+
+    @Id("materialSquaring")
+    private TextField materialSquaring;
 
 
     //@Id("comment")
@@ -115,21 +117,30 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             setPrice();
         });
         width.setRequired(true);
-        binder.forField( width).bind("width");
+        binder.forField(width).bind("width");
 
         materialClass.setItems(MaterialClass.values());
-        materialClass.setLabel("Клас");
+        materialClass.setLabel("Класс");
         materialClass.addValueChangeListener(e -> {
             setPrice();
         });
         materialClass.setRequired(true);
-        binder.forField( materialClass).bind("materialClass");
+        binder.forField(materialClass).bind("materialClass");
 
         materialCover.setItems(MaterialCover.values());
         materialCover.setLabel("Покрытие");
         materialCover.addValueChangeListener(e -> {
             setPrice();
         });
+        //У цинка не блокируем выбор цвета
+        materialCover.addValueChangeListener(e -> {
+            if (e.getValue().ordinal() == 0) {
+                materialColor.setEnabled(false);
+            } else {
+                materialColor.setEnabled(true);
+            }
+        });
+
         materialCover.setRequired(true);
         binder.forField(materialCover).bind("materialCover");
 
@@ -139,14 +150,15 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             setPrice();
         });
         materialColor.setRequired(true);
-        binder.forField( materialColor).bind("materialColor");
+        binder.forField(materialColor).bind("materialColor");
 
 
-        height.setLabel("Высота");
+        height.setLabel("Длинна");
         height.addKeyUpListener(e -> {
             setPrice();
+            setMaterialSquaring();
         });
-        binder.forField( height).bind("height");
+        binder.forField(height).bind("height");
 
         //	binder.forField(comment).bind("comment");
         binder.forField(products).bind("product");
@@ -158,9 +170,20 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
         layWithParams.setVisible(false);
 
+      ///  materialSquaring.setLabel("Квадратура");
+      //  materialSquaring.setEnabled(false);
+
+
+
         delete.addClickListener(e -> fireEvent(new DeleteEvent(this)));
         setPrice();
     }
+
+
+    private void setMaterialSquaring() {
+        materialSquaring.setValue(String.valueOf(products.getValue().getSquareMeters() * height.getValue()));
+    }
+
 
     private Double findProductPrice() {
         if (!ObjectUtils.isEmpty(products.getValue())
@@ -188,8 +211,9 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             if (product.getType() != null) {
                 if (product.getType().equals(ProductType.PROFILED) || product.getType().equals(ProductType.METAL_TILE)) {
                     if (!ObjectUtils.isEmpty(height.getValue()) && !ObjectUtils.isEmpty(product.getSquareMeters())) {
+
                         totalPrice = new BigDecimal(selectedAmount * (findProductPrice()) * product.getSquareMeters() * height.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
-                     //   product.setPrice(totalPrice);
+                        //   product.setPrice(totalPrice);
                     }
                 }
             } else {

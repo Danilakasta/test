@@ -35,6 +35,11 @@ public class ContractorServiceImpl implements ContractorService {
     }
 
     @Override
+    public List<Contractor> findAllOrderName() {
+        return contractorRepository.findAllByOrderByName();
+    }
+
+    @Override
     public Contractor findById(Long id) {
         try {
             return contractorRepository.findById(id).get();

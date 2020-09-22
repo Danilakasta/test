@@ -1,10 +1,8 @@
 package com.roofapp.ui.views.orderedit;
 
 import com.roofapp.backend.dao.roofdb.OrderState;
-import com.roofapp.backend.dao.roofdb.entity.Order;
-import com.roofapp.backend.dao.roofdb.entity.PickupLocation;
-import com.roofapp.backend.dao.roofdb.entity.Product;
-import com.roofapp.backend.dao.roofdb.entity.User;
+import com.roofapp.backend.dao.roofdb.entity.*;
+import com.roofapp.backend.service.ContractorService;
 import com.roofapp.backend.service.PickupLocationService;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
@@ -85,7 +83,7 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 	private ComboBox<PickupLocation> pickupLocation;
 
 	@Id("customerName")
-	private TextField customerName;
+	private ComboBox<Contractor> customerName;
 
 	@Id("customerNumber")
 	private TextField customerNumber;
@@ -112,12 +110,18 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
 	private final ProductAmountService productAmountService;
 
+	private final ContractorService contractorService;
+
 	@Autowired
-	public OrderEditor(PickupLocationService locationService, ProductService productService, ProductAmountService productAmountService) {
+	public OrderEditor(PickupLocationService locationService, ProductService productService, ProductAmountService productAmountService,ContractorService contractorService) {
 		this.productAmountService = productAmountService;
+		this.contractorService = contractorService;
 		DataProvider<PickupLocation, String> locationDataProvider = new CrudEntityDataProvider<>(locationService);
 		DataProvider<Product, String> productDataProvider = new CrudEntityDataProvider<>(productService);
 		itemsEditor = new OrderItemsEditor(productDataProvider, this.productAmountService);
+
+
+		customerName.setItems(contractorService.findAllOrderName());
 
 		itemsContainer.add(itemsEditor);
 

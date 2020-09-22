@@ -12,6 +12,8 @@ public interface ContractorService {
 
     List<Contractor> findAll();
 
+    List<Contractor> findAllOrderName();
+
     Contractor findById(Long id);
 
     void delete(Contractor contractor);

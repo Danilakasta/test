@@ -63,9 +63,9 @@ class OrderEditor extends window.ScrollShadowMixin(PolymerElement) {
         </vaadin-form-layout>
 
         <vaadin-form-layout id="form3" colspan="3">
-          <vaadin-text-field id="customerName" label="Покупатель" colspan="2">
+          <vaadin-combo-box id="customerName" label="Покупатель" colspan="2">
             <iron-icon slot="prefix" icon="vaadin:user"></iron-icon>
-          </vaadin-text-field>
+          </vaadin-combo-box>
 
           <vaadin-text-field id="customerNumber" label="Номер телефона">
             <iron-icon slot="prefix" icon="vaadin:phone"></iron-icon>
