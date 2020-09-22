@@ -98,8 +98,9 @@ public class OrderDetails extends PolymerTemplate<OrderDetails.Model> {
 		@Include({ "id", "dueDate.day", "dueDate.weekday", "dueDate.date", "dueTime", "state", "pickupLocation.name",
 			"customer.fullName", "customer.phoneNumber", "customer.details", "items.product.name", "items.comment",
 			"items.quantity", "items.materialClass","items.materialCover" ,"items.materialColor","items.height","items.price", "history.message", "history.createdBy.firstName",
-			"history.timestamp", "history.newState", "totalPrice" })
+			"history.timestamp", "history.newState", "totalPrice" , "items.materialSquaring"})
 		@Encode(value = LongToStringConverter.class, path = "id")
+
 		@Encode(value = StorefrontLocalDateConverter.class, path = "dueDate")
 		@Encode(value = LocalTimeConverter.class, path = "dueTime")
 		@Encode(value = OrderStateConverter.class, path = "state")
@@ -111,6 +112,7 @@ public class OrderDetails extends PolymerTemplate<OrderDetails.Model> {
 		//@Encode(value = CurrencyFormatter.class, path = "items.product.price")
 		@Encode(value = LocalDateTimeConverter.class, path = "history.timestamp")
 		@Encode(value = OrderStateConverter.class, path = "history.newState")
+		@Encode(value = LongToStringConverter.class, path = "items.materialSquaring")
 	//	@Encode(value = CurrencyFormatter.class, path = "totalPrice")
 		void setItem(Order order);
 

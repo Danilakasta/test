@@ -154,10 +154,15 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
 
         height.setLabel("Длинна");
-        height.addKeyUpListener(e -> {
+        height.addKeyDownListener(e -> {
             setPrice();
             setMaterialSquaring();
         });
+        height.addValueChangeListener(e -> {
+            setPrice();
+            setMaterialSquaring();
+        });
+
         binder.forField(height).bind("height");
 
         //	binder.forField(comment).bind("comment");
@@ -174,14 +179,16 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         materialSquaring.setEnabled(false);
 
 
-
         delete.addClickListener(e -> fireEvent(new DeleteEvent(this)));
         setPrice();
     }
 
 
     private void setMaterialSquaring() {
-        materialSquaring.setValue(String.valueOf(products.getValue().getSquareMeters() * height.getValue()));
+        Product product = products.getValue();
+        Double heightVal = height.getValue();
+        if (product != null && heightVal != null)
+            materialSquaring.setValue(String.valueOf(product.getSquareMeters() * heightVal ));
     }
 
 
