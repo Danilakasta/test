@@ -18,4 +18,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     int countByNameLikeIgnoreCase(String name);
 
     List<Product> findByTypeIn(List<ProductType> productTypes);
+
+    List<Product> findAllByOrderByName();
 }

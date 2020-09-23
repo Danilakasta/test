@@ -1,6 +1,7 @@
 package com.roofapp.backend.service;
 
 import com.roofapp.backend.dao.roofdb.ProductType;
+import com.roofapp.backend.dao.roofdb.entity.Contractor;
 import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.dao.roofdb.entity.User;
 import com.roofapp.backend.dao.roofdb.repositories.ProductRepository;
@@ -100,6 +101,11 @@ public class ProductService implements FilterableCrudService<Product>  {
                     "There is already a product with that name. Please select a unique name for the product.");
         }
 
+    }
+
+
+    public List<Product> findAllOrderName() {
+        return productRepository.findAllByOrderByName();
     }
 
 }

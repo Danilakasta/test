@@ -1,6 +1,8 @@
 package com.roofapp.backend.service;
 
 import com.roofapp.backend.dao.roofdb.entity.AbstractEntity;
+import com.roofapp.backend.dao.roofdb.entity.Contractor;
+import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.dao.roofdb.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,4 +45,5 @@ public interface CrudService<T extends AbstractEntity> {
 	T createNew(User currentUser);
 
 	List<T> findAll() ;
+
 }

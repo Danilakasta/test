@@ -5,6 +5,7 @@ import com.roofapp.backend.dao.roofdb.entity.OrderItem;
 import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.dao.roofdb.entity.ProductAmount;
 import com.roofapp.backend.service.ProductAmountService;
+import com.roofapp.backend.service.ProductService;
 import com.roofapp.ui.views.order.events.*;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
@@ -68,7 +69,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
     private NumberField price;
 
     @Id("materialSquaring")
-    private TextField materialSquaring;
+    private Div materialSquaring;
 
 
     //@Id("comment")
@@ -83,12 +84,14 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
     private BeanValidationBinder<OrderItem> binder = new BeanValidationBinder<>(OrderItem.class);
 
-    public OrderItemEditor(DataProvider<Product, String> productDataProvider, ProductAmountService productAmountService) {
+    public OrderItemEditor(/*DataProvider<Product, String> productDataProvider*/ProductService productService, ProductAmountService productAmountService) {
         this.productAmountService = productAmountService;
         this.fieldSupport = new AbstractFieldSupport<>(this, null,
                 Objects::equals, c -> {
         });
-        products.setDataProvider(productDataProvider);
+    //    products.setDataProvider(productDataProvider);
+        products.setItems(productService.findAllOrderName());
+
         products.addValueChangeListener(e -> {
             setPrice();
             fireEvent(new ProductChangeEvent(this, e.getValue()));
@@ -100,9 +103,12 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
                     layWithParams.setVisible(false);
 
         });
-
         products.setLabel("Продукт");
-        amount.addValueChangeListener(e -> setPrice());
+
+        amount.addValueChangeListener(e -> {
+            setPrice();
+            setMaterialSquaring();
+        });
         amount.setPattern("#0.00");
         amount.setLabel("кол-во");
         //	comment.addValueChangeListener(e -> fireEvent(new CommentChangeEvent(this, e.getValue())));
@@ -154,11 +160,15 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
 
         height.setLabel("Длинна");
-        height.addKeyDownListener(e -> {
+        height.addInputListener(e -> {
             setPrice();
             setMaterialSquaring();
         });
         height.addValueChangeListener(e -> {
+            setPrice();
+            setMaterialSquaring();
+        });
+        height.addKeyPressListener(e -> {
             setPrice();
             setMaterialSquaring();
         });
@@ -167,16 +177,17 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
         //	binder.forField(comment).bind("comment");
         binder.forField(products).bind("product");
-        products.setRequired(true);
+        //   products.setRequired(true);
 
 
         price.setEnabled(false);
+        price.setLabel("Цена");
         binder.forField(price).bind("price");
 
         layWithParams.setVisible(false);
 
-        materialSquaring.setLabel("Квадратура");
-        materialSquaring.setEnabled(false);
+        // materialSquaring.setLabel("Квадратура");
+        //  materialSquaring.setEnabled(false);
 
 
         delete.addClickListener(e -> fireEvent(new DeleteEvent(this)));
@@ -188,7 +199,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         Product product = products.getValue();
         Double heightVal = height.getValue();
         if (product != null && heightVal != null)
-            materialSquaring.setValue(String.valueOf(product.getSquareMeters() * heightVal ));
+            materialSquaring.setText(String.format("%.2f",product.getSquareMeters() * heightVal * amount.getValue()) + " кв.м.");
     }
 
 

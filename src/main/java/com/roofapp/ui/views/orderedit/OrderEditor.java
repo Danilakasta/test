@@ -118,7 +118,7 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 		this.contractorService = contractorService;
 		DataProvider<PickupLocation, String> locationDataProvider = new CrudEntityDataProvider<>(locationService);
 		DataProvider<Product, String> productDataProvider = new CrudEntityDataProvider<>(productService);
-		itemsEditor = new OrderItemsEditor(productDataProvider, this.productAmountService);
+		itemsEditor = new OrderItemsEditor(productService, this.productAmountService);
 
 
 		customerName.setItems(contractorService.findAllOrderName());
