@@ -1,7 +1,7 @@
 package com.roofapp.backend.dao.roofdb;
 
 public enum CoverType {
-    NONE("Без покрытия"),
+    NONE("Цинк"),
     MATE("Мат"),
     MATE_RR("RR Мат"),
     MATE_STANDART("Мат стандарт"),

@@ -23,7 +23,10 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -46,11 +49,12 @@ public class MaterialForm extends Div {
     private final NumberField price;
     private final NumberField priceDelivery;
     private final NumberField priceOneTone;
-    private final IntegerField weightOfBay;
+    private final NumberField weightOfBay;
     private final IntegerField length;
     private final NumberField priceOneMetre;
     private final Select<MaterialColor> materialColor;
     private final Select<Width> width;
+    private final NumberField widthFact;
     private final Select<CoverType> cover;
     private final NumberField teorCoefficient;
     private final NumberField factCoefficient;
@@ -145,6 +149,10 @@ public class MaterialForm extends Div {
         horizontalLayout.setFlexGrow(1, serialNumber, manufacturer);
         content.add(horizontalLayout);
 
+        cover = new Select<>();
+        cover.setLabel("Покрытие");
+        cover.setWidth("100%");
+        cover.setItems(CoverType.values());
 
         materialColor = new Select<>();
         materialColor.setLabel("Цвет");
@@ -152,20 +160,36 @@ public class MaterialForm extends Div {
         materialColor.setItems(MaterialColor.values());
         // content.add(materialColor);
 
-        cover = new Select<>();
-        cover.setLabel("Покрытие");
-        cover.setWidth("100%");
-        cover.setItems(CoverType.values());
+
+        //У цинка не блокируем выбор цвета
+        cover.addValueChangeListener(e -> {
+            if (e.getValue().ordinal() == 0) {
+                materialColor.setEnabled(false);
+            } else {
+                materialColor.setEnabled(true);
+            }
+        });
 
         width = new Select<>();
-        width.setLabel("Толщина");
+        width.setLabel("Толщина теория");
         width.setWidth("100%");
         width.setItems(Width.values());
+        width.addValueChangeListener(e -> {
+            setTeorCoefficient();
+        });
         // content.add(materialColor);
 
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(materialColor, cover, width);
+
+        widthFact = new NumberField();
+        widthFact.setLabel("Толщина Факт");
+        widthFact.setWidth("100%");
+        widthFact.setSuffixComponent(new Span("мм."));
+
+        // content.add(materialColor);
+
+        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(cover, materialColor, width, widthFact);
         horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(3, materialColor, cover, width);
+        horizontalLayout2.setFlexGrow(3, cover, materialColor, width, widthFact);
         content.add(horizontalLayout2);
 
 
@@ -173,78 +197,91 @@ public class MaterialForm extends Div {
         price.setSuffixComponent(new Span("р"));
         price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         price.setValueChangeMode(ValueChangeMode.EAGER);
+        price.addValueChangeListener(e -> setPriceOneMetre());
+
+        price.addValueChangeListener(e -> setPriceOneTone());
 
         priceDelivery = new NumberField("Цена доставки");
         priceDelivery.setSuffixComponent(new Span("р"));
         priceDelivery.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         priceDelivery.setValueChangeMode(ValueChangeMode.EAGER);
+        priceDelivery.addValueChangeListener(e -> setPriceOneTone());
 
         priceOneTone = new NumberField("Цена за тонну");
         priceOneTone.setSuffixComponent(new Span("р"));
         priceOneTone.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         priceOneTone.setValueChangeMode(ValueChangeMode.EAGER);
+        priceOneTone.setEnabled(false);
 
-        final HorizontalLayout horizontalLayout3 = new HorizontalLayout(price, priceDelivery, priceOneTone);
+        weightOfBay = new NumberField("Вес бухты");
+        weightOfBay.setSuffixComponent(new Span("т"));
+        weightOfBay.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+        weightOfBay.setValueChangeMode(ValueChangeMode.EAGER);
+        weightOfBay.addValueChangeListener(e -> {
+            setPriceOneTone();
+            setTeorCoefficient();
+        });
+
+        final HorizontalLayout horizontalLayout3 = new HorizontalLayout(price, priceDelivery, weightOfBay, priceOneTone);
         horizontalLayout3.setWidth("100%");
-        horizontalLayout3.setFlexGrow(3, price, priceDelivery, priceOneTone);
+        horizontalLayout3.setFlexGrow(3, price, priceDelivery, weightOfBay, priceOneTone);
         content.add(horizontalLayout3);
 
 
-        weightOfBay = new IntegerField("Вес бухты");
-        weightOfBay.setSuffixComponent(new Span("кг"));
-        weightOfBay.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        weightOfBay.setValueChangeMode(ValueChangeMode.EAGER);
-
-        length = new IntegerField("Длинна пас.");
+        length = new IntegerField("Длинна паспорт");
         length.setSuffixComponent(new Span("пог. м."));
         length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         length.setValueChangeMode(ValueChangeMode.EAGER);
+
+        length.addValueChangeListener(e -> {
+            setPriceOneMetre();
+        });
+
 
         priceOneMetre = new NumberField("Себеc. теор");
         priceOneMetre.setSuffixComponent(new Span("р пог.м."));
         priceOneMetre.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         priceOneMetre.setValueChangeMode(ValueChangeMode.EAGER);
+        priceOneMetre.setEnabled(false);
 
-        final HorizontalLayout horizontalLayout4 = new HorizontalLayout(weightOfBay, length, priceOneMetre);
+        final HorizontalLayout horizontalLayout4 = new HorizontalLayout(length, priceOneMetre);
         horizontalLayout4.setWidth("100%");
-        horizontalLayout4.setFlexGrow(3, weightOfBay, length, priceOneMetre);
+        horizontalLayout4.setFlexGrow(3, length, priceOneMetre);
         content.add(horizontalLayout4);
 
 
-        teorCoefficient = new NumberField("Теор. коеф");
+        teorCoefficient = new NumberField("Длинна теория");
+        teorCoefficient.setSuffixComponent(new Span("пог.м.т."));
         teorCoefficient.setWidth("100%");
         teorCoefficient.setValueChangeMode(ValueChangeMode.EAGER);
+      //  teorCoefficient.setEnabled(false);
         content.add(teorCoefficient);
 
-        factCoefficient = new NumberField("Факт. коеф");
+        factCoefficient = new NumberField("Факт. длинна");
+        factCoefficient.setSuffixComponent(new Span("пог.м."));
         factCoefficient.setWidth("100%");
         factCoefficient.setValueChangeMode(ValueChangeMode.EAGER);
+        factCoefficient.setEnabled(false);
         content.add(factCoefficient);
-
-        final HorizontalLayout horizontalLayout5 = new HorizontalLayout(teorCoefficient, factCoefficient);
-        horizontalLayout5.setWidth("100%");
-        horizontalLayout5.setFlexGrow(2, teorCoefficient, factCoefficient);
-        content.add(horizontalLayout5);
-
-
         used = new NumberField("Израсходовано");
         used.setSuffixComponent(new Span("м"));
-        used.setEnabled(false);
+     //   used.setEnabled(false);
         used.setWidth("100%");
         used.setValueChangeMode(ValueChangeMode.EAGER);
         content.add(used);
 
         remains = new NumberField("Остаток");
         remains.setSuffixComponent(new Span("м"));
-        remains.setEnabled(false);
+      //  remains.setEnabled(false);
         remains.setWidth("100%");
         remains.setValueChangeMode(ValueChangeMode.EAGER);
         content.add(remains);
 
-        final HorizontalLayout horizontalLayout6 = new HorizontalLayout(used, remains);
-        horizontalLayout6.setWidth("100%");
-        horizontalLayout6.setFlexGrow(2, used, remains);
-        content.add(horizontalLayout6);
+
+        final HorizontalLayout horizontalLayout5 = new HorizontalLayout(teorCoefficient, factCoefficient, used, remains);
+        horizontalLayout5.setWidth("100%");
+        horizontalLayout5.setFlexGrow(2, teorCoefficient, factCoefficient, used, remains);
+        content.add(horizontalLayout5);
 
 
         binder = new BeanValidationBinder<>(Material.class);
@@ -309,4 +346,40 @@ public class MaterialForm extends Div {
         currentMaterial = Material;
         binder.readBean(Material);
     }
+
+    private void setPriceOneTone() {
+        Double priceDouble = 0D;
+        if (!price.isEmpty() && !weightOfBay.isEmpty()) {
+            priceDouble = (price.getValue() / weightOfBay.getValue()) + priceDelivery.getValue();
+            priceOneTone.setValue(aroundDouble(priceDouble));
+        } else
+            priceOneTone.setValue(0D);
+
+    }
+
+    private void setPriceOneMetre() {
+        Double priceDouble = 0D;
+        if (!price.isEmpty() && !length.isEmpty()) {
+            priceDouble = price.getValue() / length.getValue();
+            priceOneMetre.setValue(aroundDouble(priceDouble));
+        } else
+            priceOneMetre.setValue(0D);
+    }
+
+    private void setTeorCoefficient() {
+        final Double weightOfMetalConst = 1.25D;
+        final Double specificWeightConst = 7.85D;
+        Double teofCofDouble = 0D;
+
+        if (!weightOfBay.isEmpty() && !width.isEmpty()) {
+            teofCofDouble = (weightOfBay.getValue() / width.getValue().getWidth() / weightOfMetalConst / specificWeightConst) * 1000;
+            teorCoefficient.setValue(aroundDouble(teofCofDouble));
+        } else
+            teorCoefficient.setValue(teofCofDouble);
+    }
+
+    private Double aroundDouble(Double val) {
+        return new BigDecimal(val.toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
+
 }

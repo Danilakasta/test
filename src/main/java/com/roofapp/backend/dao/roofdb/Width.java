@@ -16,12 +16,16 @@ public enum Width {
 
     private final Double width;
 
-    private Width(Double name) {
+    Width(Double name) {
         this.width = name;
     }
 
     @Override
     public String toString() {
         return width.toString();
+    }
+
+    public Double getWidth(){
+        return this.width;
     }
 }

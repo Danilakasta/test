@@ -9,16 +9,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
-@Entity(name="Materials")
+@Entity(name = "Materials")
 @Data
 public class Material extends AbstractEntity {
 
-   // @Size(min = 2, message = "Product name must have at least two characters")
+    // @Size(min = 2, message = "Product name must have at least two characters")
     //Порядковый номер
     @NotNull
     @Column(name = "serial_number")
 
-    private Integer serialNumber ;
+    private Integer serialNumber;
     //Производитель
     @NotNull
     private String manufacturer;
@@ -37,30 +37,35 @@ public class Material extends AbstractEntity {
     @NotNull
     private Width width = Width.W28;
 
+    @NotNull
+    @Column(name = "width_fact")
+    private Double widthFact;
+
     //  @Min(0)
     //Цена бухты
     @NotNull
-    private Double price ;
+    private Double price;
     //Цена доставки
     @NotNull
     @Column(name = "price_delivery")
 
-    private Double priceDelivery ;
+    private Double priceDelivery;
     // Цена за тонну
     @NotNull
     @Column(name = "price_one_tone")
-    private Double  priceOneTone;
+    private Double priceOneTone;
 
 
     //Вес бухты кг
     @Column(name = "weight_of_bay")
-    private Integer weightOfBay;
+    private Double weightOfBay;
+
     //Длинна паспортная
     private Integer length;
     //Себестоймость погонного метра теор
     @Column(name = "price_one_metre")
 
-    private Double priceOneMetre ;
+    private Double priceOneMetre;
 
 
     //Теоритический коэф
