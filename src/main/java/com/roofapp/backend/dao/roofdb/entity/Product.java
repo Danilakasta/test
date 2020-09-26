@@ -1,5 +1,6 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
+import com.roofapp.backend.dao.roofdb.CargoType;
 import com.roofapp.backend.dao.roofdb.MaterialColor;
 import com.roofapp.backend.dao.roofdb.ProductType;
 import com.roofapp.backend.dao.roofdb.Width;
@@ -52,6 +53,9 @@ public class Product extends AbstractEntity {
     private String secondTitle;
 
     private String category;
+
+    @Column(name = "cargo_type")
+    private CargoType cargoType;
 
     @Override
     public String toString() {

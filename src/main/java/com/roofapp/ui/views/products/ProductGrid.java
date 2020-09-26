@@ -72,6 +72,17 @@ public class ProductGrid extends Grid<Product> {
                    .setComparator(Comparator.comparing(Product::getPrice))
                    .setFlexGrow(3).setKey("price");
 */
+
+        final String cargoTypeTemplate = "[[item.cargoType]]";
+        addColumn(TemplateRenderer.<Product>of(cargoTypeTemplate )
+                .withProperty("cargoType",
+                        product -> product.getCargoType().toString()))
+                .setHeader("Тип материала")
+                .setComparator(Comparator
+                        .comparing(Product::getCargoType))
+                .setFlexGrow(5).setKey("cargoType");
+
+
         addColumn(Product::getPrice).setHeader("Цена")
                 .setFlexGrow(20).setSortable(true).setKey("price");
 

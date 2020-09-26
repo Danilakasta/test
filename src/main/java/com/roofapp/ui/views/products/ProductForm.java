@@ -5,9 +5,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import com.roofapp.backend.dao.roofdb.MaterialColor;
+import com.roofapp.backend.dao.roofdb.CargoType;
 import com.roofapp.backend.dao.roofdb.ProductType;
-import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.service.ProductService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
@@ -52,6 +51,8 @@ public class ProductForm extends Div {
    // private final TextField length;
 
     private final Select<ProductType> type;
+
+    private final Select<CargoType> cargoType;
 
    // private final Select<MaterialColor> materialColor;
 
@@ -135,6 +136,11 @@ public class ProductForm extends Div {
         type.setItems(ProductType.values());
 
 
+        cargoType = new Select<>();
+        cargoType.setLabel("Тип товара");
+        cargoType.setWidth("100%");
+        cargoType.setItems(CargoType.values());
+
         //  content.add(type);
 
        /* materialColor = new Select<>();
@@ -168,10 +174,10 @@ public class ProductForm extends Div {
         length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         length.setValueChangeMode(ValueChangeMode.EAGER);
 */
-        final HorizontalLayout horizontalLayout = new HorizontalLayout(type,price
+        final HorizontalLayout horizontalLayout = new HorizontalLayout(type, cargoType,price
                 /*weight, length*/);
         horizontalLayout.setWidth("100%");
-        horizontalLayout.setFlexGrow(1, type,price/*, weight*/);
+        horizontalLayout.setFlexGrow(1, type, cargoType,price/*, weight*/);
         content.add(horizontalLayout);
 
 

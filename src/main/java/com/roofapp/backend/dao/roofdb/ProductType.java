@@ -5,7 +5,8 @@ public enum ProductType {
     METAL_TILE("Металочерепица"),
     ADDITIONAL_ELEMENTS("Доборные элементы"),
     DRAINAGE_SYSTEM("Водосточные системы"),
-    PRODUCTS_STOCK("Продукция на складе");
+    PRODUCTS_STOCK("Продукция на складе"),
+    PRODUCTS_SERVICES("Услуги");
 
     private final String name;
 
