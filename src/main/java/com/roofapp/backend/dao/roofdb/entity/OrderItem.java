@@ -5,6 +5,7 @@ import com.roofapp.backend.dao.roofdb.MaterialColor;
 import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.Width;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity(name = "order_item ")
+@Entity(name = "order_item")
 @Data
 public class OrderItem extends AbstractEntity {
 
@@ -49,4 +50,19 @@ public class OrderItem extends AbstractEntity {
 	@NotNull
 	@Column(name = "total_price")
 	private Double price;
+
+	@Override
+	public String toString() {
+		return "OrderItem{" +
+				"product=" + product +
+				", quantity=" + quantity +
+				", comment='" + comment + '\'' +
+				", width=" + width +
+				", materialClass=" + materialClass +
+				", materialCover=" + materialCover +
+				", materialColor=" + materialColor +
+				", height=" + height +
+				", price=" + price +
+				'}';
+	}
 }

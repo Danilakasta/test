@@ -2,8 +2,11 @@ package com.roofapp.backend.service;
 
 //import com.roofapp.backend.data.DashboardData;
 //import com.roofapp.backend.data.DeliveryStats;
+import com.roofapp.backend.dao.roofdb.CargoType;
 import com.roofapp.backend.dao.roofdb.OrderState;
+import com.roofapp.backend.dao.roofdb.OrderType;
 import com.roofapp.backend.dao.roofdb.entity.Order;
+import com.roofapp.backend.dao.roofdb.entity.OrderItem;
 import com.roofapp.backend.dao.roofdb.entity.OrderSummary;
 import com.roofapp.backend.dao.roofdb.entity.User;
 import com.roofapp.backend.dao.roofdb.repositories.OrderRepository;
@@ -24,11 +27,13 @@ import java.util.function.BiConsumer;
 public class OrderService implements CrudService<Order> {
 
 	private final OrderRepository orderRepository;
+	private final PickupLocationService pickupLocationService;
 
 	@Autowired
-	public OrderService(OrderRepository orderRepository) {
+	public OrderService(OrderRepository orderRepository, PickupLocationService pickupLocationService) {
 		super();
 		this.orderRepository = orderRepository;
+		this.pickupLocationService = pickupLocationService;
 	}
 
 	private static final Set<OrderState> notAvailableStates = Collections.unmodifiableSet(
@@ -177,9 +182,50 @@ public class OrderService implements CrudService<Order> {
 		return order;
 	}
 
+
+	@Transactional
+	public void createNewManufactureOrder(Order order) {
+
+		if(order.getState().equals(OrderState.MANUFACTURE)) {
+			Order manufactureOrder = new Order(null);
+			manufactureOrder.setDueDate(order.getDueDate());
+			manufactureOrder.setDueTime(order.getDueTime());
+			manufactureOrder.setCustomer(order.getCustomer());
+			manufactureOrder.setState(OrderState.NEW);
+			manufactureOrder.setParentId(order.getId());
+			manufactureOrder.setPickupLocation(pickupLocationService.findById(3L).get());
+			manufactureOrder.setOrderType(OrderType.MANUFACTURED);
+
+			//создание позицый производства
+			List<OrderItem> orderItems = new ArrayList<>();
+			order.getItems().forEach(item->{
+				if(item.getProduct().getCargoType().equals(CargoType.MANUFACTURED)){
+					OrderItem orderItem = new OrderItem();
+					orderItem.setProduct(item.getProduct());
+					orderItem.setPrice(item.getPrice());
+					orderItem.setComment(item.getComment());
+					orderItem.setQuantity(item.getQuantity());
+					orderItem.setWidth(item.getWidth());
+					orderItem.setHeight(item.getHeight());
+					orderItem.setMaterialClass(item.getMaterialClass());
+					orderItem.setMaterialColor(item.getMaterialColor());
+					orderItem.setMaterialCover(item.getMaterialCover());
+					orderItems.add(orderItem);
+				}
+			});
+			manufactureOrder.setItems(orderItems);
+
+			order.setParentId(order.getId());
+			order.setState(OrderState.TRANSFERED);
+			orderRepository.save(order);
+			orderRepository.save(manufactureOrder);
+		}
+
+	}
+
 	@Override
 	public List<Order> findAll() {
-		return null;
+		return orderRepository.findAll();
 	}
 
 }

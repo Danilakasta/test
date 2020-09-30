@@ -98,7 +98,7 @@ public class OrderDetails extends PolymerTemplate<OrderDetails.Model> {
 		@Include({ "id", "dueDate.day", "dueDate.weekday", "dueDate.date", "dueTime", "state", "pickupLocation.name",
 			"customer.name", "customer.phone", "customer.details", "items.product.name", "items.comment",
 			"items.quantity", "items.materialClass","items.materialCover" ,"items.materialColor","items.height","items.price", "history.message", "history.createdBy.firstName",
-			"history.timestamp", "history.newState", "totalPrice" , "items.materialSquaring"})
+			"history.timestamp", "history.newState", "totalPrice" , "items.materialSquaring","orderType" })
 		@Encode(value = LongToStringConverter.class, path = "id")
 		//@Encode(value = ContractorToStringConverter.class, path = "customer.fullName")
 		@Encode(value = StorefrontLocalDateConverter.class, path = "dueDate")
@@ -108,6 +108,7 @@ public class OrderDetails extends PolymerTemplate<OrderDetails.Model> {
 		@Encode(value = MaterialClassToStringConverter.class, path = "items.materialClass")
 		@Encode(value = MaterialCoverToStringConverter.class, path = "items.materialCover")
 		@Encode(value = MaterialColorToStringConverter.class, path = "items.materialColor")
+		@Encode(value = OrderTypeToStringConverter.class, path = "orderType")
 
 		//@Encode(value = CurrencyFormatter.class, path = "items.product.price")
 		@Encode(value = LocalDateTimeConverter.class, path = "history.timestamp")

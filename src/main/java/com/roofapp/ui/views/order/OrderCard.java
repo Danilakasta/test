@@ -81,6 +81,15 @@ public class OrderCard {
 		return order.getCustomer().getName();
 	}
 
+	public String getOrderType() {
+		return order.getOrderType().toString();
+	}
+
+	public String getParentId() {
+		return order.getParentId().toString();
+	}
+
+
 	public List<OrderItem> getItems() {
 		return order.getItems();
 	}

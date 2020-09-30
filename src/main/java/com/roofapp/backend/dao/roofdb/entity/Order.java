@@ -1,6 +1,7 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
 import com.roofapp.backend.dao.roofdb.OrderState;
+import com.roofapp.backend.dao.roofdb.OrderType;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
@@ -54,7 +55,7 @@ public class Order extends AbstractEntity implements OrderSummary {
     private PickupLocation pickupLocation;
 
     //@NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE,fetch= FetchType.EAGER)
     private Contractor customer;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -64,6 +65,7 @@ public class Order extends AbstractEntity implements OrderSummary {
     @NotEmpty
     @Valid
     private List<OrderItem> items;
+
     //@NotNull(message = "{bakery.status.required}")
     private OrderState state;
 
@@ -71,6 +73,14 @@ public class Order extends AbstractEntity implements OrderSummary {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "id")
     @OrderColumn
     private List<HistoryItem> history;
+
+
+    @Column(name = "order_type")
+    private OrderType orderType = OrderType.CONTRACTOR_ORDER;
+
+
+    @Column(name = "parent_id")
+    private Long parentId;
 
     public Order(User createdBy) {
         this.state = OrderState.NEW;
@@ -168,4 +178,31 @@ public class Order extends AbstractEntity implements OrderSummary {
     public Double getTotalPrice() {
         return items.stream().map(i -> i.getTotalPrice()).reduce(Double.valueOf(0), Double::sum);
     }
+
+    @Override
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
+
+    public void setState(OrderState state) {
+        this.state = state;
+    }
+
+    @Override
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+
+
 }

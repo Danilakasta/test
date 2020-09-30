@@ -136,8 +136,13 @@ class OrderCard extends PolymerElement {
         <span class="main">[[header.main]]</span>
         <span class="secondary">[[header.secondary]]</span>
       </div>
+
       <div class="wrapper" on-click="_cardClick">
         <div class="info-wrapper">
+          <div class="time-place">
+             <h4 class="time">[[orderCard.orderType]]</h4>
+             <h5 >#[[orderCard.parentId]] </h5> 
+          </div>
           <order-status-badge class="badge" status="[[orderCard.state]]"></order-status-badge>
           <div class="time-place">
             <h3 class="time">[[orderCard.time]]</h3>

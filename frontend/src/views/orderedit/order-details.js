@@ -126,7 +126,7 @@ class OrderDetails extends window.ScrollShadowMixin(PolymerElement) {
     <div class="scrollable main-row" id="main">
       <div class="meta-row">
         <order-status-badge status="[[item.state]]"></order-status-badge>
-        <span class="dim">Заказ #[[item.id]]</span>
+        <span class="dim">[[item.orderType]] #[[item.id]]</span>
       </div>
 
       <vaadin-form-layout id="form1">

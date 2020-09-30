@@ -17,6 +17,7 @@ import com.roofapp.ui.views.products.ProductView;
 import com.roofapp.ui.views.contractors.ContractorsView;
 import com.roofapp.ui.views.order.OrderView;
 import com.roofapp.ui.views.users.UserView;
+import com.roofapp.ui.views.warehouse.WarehouseView;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -125,6 +126,12 @@ public class MainLayout extends AppLayout implements RouterLayout {
                 currentUser.getUser().getRole().equals(Role.MACHINE_ENGINEER))
             addToDrawer(createMenuLink(ManufactureView.class, ManufactureView.VIEW_NAME,
                     VaadinIcon.ADD_DOCK.create()));
+
+        if (currentUser.getUser().getRole().equals(Role.ADMIN)
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR) ||
+                currentUser.getUser().getRole().equals(Role.MACHINE_ENGINEER))
+            addToDrawer(createMenuLink(WarehouseView.class, WarehouseView.VIEW_NAME,
+                    VaadinIcon.STORAGE.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN))
             addToDrawer(createMenuLink(UserView.class, UserView.VIEW_NAME,
