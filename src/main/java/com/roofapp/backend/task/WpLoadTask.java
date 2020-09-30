@@ -85,12 +85,12 @@ public class WpLoadTask {
                 if (order == null) {
                     order = new Order(null);
                 }
-                Customer customer = new Customer();
+             /*   Customer customer = new Customer();
                 customer.setDetails(wpOrder.getDetails());
                 customer.setFullName(wpOrder.getFullName());
-                customer.setPhoneNumber(wpOrder.getPhoneNumbers());
+                customer.setPhoneNumber(wpOrder.getPhoneNumbers());*/
                 order.setWpOrderId(wpOrder.getId());
-                order.setCustomer(customer);
+              //  order.setCustomer(customer);
                 order.setDueDate(wpOrder.getDate().toLocalDateTime().toLocalDate());
                 order.setDueTime(wpOrder.getDate().toLocalDateTime().toLocalTime());
                 order.setPickupLocation(pickupLocation.get());

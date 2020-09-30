@@ -153,12 +153,12 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 		pickupLocation.setRequired(false);
 
 		customerName.setRequired(true);
-		binder.bind(customerName, "customer.fullName");
+		binder.bind(customerName, "customer");
 
-		customerNumber.setRequired(true);
-		binder.bind(customerNumber, "customer.phoneNumber");
+	//	customerNumber.setRequired(true);
+	//	binder.bind(customerNumber, "customer.phone");
 
-		binder.bind(customerDetails, "customer.details");
+		//binder.bind(customerDetails, "customer.details");
 
 		itemsEditor.setRequiredIndicatorVisible(true);
 		binder.bind(itemsEditor, "items");

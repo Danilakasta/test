@@ -78,7 +78,7 @@ public class OrderCard {
 	}
 
 	public String getFullName() {
-		return order.getCustomer().getFullName();
+		return order.getCustomer().getName();
 	}
 
 	public List<OrderItem> getItems() {

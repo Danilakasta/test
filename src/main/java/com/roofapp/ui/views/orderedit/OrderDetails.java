@@ -96,7 +96,7 @@ public class OrderDetails extends PolymerTemplate<OrderDetails.Model> {
 
 	public interface Model extends TemplateModel {
 		@Include({ "id", "dueDate.day", "dueDate.weekday", "dueDate.date", "dueTime", "state", "pickupLocation.name",
-			"customer.fullName", "customer.phoneNumber", "customer.details", "items.product.name", "items.comment",
+			"customer.name", "customer.phone", "customer.details", "items.product.name", "items.comment",
 			"items.quantity", "items.materialClass","items.materialCover" ,"items.materialColor","items.height","items.price", "history.message", "history.createdBy.firstName",
 			"history.timestamp", "history.newState", "totalPrice" , "items.materialSquaring"})
 		@Encode(value = LongToStringConverter.class, path = "id")

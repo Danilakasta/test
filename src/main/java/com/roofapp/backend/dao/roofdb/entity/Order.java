@@ -6,6 +6,7 @@ import org.hibernate.annotations.BatchSize;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class Order extends AbstractEntity implements OrderSummary {
 
     //@NotNull
     @OneToOne(cascade = CascadeType.ALL)
-    private Customer customer;
+    private Contractor customer;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderColumn
@@ -73,7 +74,7 @@ public class Order extends AbstractEntity implements OrderSummary {
 
     public Order(User createdBy) {
         this.state = OrderState.NEW;
-        setCustomer(new Customer());
+      //  setCustomer(new Contractor());
         addHistoryItem(createdBy, "Order placed");
         this.items = new ArrayList<>();
     }
@@ -119,11 +120,11 @@ public class Order extends AbstractEntity implements OrderSummary {
     }
 
     @Override
-    public Customer getCustomer() {
+    public Contractor getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(Contractor customer) {
         this.customer = customer;
     }
 

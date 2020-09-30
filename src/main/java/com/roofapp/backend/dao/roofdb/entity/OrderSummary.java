@@ -11,7 +11,7 @@ public interface OrderSummary {
 
 	OrderState getState();
 
-	Customer getCustomer();
+	Contractor getCustomer();
 
 	List<OrderItem> getItems();
 

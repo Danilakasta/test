@@ -146,12 +146,12 @@ class OrderDetails extends window.ScrollShadowMixin(PolymerElement) {
 
         <vaadin-form-item colspan="2">
           <label slot="label">Покуптель</label>
-          <h3>[[item.customer.fullName]]</h3>
+          <h3>[[item.customer.name]]</h3>
         </vaadin-form-item>
 
         <vaadin-form-item>
           <label slot="label">Номер телефона</label>
-          <h3>[[item.customer.phoneNumber]]</h3>
+          <h3>[[item.customer.phone]]</h3>
         </vaadin-form-item>
       </vaadin-form-layout>
 
