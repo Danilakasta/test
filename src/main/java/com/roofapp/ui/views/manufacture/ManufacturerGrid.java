@@ -1,7 +1,6 @@
 package com.roofapp.ui.views.manufacture;
 
-import com.roofapp.backend.dao.roofdb.entity.Manufacturers;
-import com.roofapp.backend.dao.roofdb.entity.Manufacturers;
+import com.roofapp.backend.dao.roofdb.entity.OrderItem;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
@@ -18,73 +17,43 @@ import java.util.Comparator;
  * data sets.
  */
 @Log
-public class ManufacturerGrid extends Grid<Manufacturers> {
+public class ManufacturerGrid extends Grid<OrderItem> {
 
     public ManufacturerGrid() {
 
         setSizeFull();
 
-        addColumn(Manufacturers::getName).setHeader("Название")
-                .setFlexGrow(15).setSortable(true).setKey("name");
+        addColumn(orderItems -> orderItems.getOrderId())
+                .setHeader("id заказа")
+                .setFlexGrow(3).setKey("orderId");
 
+        addColumn(orderItems -> orderItems.getId())
+                .setHeader("id ордера на производство")
+                .setFlexGrow(3).setKey("id");
 
-        // Format and add " €" to price
-        final DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setMaximumFractionDigits(2);
-        decimalFormat.setMinimumFractionDigits(2);
+        addColumn(orderItems -> orderItems.getProduct() )
+                .setHeader("Название продукта")
+                .setFlexGrow(3).setKey("name");
 
-        // Add an traffic light icon in front of availability
-        // Three css classes with the same names of three availability values,
-        // Available, Coming and Discontinued, are defined in shared-styles.css
-        // and are
-        // used here in availabilityTemplate.
+        addColumn(orderItems -> orderItems.getHeight() )
+                .setHeader("Длинна")
+                .setFlexGrow(3).setKey("height");
 
-        final String availabilityTemplate = "<iron-icon icon=\"vaadin:circle\" class-name=\"[[item.type]]\"></iron-icon> [[item.type]]";
-      final String materialColorTemplate = "<iron-icon icon=\"vaadin:circle\" class-name=\"[[item.materialColor]]\"></iron-icon> [[item.materialColor]]";
+        addColumn(orderItems -> orderItems.getQuantity() )
+                .setHeader("кол-во")
+                .setFlexGrow(3).setKey("quantity");
 
-        final String widthTemplate = "[[item.width]]";
-        addColumn(TemplateRenderer.<Manufacturers>of(widthTemplate)
-                .withProperty("width",
-                        Manufacturers -> Manufacturers.getWidth().toString()))
-                .setHeader("Толшина")
-                .setComparator(Comparator
-                        .comparing(Manufacturers::getWidth))
-                .setFlexGrow(5).setKey("width");
+        addColumn(orderItems -> orderItems.getMaterialCover() )
+                .setHeader("Покрытие")
+                .setFlexGrow(3).setKey("MaterialCover");
 
+        addColumn(orderItems -> orderItems.getMaterialColor() )
+                .setHeader("Цвет")
+                .setFlexGrow(3).setKey("MaterialColor");
 
-        final String materialClassTemplate = "[[item.MaterialClass]]";
-        addColumn(TemplateRenderer.<Manufacturers>of(materialClassTemplate)
-                .withProperty("MaterialClass",
-                        Manufacturers -> Manufacturers.getMaterialClass().toString()))
-                .setHeader("Клас покрытия")
-                .setComparator(Comparator
-                        .comparing(Manufacturers::getMaterialClass))
-                .setFlexGrow(5).setKey("MaterialClass");
-
-        final String materialCoverTemplate = "[[item.MaterialCover]]";
-        addColumn(TemplateRenderer.<Manufacturers>of(materialCoverTemplate)
-                .withProperty("MaterialCover",
-                        Manufacturers -> Manufacturers.getMaterialCover().toString()))
-                .setHeader("Ппокрытие")
-                .setComparator(Comparator
-                        .comparing(Manufacturers::getMaterialCover))
-                .setFlexGrow(5).setKey("MaterialCover");
-
-        addColumn(TemplateRenderer.<Manufacturers>of(materialColorTemplate)
-                .withProperty("materialColor",
-                        Manufacturers -> Manufacturers.getMaterialColor()))
-                .setHeader("Цвет материала")
-                .setComparator(Comparator
-                        .comparing(Manufacturers::getMaterialColor))
-                .setFlexGrow(5).setKey("materialColor");
-
-         addColumn(Manufacturers -> Manufacturers.getHeight() == 0 ? "-"
-                : Double.toString(Manufacturers.getHeight()))
-                .setHeader("Длина м.")
-                .setComparator(
-                        Comparator.comparingDouble(Manufacturers::getHeight))
-                .setFlexGrow(3).setKey("length");
-
+        addColumn(orderItems -> orderItems.getMaterialClass() )
+                .setHeader("Класс")
+                .setFlexGrow(3).setKey("MaterialClass");
 
 
         UI.getCurrent().getPage().addBrowserWindowResizeListener(
@@ -93,23 +62,14 @@ public class ManufacturerGrid extends Grid<Manufacturers> {
 
     private void setColumnVisibility(int width) {
         if (width > 800) {
-            getColumnByKey("name").setVisible(true);
-//            getColumnByKey("price").setVisible(true);
-       //     getColumnByKey("type").setVisible(true);
-//            getColumnByKey("stock").setVisible(true);
-          //  getColumnByKey("category").setVisible(true);
+         //   getColumnByKey("name").setVisible(true);
+
         } else if (width > 550) {
-            getColumnByKey("name").setVisible(true);
-         //   getColumnByKey("price").setVisible(true);
-         //   getColumnByKey("type").setVisible(false);
-         //   getColumnByKey("stock").setVisible(false);
-         //   getColumnByKey("category").setVisible(true);
+         //   getColumnByKey("name").setVisible(true);
+
         } else {
-            getColumnByKey("name").setVisible(true);
-          //  getColumnByKey("price").setVisible(true);
-          //  getColumnByKey("type").setVisible(false);
-      //      getColumnByKey("stock").setVisible(false);
-          //  getColumnByKey("category").setVisible(false);
+       //     getColumnByKey("name").setVisible(true);
+
         }
     }
 
@@ -124,22 +84,14 @@ public class ManufacturerGrid extends Grid<Manufacturers> {
         });
     }
 
-    public Manufacturers getSelectedRow() {
-        Notification.show("asdasd");
+    public OrderItem getSelectedRow() {
+        Notification.show("");
         return asSingleSelect().getValue();
     }
 
-    public void refresh(Manufacturers Manufacturers) {
+    public void refresh(OrderItem Manufacturers) {
         getDataCommunicator().refresh(Manufacturers);
     }
 
-    private String formatCategories(Manufacturers Manufacturers) {
-      /*  if (Manufacturers.getCategory() == null || Manufacturers.getCategory().isEmpty()) {
-            return "";
-        }
-        return Manufacturers.getCategory().stream()
-                .sorted(Comparator.comparing(Category::getId))
-                .map(Category::getName).collect(Collectors.joining(", "));*/
-        return "";
-    }
+
 }

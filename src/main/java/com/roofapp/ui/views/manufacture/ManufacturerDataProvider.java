@@ -1,64 +1,63 @@
 package com.roofapp.ui.views.manufacture;
 
-import com.roofapp.backend.dao.roofdb.entity.Manufacturers;
-import com.roofapp.backend.service.ManufacturerService;
+import com.roofapp.backend.dao.roofdb.entity.OrderItem;
+import com.roofapp.backend.service.OrderItemsService;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 /**
  * Utility class that encapsulates filtering and CRUD operations for
- * {@link Manufacturers} entities.
+ * {@link OrderItem} entities.
  * <p>
 
  */
-public class ManufacturerDataProvider extends ListDataProvider<Manufacturers> {
+public class ManufacturerDataProvider extends ListDataProvider<OrderItem> {
 
     /**
      * Text filter that can be changed separately.
      */
     private String filterText = "";
-    private List<Manufacturers> manufacturerss;
+   // private List<OrderItem> manufacturerss;
 
 
-    private final ManufacturerService manufacturersService;
+    private final OrderItemsService orderItemsService;
 
     @Autowired
-    public ManufacturerDataProvider(Collection<Manufacturers> items, ManufacturerService manufacturersService) {
+    public ManufacturerDataProvider(Collection<OrderItem> items, OrderItemsService orderItemsService) {
         super(items);
-        this.manufacturersService = manufacturersService;
+        this.orderItemsService = orderItemsService;
     }
 
 
     /**
      * Store given Manufacturers to the backing data service.
      *
-     * @param Manufacturers the updated or new Manufacturers
+     * @param item the updated or new Manufacturers
      */
-    public void save(Manufacturers Manufacturers) {
-        if (Manufacturers.isNew()) {
-            getItems().add(Manufacturers);
+    public void save(OrderItem item) {
+        if (item.isNew()) {
+            getItems().add(item);
             refreshAll();
         } else {
           // refreshItem(Manufacturers);
             refreshAll();
         }
-        manufacturersService.save(Manufacturers);
+        orderItemsService.save(item);
     }
 
     /**
      * Delete given Manufacturers from the backing data service.
      *
-     * @param Manufacturers the Manufacturers to be deleted
+     * @param item the Manufacturers to be deleted
      */
-    public void delete(Manufacturers Manufacturers) {
+    public void delete(OrderItem item) {
      //   DataService.get().deleteManufacturers(Manufacturers.getId());
-        manufacturersService.delete(Manufacturers);
-        getItems().remove(Manufacturers);
+        orderItemsService.delete(item);
+        getItems().remove(item);
         refreshAll();
     }
 
@@ -76,9 +75,7 @@ public class ManufacturerDataProvider extends ListDataProvider<Manufacturers> {
         }
         this.filterText = filterText.trim().toLowerCase(Locale.ENGLISH);
 
-        setFilter(Manufacturers -> passesFilter(Manufacturers.getName(), this.filterText)
-                        || passesFilter(Manufacturers.getType(), this.filterText)
-                //    || passesFilter(Manufacturers.getCategory(), this.filterText)
+        setFilter(Manufacturers -> passesFilter(Manufacturers.getProduct().getName(), this.filterText)
         );
     }
 

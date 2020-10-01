@@ -86,7 +86,7 @@ public class OrderCard {
 	}
 
 	public String getParentId() {
-		return order.getParentId().toString();
+		return order.getParentId()!=null ? order.getParentId().toString() : order.getId().toString();
 	}
 
 

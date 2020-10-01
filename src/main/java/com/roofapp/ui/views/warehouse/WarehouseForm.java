@@ -106,12 +106,10 @@ public class WarehouseForm extends Div {
     public WarehouseForm(WarehouseViewLogic viewLogic, WarehouseItemService itemService, ProductService productService) {
         this.itemService = itemService;
         setClassName("product-form");
-
         content = new VerticalLayout();
         content.setSizeUndefined();
         content.addClassName("product-form-content");
         add(content);
-
 
         product = new ComboBox<>();
         product.setLabel("Номенклатура");
@@ -136,97 +134,10 @@ public class WarehouseForm extends Div {
         comment.setRequired(true);
         content.add(comment);
 
-
-
-     //   viewLogic = sampleCrudLogic;
-
-      /*  name = new TextField("Наименование");
-        name.setWidth("100%");
-        name.setRequired(true);
-        name.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(name);
-*/
-       /* type = new Select<>();
-        type.setLabel("Катогория товара");
-        type.setWidth("100%");
-        type.setItems(ProductType.values());
-
-
-        cargoType = new Select<>();
-        cargoType.setLabel("Тип товара");
-        cargoType.setWidth("100%");
-        cargoType.setItems(CargoType.values());
-*/
-        //  content.add(type);
-
-       /* materialColor = new Select<>();
-        materialColor.setLabel("Цвет");
-        materialColor.setWidth("100%");
-        materialColor.setItems(MaterialColor.values());
-        // content.add(materialColor);
-
-        width = new Select<>();
-        width.setLabel("Толщина");
-        width.setWidth("100%");
-        width.setItems(Width.values());
-        // content.add(materialColor);
-
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(type,
-                materialColor,width);
-        horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(1, type,materialColor);
-        content.add(horizontalLayout2);
-*/
-       /* price = new NumberField("Цена");
-        price.setSuffixComponent(new Span("р"));
-        price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        price.setValueChangeMode(ValueChangeMode.EAGER);
-*/
-      /*  weight = new TextField("Вес кг.");
-        weight.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        weight.setValueChangeMode(ValueChangeMode.EAGER);
-
-        length = new TextField("Длинна м.");
-        length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        length.setValueChangeMode(ValueChangeMode.EAGER);
-*/
-        //final HorizontalLayout horizontalLayout = new HorizontalLayout(type, cargoType,price
-                /*weight, length);
-      //  horizontalLayout.setWidth("100%");
-      //  horizontalLayout.setFlexGrow(1, type, cargoType,price/*, weight);
-      //  content.add(horizontalLayout);
-*/
-
-      /*  width = new NumberField("Ширина листа");
-      /  width.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        width.setValueChangeMode(ValueChangeMode.EAGER);
-
-        squareMeters = new NumberField("м2 в 1п.м.");
-        squareMeters.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        squareMeters.setValueChangeMode(ValueChangeMode.EAGER);
-
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(width,squareMeters
-                /*weight, length);
-        horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(1,width,squareMeters);
-        content.add(horizontalLayout2);
-*/
-      /*  category = new CheckboxGroup<>();
-        category.setLabel("Categories");
-        category.setId("category");
-        category.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
-        content.add(category);
-*/
         binder = new BeanValidationBinder<>(WarehouseItem.class);
-      //  binder.forField(price).withConverter(new PriceConverter())
-           //    .bind("price");
-      //  binder.forField(weight).withConverter(new StockCountConverter())
-         //      .bind("weight");
-      //  binder.forField(length).withConverter(new StockCountConverter())
-       //         .bind("length");
+
         binder.bindInstanceFields(this);
 
-        // enable/disable save button while editing
         binder.addStatusChangeListener(event -> {
             final boolean isValid = !event.hasValidationErrors();
             final boolean hasChanges = binder.hasChanges();

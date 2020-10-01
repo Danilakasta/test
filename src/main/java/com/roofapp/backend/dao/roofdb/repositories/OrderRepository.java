@@ -18,21 +18,21 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	@EntityGraph(value = Order.ENTITY_GRAPTH_BRIEF, type = EntityGraphType.LOAD)
-    Page<Order> findByDueDateAfter(LocalDate filterDate, Pageable pageable);
+    Page<Order> findByDueDateAfterOrderByParentId(LocalDate filterDate, Pageable pageable);
 
 	@EntityGraph(value = Order.ENTITY_GRAPTH_BRIEF, type = EntityGraphType.LOAD)
-    Page<Order> findByCustomerNameContainingIgnoreCase(String searchQuery, Pageable pageable);
+    Page<Order> findByCustomerNameContainingIgnoreCaseOrderByParentId(String searchQuery, Pageable pageable);
 
 	@EntityGraph(value = Order.ENTITY_GRAPTH_BRIEF, type = EntityGraphType.LOAD)
-    Page<Order> findByCustomerNameContainingIgnoreCaseAndDueDateAfter(String searchQuery, LocalDate dueDate, Pageable pageable);
+    Page<Order> findByCustomerNameContainingIgnoreCaseAndDueDateAfterOrderByParentId(String searchQuery, LocalDate dueDate, Pageable pageable);
 
 	@Override
 	@EntityGraph(value = Order.ENTITY_GRAPTH_BRIEF, type = EntityGraphType.LOAD)
 	List<Order> findAll();
 
-	@Override
+	//@Override
 	@EntityGraph(value = Order.ENTITY_GRAPTH_BRIEF, type = EntityGraphType.LOAD)
-    Page<Order> findAll(Pageable pageable);
+    Page<Order> findAllByOrderByParentId(Pageable pageable);
 
 	@EntityGraph(value = Order.ENTITY_GRAPTH_BRIEF, type = EntityGraphType.LOAD)
 	List<OrderSummary> findByDueDateGreaterThanEqual(LocalDate dueDate);

@@ -66,16 +66,16 @@ public class OrderService implements CrudService<Order> {
                                                    Optional<LocalDate> optionalFilterDate, Pageable pageable) {
 		if (optionalFilter.isPresent() && !optionalFilter.get().isEmpty()) {
 			if (optionalFilterDate.isPresent()) {
-				return orderRepository.findByCustomerNameContainingIgnoreCaseAndDueDateAfter(
+				return orderRepository.findByCustomerNameContainingIgnoreCaseAndDueDateAfterOrderByParentId(
 						optionalFilter.get(), optionalFilterDate.get(), pageable);
 			} else {
-				return orderRepository.findByCustomerNameContainingIgnoreCase(optionalFilter.get(), pageable);
+				return orderRepository.findByCustomerNameContainingIgnoreCaseOrderByParentId(optionalFilter.get(), pageable);
 			}
 		} else {
 			if (optionalFilterDate.isPresent()) {
-				return orderRepository.findByDueDateAfter(optionalFilterDate.get(), pageable);
+				return orderRepository.findByDueDateAfterOrderByParentId(optionalFilterDate.get(), pageable);
 			} else {
-				return orderRepository.findAll(pageable);
+				return orderRepository.findAllByOrderByParentId(pageable);
 			}
 		}
 	}
@@ -210,6 +210,7 @@ public class OrderService implements CrudService<Order> {
 					orderItem.setMaterialClass(item.getMaterialClass());
 					orderItem.setMaterialColor(item.getMaterialColor());
 					orderItem.setMaterialCover(item.getMaterialCover());
+					orderItem.setOrderType(OrderType.MANUFACTURED);
 					orderItems.add(orderItem);
 				}
 			});
@@ -226,6 +227,10 @@ public class OrderService implements CrudService<Order> {
 	@Override
 	public List<Order> findAll() {
 		return orderRepository.findAll();
+	}
+
+	public Optional<Order> findById(Long id) {
+		return orderRepository.findById(id);
 	}
 
 }

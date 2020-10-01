@@ -1,7 +1,7 @@
 package com.roofapp.ui.views.manufacture;
 
-import com.roofapp.backend.dao.roofdb.entity.Manufacturers;
-import com.roofapp.backend.service.ManufacturerService;
+import com.roofapp.backend.dao.roofdb.entity.OrderItem;
+import com.roofapp.backend.service.*;
 import com.roofapp.ui.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
@@ -28,37 +28,38 @@ import com.vaadin.flow.router.Route;
 //@RouteAlias(value = "", layout = MainLayout.class)
 public class ManufactureView extends HorizontalLayout
         implements HasUrlParameter<String> {
+    public static final String VIEW_NAME = "Произвоодство";
 
-    public static final String VIEW_NAME = "Производство";
 
-
-   private final ManufacturerService manufacturerService;
+    private final OrderItemsService itemService;
 
     private final ManufacturerGrid grid;
-   //private final ManufacturersForm form;
+    private final ManufactureForm form;
     private TextField filter;
 
-  //  private final ManufacturersViewLogic viewLogic = new ManufacturersViewLogic(this);
-    private Button newManufacturers;
+    private final ManufactureViewLogic viewLogic = new ManufactureViewLogic(this);
+    private Button newItem;
 
     private ManufacturerDataProvider dataProvider;
 
-    public ManufactureView(ManufacturerService manufacturerService) {
-
-        this.manufacturerService= manufacturerService;
+    public ManufactureView(OrderItemsService itemService,
+                           MachineService machineService,
+                           MaterialService materialService,
+                           WarehouseItemService warehouseItemService, OrderService orderService) {
+        this.itemService = itemService;
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();
         final HorizontalLayout topLayout = createTopBar();
         grid = new ManufacturerGrid();
-        dataProvider = new ManufacturerDataProvider(manufacturerService.findAllSortedOrders(), manufacturerService);
+        dataProvider = new ManufacturerDataProvider( itemService.findAllByPriority() ,  itemService);
         grid.setDataProvider(this.dataProvider);
         // Allows user to select a single row in the grid.
-        //grid.asSingleSelect().addValueChangeListener(
-            //    event -> viewLogic.rowSelected(event.getValue()));
-       //form = new ManufacturersForm(viewLogic,ManufacturersService);
+        grid.asSingleSelect().addValueChangeListener(
+                event -> viewLogic.rowSelected(event.getValue()));
+        form = new ManufactureForm(viewLogic,  itemService,machineService,materialService,warehouseItemService,orderService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add( new H2(this.VIEW_NAME));
+        barAndGridLayout.add(new H2(this.VIEW_NAME));
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
         barAndGridLayout.setFlexGrow(1, grid);
@@ -67,9 +68,9 @@ public class ManufactureView extends HorizontalLayout
         barAndGridLayout.expand(grid);
 
         add(barAndGridLayout);
-    //    add(form);
+        add(form);
 
-      //  viewLogic.init();
+        viewLogic.init();
     }
 
     public HorizontalLayout createTopBar() {
@@ -81,18 +82,18 @@ public class ManufactureView extends HorizontalLayout
         // A shortcut to focus on the textField by pressing ctrl + F
         filter.addFocusShortcut(Key.KEY_F, KeyModifier.CONTROL);
 
-        newManufacturers = new Button("Новый");
-        // Setting theme variant of new Manufacturersion button to LUMO_PRIMARY that
+        newItem = new Button("Новая позиция");
+        // Setting theme variant of new production button to LUMO_PRIMARY that
         // changes its background color to blue and its text color to white
-        newManufacturers.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newManufacturers.setIcon(VaadinIcon.PLUS_CIRCLE.create());
-       // newManufacturers.addClickListener(click -> viewLogic.newManufacturers());
-        // A shortcut to click the new Manufacturers button by pressing ALT + N
-        newManufacturers.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
+        newItem.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        newItem.setIcon(VaadinIcon.PLUS_CIRCLE.create());
+        newItem.addClickListener(click -> viewLogic.newItem());
+        // A shortcut to click the new product button by pressing ALT + N
+        newItem.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
         final HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidth("100%");
         topLayout.add(filter);
-        topLayout.add(newManufacturers);
+        topLayout.add(newItem);
         topLayout.setVerticalComponentAlignment(Alignment.START, filter);
         topLayout.expand(filter);
         return topLayout;
@@ -104,22 +105,22 @@ public class ManufactureView extends HorizontalLayout
 
     /**
      * Shows a temporary popup notification to the user.
-     * 
-     * @see Notification#show(String)
+     *
      * @param msg
+     * @see Notification#show(String)
      */
     public void showNotification(String msg) {
         Notification.show(msg);
     }
 
     /**
-     * Enables/Disables the new Manufacturers button.
-     * 
+     * Enables/Disables the new product button.
+     *
      * @param enabled
      */
-    public void setNewManufacturersEnabled(boolean enabled) {
+    public void setNewItemEnabled(boolean enabled) {
 
-        newManufacturers.setEnabled(enabled);
+        newItem.setEnabled(enabled);
     }
 
     /**
@@ -131,54 +132,55 @@ public class ManufactureView extends HorizontalLayout
 
     /**
      * Selects a row
-     * 
+     *
      * @param row
      */
-    public void selectRow(Manufacturers row) {
+    public void selectRow(OrderItem row) {
         grid.getSelectionModel().select(row);
     }
 
     /**
-     * Updates a Manufacturers in the list of Manufacturerss.
-     * 
-     * @param Manufacturers
+     * Updates a product in the list of products.
+     *
+     * @param  item
      */
-    public void updateManufacturers(Manufacturers Manufacturers) {
-        dataProvider.save(Manufacturers);
+    public void update(OrderItem item) {
+        dataProvider.save(item);
     }
 
     /**
-     * Removes a Manufacturers from the list of Manufacturerss.
-     * 
-     * @param Manufacturers
+     * Removes a product from the list of products.
+     *
+     * @param item
      */
-    public void removeManufacturers(Manufacturers Manufacturers) {
-        dataProvider.delete(Manufacturers);
+    public void remove(OrderItem item) {
+        dataProvider.delete(item);
     }
 
     /**
-     * Displays user a form to edit a Manufacturers.
-     * 
-     * @param Manufacturers
+     * Displays user a form to edit a Product.
+     *
+     * @param item
      */
-    public void editManufacturers(Manufacturers Manufacturers) {
-        showForm(Manufacturers != null);
-     //   form.editManufacturers(Manufacturers);
+    public void edit(OrderItem item) {
+        showForm(item != null);
+        form.edit(item);
     }
 
     /**
-     * Shows and hides the new Manufacturers form
-     * 
+     * Shows and hides the new product form
+     *
      * @param show
      */
     public void showForm(boolean show) {
-     //   form.setVisible(show);
-    //    form.setEnabled(show);
+        form.setVisible(show);
+        form.setEnabled(show);
     }
 
     @Override
     public void setParameter(BeforeEvent event,
-            @OptionalParameter String parameter) {
-      //  viewLogic.enter(parameter);
+                             @OptionalParameter String parameter) {
+        viewLogic.enter(parameter);
     }
 }
+

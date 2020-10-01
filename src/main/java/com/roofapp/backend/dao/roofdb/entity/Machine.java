@@ -45,6 +45,6 @@ public class Machine extends AbstractEntity {
 
     @Override
     public String toString() {
-        return name +" "+width ;
+        return name  +" "+ type.toString()+" Волна -"+waveHeight.toString();
     }
 }

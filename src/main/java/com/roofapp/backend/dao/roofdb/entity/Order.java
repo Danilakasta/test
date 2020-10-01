@@ -1,7 +1,11 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.OrderType;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
@@ -25,6 +29,7 @@ import java.util.List;
         @NamedAttributeNode("history")
 })})
 @Table(indexes = @Index(columnList = "due_date"))
+@EqualsAndHashCode
 public class Order extends AbstractEntity implements OrderSummary {
 
     @Column(name = "wp_order_id")
@@ -59,18 +64,19 @@ public class Order extends AbstractEntity implements OrderSummary {
     private Contractor customer;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @OrderColumn
-    @JoinColumn
+   // @OrderColumn
+    @JoinColumn(name="order_id")
     @BatchSize(size = 1000)
     @NotEmpty
     @Valid
+    @JsonManagedReference
     private List<OrderItem> items;
 
     //@NotNull(message = "{bakery.status.required}")
     private OrderState state;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "id")
     @OrderColumn
     private List<HistoryItem> history;
 

@@ -1,26 +1,35 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
-import com.roofapp.backend.dao.roofdb.MaterialClass;
-import com.roofapp.backend.dao.roofdb.MaterialColor;
-import com.roofapp.backend.dao.roofdb.MaterialCover;
-import com.roofapp.backend.dao.roofdb.Width;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.roofapp.backend.dao.roofdb.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity(name = "order_item")
 @Data
+@EqualsAndHashCode
 public class OrderItem extends AbstractEntity {
 
 	@ManyToOne
 	//@NotNull(message = "{bakery.pickup.product.required}")
 	private Product product;
+
+	/*@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="order_id")
+	@JsonBackReference
+	//@JsonIgnore
+	@JsonIgnore*/
+
+	@Column(name = "order_id")
+	private Long orderId;
 
 	@Min(1)
 	//@NotNull
@@ -50,6 +59,9 @@ public class OrderItem extends AbstractEntity {
 	@NotNull
 	@Column(name = "total_price")
 	private Double price;
+
+	@Column(name = "order_type")
+	private OrderType orderType = OrderType.CONTRACTOR_ORDER;
 
 	@Override
 	public String toString() {

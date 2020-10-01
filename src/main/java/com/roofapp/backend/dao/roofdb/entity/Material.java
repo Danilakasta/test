@@ -80,4 +80,9 @@ public class Material extends AbstractEntity {
     //остаток
     private Double remains;
 
+    @Override
+    public String toString(){
+        return   serialNumber +" " + manufacturer+" "+width +" "+materialColor  +" "+ cover;
+    }
+
 }
