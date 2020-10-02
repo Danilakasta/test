@@ -63,9 +63,9 @@ public class ManufactureForm extends Div {
     private final  OrderService orderService;
     private Button save;
     private Button ok;
-   /* private Button discard;
+ // private Button discard;
     private Button cancel;
-    private final Button delete;*/
+    /*  private final Button delete;*/
 
     private WarehouseViewLogic viewLogic;
 
@@ -190,24 +190,32 @@ public class ManufactureForm extends Div {
         });
         save.setEnabled(false);
         save.addClickShortcut(Key.KEY_S, KeyModifier.CONTROL);
-        content.add(save);
+      //  content.add(save);
 
 
-
-     /*   discard = new Button("Сбросить");
+/*
+      discard = new Button("Сбросить");
         discard.setWidth("100%");
         discard.addClickListener(
                 event -> viewLogic.edit(item));
-
-        cancel = new Button("Отменить");
+*/
+        cancel = new Button("Отмена");
         cancel.setWidth("100%");
         cancel.addClickListener(event -> viewLogic.cancel());
         cancel.addClickShortcut(Key.ESCAPE);
         getElement()
                 .addEventListener("keydown", event -> viewLogic.cancel())
                 .setFilter("event.key == 'Escape'");
+      //  content.add(cancel);
 
-        delete = new Button("Удалить");
+
+        final HorizontalLayout horizontalLayout = new HorizontalLayout(  cancel ,save);
+        horizontalLayout.setWidth("100%");
+        horizontalLayout.setFlexGrow(1,  cancel ,save);
+        content.add(horizontalLayout);
+
+
+      /*    delete = new Button("Удалить");
         delete.setWidth("100%");
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR,
                 ButtonVariant.LUMO_PRIMARY);
