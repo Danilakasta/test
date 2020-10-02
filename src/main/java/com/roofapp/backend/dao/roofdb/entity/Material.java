@@ -1,8 +1,6 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
-import com.roofapp.backend.dao.roofdb.CoverType;
-import com.roofapp.backend.dao.roofdb.MaterialColor;
-import com.roofapp.backend.dao.roofdb.Width;
+import com.roofapp.backend.dao.roofdb.*;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -32,7 +30,13 @@ public class Material extends AbstractEntity {
     private MaterialColor materialColor = MaterialColor.RAL9016;
     //Покрытие
     @NotNull
-    private CoverType cover = CoverType.NONE;
+    private MaterialCover cover ;
+
+    //клас
+    @NotNull
+    @Column(name = "material_class")
+    private MaterialClass materialClass ;
+
     //толшина
     @NotNull
     private Width width = Width.W28;

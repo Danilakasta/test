@@ -49,6 +49,9 @@ public class MaterialsGrid extends Grid<Material> {
                         .comparing(Material::getCover))
                 .setFlexGrow(5).setKey("cover");
 
+        addColumn(Material::getMaterialClass).setHeader("клас покрытия")
+                .setFlexGrow(20).setSortable(true).setKey("materialClass");
+
         final String widthTemplate = "[[item.width]]";
         addColumn(TemplateRenderer.<Material>of(widthTemplate)
                 .withProperty("width",

@@ -1,7 +1,8 @@
 package com.roofapp.ui.views.materials;
 
-import com.roofapp.backend.dao.roofdb.CoverType;
+import com.roofapp.backend.dao.roofdb.MaterialClass;
 import com.roofapp.backend.dao.roofdb.MaterialColor;
+import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.service.MaterialService;
@@ -23,7 +24,6 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -55,7 +55,10 @@ public class MaterialForm extends Div {
     private final Select<MaterialColor> materialColor;
     private final Select<Width> width;
     private final NumberField widthFact;
-    private final Select<CoverType> cover;
+    private final Select<MaterialCover> cover;
+
+    private final Select<MaterialClass> materialClass;
+
     private final NumberField teorCoefficient;
     private final NumberField factCoefficient;
     private final NumberField used;
@@ -149,19 +152,20 @@ public class MaterialForm extends Div {
         horizontalLayout.setFlexGrow(1, serialNumber, manufacturer);
         content.add(horizontalLayout);
 
-        cover = new Select<>();
-        cover.setLabel("Покрытие");
-        cover.setWidth("100%");
-        cover.setItems(CoverType.values());
 
         materialColor = new Select<>();
         materialColor.setLabel("Цвет");
         materialColor.setWidth("100%");
         materialColor.setItems(MaterialColor.values());
+
+
         // content.add(materialColor);
-
-
+        cover = new Select<>();
+        cover.setLabel("Покрытие");
+        cover.setWidth("100%");
+        cover.setItems(MaterialCover.values());
         //У цинка не блокируем выбор цвета
+
         cover.addValueChangeListener(e -> {
             if (e.getValue().ordinal() == 0) {
                 materialColor.setEnabled(false);
@@ -169,6 +173,15 @@ public class MaterialForm extends Div {
                 materialColor.setEnabled(true);
             }
         });
+
+
+
+        materialClass = new Select<>();
+        materialClass.setLabel("Клас покрытия");
+        materialClass.setWidth("100%");
+        materialClass.setItems(MaterialClass.values());
+
+
 
         width = new Select<>();
         width.setLabel("Толщина теория");
@@ -187,9 +200,9 @@ public class MaterialForm extends Div {
 
         // content.add(materialColor);
 
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(cover, materialColor, width, widthFact);
+        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(cover,  materialClass, materialColor, width, widthFact);
         horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(3, cover, materialColor, width, widthFact);
+        horizontalLayout2.setFlexGrow(3, cover, materialClass, materialColor, width, widthFact);
         content.add(horizontalLayout2);
 
 
