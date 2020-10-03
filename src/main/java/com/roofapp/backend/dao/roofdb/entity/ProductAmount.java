@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Entity(name = "product_amount")
 @Data
@@ -36,7 +38,12 @@ public class ProductAmount extends AbstractEntity {
     private MaterialColor materialColor;
 */
 
+    @Min(1)
+    @Max(1000)
     private Double price;
+
+    @Column(name = "self_price")
+    private Double selfPrice;
 
 
     @Override

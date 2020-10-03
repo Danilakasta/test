@@ -98,7 +98,7 @@ public class OrderDetails extends PolymerTemplate<OrderDetails.Model> {
 		@Include({ "id", "dueDate.day", "dueDate.weekday", "dueDate.date", "dueTime", "state", "pickupLocation.name",
 			"customer.name", "customer.phone", "customer.details", "items.product.name", "items.comment",
 			"items.quantity", "items.materialClass","items.materialCover" ,"items.materialColor","items.height","items.price", "history.message", "history.createdBy.firstName",
-			"history.timestamp", "history.newState", "totalPrice" , "items.materialSquaring","orderType" })
+			"history.timestamp", "history.newState", "totalPrice" , "items.materialSquaring","orderType","discount"})
 		@Encode(value = LongToStringConverter.class, path = "id")
 		//@Encode(value = ContractorToStringConverter.class, path = "customer.fullName")
 		@Encode(value = StorefrontLocalDateConverter.class, path = "dueDate")
@@ -114,7 +114,10 @@ public class OrderDetails extends PolymerTemplate<OrderDetails.Model> {
 		@Encode(value = LocalDateTimeConverter.class, path = "history.timestamp")
 		@Encode(value = OrderStateConverter.class, path = "history.newState")
 		@Encode(value = LongToStringConverter.class, path = "items.materialSquaring")
-	//	@Encode(value = CurrencyFormatter.class, path = "totalPrice")
+
+		@Encode(value = DiscountToStringConverter.class, path = "discount")
+
+			//	@Encode(value = CurrencyFormatter.class, path = "totalPrice")
 		void setItem(Order order);
 
 		void setReview(boolean review);

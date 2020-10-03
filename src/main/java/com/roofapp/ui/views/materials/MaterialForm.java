@@ -167,10 +167,12 @@ public class MaterialForm extends Div {
         //У цинка не блокируем выбор цвета
 
         cover.addValueChangeListener(e -> {
-            if (e.getValue().ordinal() == 0) {
-                materialColor.setEnabled(false);
-            } else {
-                materialColor.setEnabled(true);
+            if(e.getValue() !=null) {
+                if (e.getValue().ordinal() == 0) {
+                    materialColor.setEnabled(false);
+                } else {
+                    materialColor.setEnabled(true);
+                }
             }
         });
 

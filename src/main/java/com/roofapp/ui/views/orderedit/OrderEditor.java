@@ -1,5 +1,6 @@
 package com.roofapp.ui.views.orderedit;
 
+import com.roofapp.backend.dao.roofdb.Discount;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.entity.*;
 import com.roofapp.backend.service.ContractorService;
@@ -25,6 +26,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
@@ -90,6 +92,9 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
     @Id("customerDetails")
     private TextField customerDetails;
+
+    @Id("discount")
+    private ComboBox<Discount> discount;
 
     @Id("cancel")
     private Button cancel;
@@ -159,6 +164,12 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
         customerName.setRequired(true);
         binder.bind(customerName, "customer");
+
+
+        discount = new ComboBox<>();
+        discount.setDataProvider(DataProvider.ofItems(Discount.values()));
+        discount.setItemLabelGenerator(createItemLabelGenerator(Discount::getDisplayName));
+        binder.bind(discount, "discount");
 
         //	customerNumber.setRequired(true);
         //	binder.bind(customerNumber, "customer.phone");

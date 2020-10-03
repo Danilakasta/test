@@ -4,8 +4,10 @@ import com.roofapp.backend.dao.roofdb.MaterialClass;
 import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.ProductType;
 import com.roofapp.backend.dao.roofdb.Width;
+import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.dao.roofdb.entity.ProductAmount;
+import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
 import com.vaadin.flow.component.Key;
@@ -27,10 +29,12 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 //import io.swagger.models.auth.In;
@@ -48,29 +52,32 @@ public class ProductAmountForm extends Div {
     private final Select<Product> product;
     private final NumberField price;
 
-   // private final NumberField width;
+    private final NumberField selfPrice;
 
-   // private final NumberField squareMeters;
+    // private final NumberField width;
+
+    // private final NumberField squareMeters;
 
     // private final TextField weight;
 
-   // private final TextField length;
+    // private final TextField length;
 
     private final Select<Width> width;
 
-    private final Select<MaterialClass>  materialClass;
+    private final Select<MaterialClass> materialClass;
     private final Select<MaterialCover> materialCover;
 
-   // private final Select<MaterialColor> materialColor;
+    // private final Select<MaterialColor> materialColor;
 
-  //  private final Select<Width> width;
- //   private final CheckboxGroup<Category> category;
+    //  private final Select<Width> width;
+    //   private final CheckboxGroup<Category> category;
     private Button save;
     private Button discard;
     private Button cancel;
     private final Button delete;
 
     private ProductAmountViewLogic viewLogic;
+    private MaterialService materialService;
 
     public void setViewLogic(ProductAmountViewLogic viewLogic) {
         this.viewLogic = viewLogic;
@@ -120,8 +127,12 @@ public class ProductAmountForm extends Div {
     }
 
     @Autowired
-    public ProductAmountForm(ProductAmountViewLogic viewLogic, ProductAmountService productAmountService, ProductService productService) {
+    public ProductAmountForm(ProductAmountViewLogic viewLogic,
+                             ProductAmountService productAmountService,
+                             ProductService productService,
+                             MaterialService materialService) {
         this.productService = productAmountService;
+        this.materialService = materialService;
         setClassName("product-form");
 
         content = new VerticalLayout();
@@ -129,56 +140,64 @@ public class ProductAmountForm extends Div {
         content.addClassName("product-form-content");
         add(content);
 
-     //   viewLogic = sampleCrudLogic;
+        //   viewLogic = sampleCrudLogic;
 
         product = new Select<>();
         product.setLabel("Продуст");
         product.setWidth("100%");
         product.setItemLabelGenerator(Product::toString);
-        product.setItems(productService.findByType(new ArrayList<ProductType>(Arrays.asList(ProductType.PROFILED,ProductType.METAL_TILE))));
+        product.setItems(productService.findByType(new ArrayList<ProductType>(Arrays.asList(ProductType.PROFILED, ProductType.METAL_TILE))));
 
-        width= new Select<>();
+        width = new Select<>();
         width.setWidth("100%");
         width.setLabel("Толщина метала");
         width.setItems(Width.values());
+        width.addValueChangeListener(e -> calculateSelfPrice());
 
         materialClass = new Select<>();
         materialClass.setWidth("100%");
         materialClass.setLabel("Класс");
         materialClass.setItems(MaterialClass.values());
+        materialClass.addValueChangeListener(e -> calculateSelfPrice());
 
         materialCover = new Select<>();
         materialCover.setWidth("100%");
         materialCover.setLabel("Покрытие");
         materialCover.setItems(MaterialCover.values());
+        materialCover.addValueChangeListener(e -> calculateSelfPrice());
 
-        price = new NumberField("Цена");
+        price = new NumberField("Процент надбавки");
         price.setWidth("100%");
-        price.setSuffixComponent(new Span("р"));
+        price.setSuffixComponent(new Span("%"));
         price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         price.setValueChangeMode(ValueChangeMode.EAGER);
 
 
+        selfPrice = new NumberField("Себестоймость");
+        selfPrice.setWidth("100%");
+        selfPrice.setSuffixComponent(new Span("р"));
+        selfPrice.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+        selfPrice.setValueChangeMode(ValueChangeMode.EAGER);
 
-        final HorizontalLayout horizontalLayout = new HorizontalLayout(product,width );
+
+        final HorizontalLayout horizontalLayout = new HorizontalLayout(product, width);
         horizontalLayout.setWidth("100%");
-        horizontalLayout.setFlexGrow(3, product,width);
+        horizontalLayout.setFlexGrow(3, product, width);
         content.add(horizontalLayout);
 
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(materialClass,materialCover,price);
+        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(materialCover, materialClass, price, selfPrice);
         horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(3,materialClass, materialCover,price);
+        horizontalLayout2.setFlexGrow(3, materialCover, materialClass, price, selfPrice);
         content.add(horizontalLayout2);
 
 
-
         binder = new BeanValidationBinder<>(ProductAmount.class);
-      //  binder.forField(price).withConverter(new PriceConverter())
-           //    .bind("price");
-      //  binder.forField(weight).withConverter(new StockCountConverter())
-         //      .bind("weight");
-      //  binder.forField(length).withConverter(new StockCountConverter())
-       //         .bind("length");
+        //  binder.forField(price).withConverter(new PriceConverter())
+        //    .bind("price");
+        //  binder.forField(weight).withConverter(new StockCountConverter())
+        //      .bind("weight");
+        //  binder.forField(length).withConverter(new StockCountConverter())
+        //         .bind("length");
         binder.bindInstanceFields(this);
 
         // enable/disable save button while editing
@@ -226,9 +245,9 @@ public class ProductAmountForm extends Div {
         content.add(save, discard, delete, cancel);
     }
 
-  //  public void setCategories(Collection<Category> categories) {
+    //  public void setCategories(Collection<Category> categories) {
     //    category.setItems(categories);
-  //  }
+    //  }
 
     public void editProduct(ProductAmount product) {
         if (product == null) {
@@ -237,5 +256,32 @@ public class ProductAmountForm extends Div {
         delete.setVisible(!product.isNew());
         currentProduct = product;
         binder.readBean(product);
+    }
+
+    /**
+     * Расчет себестоймости
+     */
+    private void calculateSelfPrice() {
+        Double selfPriceDouble = new Double(0D);
+        if (!width.isEmpty() &&
+                !materialCover.isEmpty() &&
+                !materialClass.isEmpty()) {
+
+            List<Material> materials =
+                    materialService.findByWidthEqualsAndCoverEqualsAndMaterialClassEquals(width.getValue(),
+                            materialCover.getValue(),
+                            materialClass.getValue());
+            Double allPrice = materials.stream().mapToDouble(f -> f.getPriceOneTone() * f.getWeightOfBay()).sum();
+            Double allLength = materials.stream().mapToDouble(f -> f.getLength()).sum();
+            selfPriceDouble = allPrice / allLength;
+            selfPrice.setValue(aroundDouble(selfPriceDouble));
+        } else
+            selfPrice.setValue(selfPriceDouble);
+    }
+
+    private Double aroundDouble(Double val) {
+        if (val != null)
+            return new BigDecimal(val.toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return 0D;
     }
 }

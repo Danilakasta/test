@@ -1,10 +1,14 @@
 package com.roofapp.backend.service;
 
+import com.roofapp.backend.dao.roofdb.MaterialClass;
+import com.roofapp.backend.dao.roofdb.MaterialCover;
+import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.dao.roofdb.repositories.MaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,4 +46,15 @@ public class MaterialServiceImpl implements MaterialService {
     public void delete(Material item) {
        materialRepository.delete(item);
     }
+
+
+    @Override
+    public List<Material> findByWidthEqualsAndCoverEqualsAndMaterialClassEquals(Width width, MaterialCover materialCover, MaterialClass materialClass) {
+        try {
+            return materialRepository.findAllByWidthEqualsAndCoverEqualsAndMaterialClassEquals(width,materialCover, materialClass);
+        }catch (Exception e){
+            return new ArrayList<>();
+        }
+    }
+
 }

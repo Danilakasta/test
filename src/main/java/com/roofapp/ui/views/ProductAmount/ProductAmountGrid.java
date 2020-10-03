@@ -58,10 +58,16 @@ public class ProductAmountGrid extends Grid<ProductAmount> {
                         .comparing(ProductAmount::getMaterialCover))
                 .setFlexGrow(5).setKey("materialCover");
 
-        addColumn(product -> decimalFormat.format(product.getPrice()) + " р")
-                .setHeader("Цена ").setTextAlign(ColumnTextAlign.END)
+        addColumn(product -> decimalFormat.format(product.getPrice()) + " %")
+                .setHeader("% надбавки").setTextAlign(ColumnTextAlign.END)
                 .setComparator(Comparator.comparing(ProductAmount::getPrice))
                 .setFlexGrow(3).setKey("price");
+
+
+        addColumn(product -> decimalFormat.format(product.getSelfPrice()) + " p")
+                .setHeader("Себестоймость р. ").setTextAlign(ColumnTextAlign.END)
+                .setComparator(Comparator.comparing(ProductAmount::getSelfPrice))
+                .setFlexGrow(3).setKey("selfPrice");
 
         // If the browser window size changes, check if all columns fit on
         // screen

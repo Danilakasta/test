@@ -3,6 +3,7 @@ package com.roofapp.backend.dao.roofdb.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.roofapp.backend.dao.roofdb.Discount;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.OrderType;
 import lombok.EqualsAndHashCode;
@@ -74,6 +75,9 @@ public class Order extends AbstractEntity implements OrderSummary {
 
     //@NotNull(message = "{bakery.status.required}")
     private OrderState state;
+
+    @Column(name = "discount")
+    private Discount discount = Discount.NULL_PERCENT;
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "id")
@@ -210,5 +214,12 @@ public class Order extends AbstractEntity implements OrderSummary {
     }
 
 
+    public Discount getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Discount discount) {
+        this.discount = discount;
+    }
 
 }

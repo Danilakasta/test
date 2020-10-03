@@ -214,7 +214,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
                     materialCover.getValue()
             );
 
-            return productAmount.getPrice();
+            return (productAmount.getPrice()/100 * productAmount.getSelfPrice()) + productAmount.getSelfPrice();
         }
         return 0d;
     }
