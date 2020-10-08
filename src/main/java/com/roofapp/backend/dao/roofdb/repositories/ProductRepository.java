@@ -19,5 +19,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByTypeIn(List<ProductType> productTypes);
 
+
     List<Product> findAllByOrderByName();
+
+    @Query("select e from Product e order by e.type,e.name")
+    List<Product> findAllByOrderByTypeAndName();
 }

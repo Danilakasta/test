@@ -68,5 +68,13 @@ public class MaterialServiceImpl implements MaterialService {
         }
     }
 
+    @Override
+    public List<Material> findAllByRemains() {
+        try {
+            return materialRepository.findAllByRemainsGreaterThan(0D);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
 
 }

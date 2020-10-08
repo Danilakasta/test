@@ -3,16 +3,12 @@ package com.roofapp.ui.views.orderedit;
 import com.roofapp.backend.dao.roofdb.Discount;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.entity.*;
-import com.roofapp.backend.service.ContractorService;
-import com.roofapp.backend.service.PickupLocationService;
-import com.roofapp.backend.service.ProductAmountService;
-import com.roofapp.backend.service.ProductService;
+import com.roofapp.backend.service.*;
 import com.roofapp.ui.crud.CrudEntityDataProvider;
 import com.roofapp.ui.dataproviders.DataProviderUtil;
 import com.roofapp.ui.events.CancelEvent;
 import com.roofapp.ui.utils.converters.LocalTimeConverter;
 import com.roofapp.ui.views.order.events.ReviewEvent;
-import com.roofapp.ui.views.order.events.TotalPriceChangeEvent;
 import com.roofapp.ui.views.order.events.ValueChangeEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
@@ -27,7 +23,6 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
@@ -118,13 +113,16 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
     private final ContractorService contractorService;
 
+    private final MaterialService materialService;
+
     @Autowired
-    public OrderEditor(PickupLocationService locationService, ProductService productService, ProductAmountService productAmountService, ContractorService contractorService) {
+    public OrderEditor(PickupLocationService locationService, ProductService productService, ProductAmountService productAmountService, ContractorService contractorService, MaterialService materialService) {
         this.productAmountService = productAmountService;
         this.contractorService = contractorService;
+        this.materialService = materialService;
         DataProvider<PickupLocation, String> locationDataProvider = new CrudEntityDataProvider<>(locationService);
         DataProvider<Product, String> productDataProvider = new CrudEntityDataProvider<>(productService);
-        itemsEditor = new OrderItemsEditor(productService, this.productAmountService);
+        itemsEditor = new OrderItemsEditor(productService, this.productAmountService, this.materialService);
 
 
         customerName.setItems(contractorService.findAllOrderName());

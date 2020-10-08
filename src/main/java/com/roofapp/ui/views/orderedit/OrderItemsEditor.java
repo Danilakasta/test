@@ -1,8 +1,8 @@
 package com.roofapp.ui.views.orderedit;
 
-import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.OrderItem;
 import com.roofapp.backend.dao.roofdb.entity.Product;
+import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
 import com.roofapp.ui.views.order.events.TotalPriceChangeEvent;
@@ -12,7 +12,6 @@ import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.internal.AbstractFieldSupport;
-import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.shared.Registration;
 
 import java.util.Collections;
@@ -35,11 +34,15 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 	private final AbstractFieldSupport<OrderItemsEditor,List<OrderItem>> fieldSupport;
 
 	private final ProductAmountService productAmountService;
+	private final MaterialService materialService;
 	
-	public OrderItemsEditor(/*DataProvider<Product, String> productDataProvider,*/ ProductService productService, ProductAmountService productAmountService) {
+	public OrderItemsEditor(/*DataProvider<Product, String> productDataProvider,*/ ProductService productService,
+																				   ProductAmountService productAmountService,
+																				   MaterialService materialService) {
 	//	this.productDataProvider = productDataProvider;
 		this.productService = productService;
 		this.productAmountService = productAmountService;
+		this.materialService = materialService;
 		this.fieldSupport = new AbstractFieldSupport<>(this, Collections.emptyList(),
 				Objects::equals, c ->  {}); 
 	}
@@ -59,7 +62,7 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 	}
 
 	private OrderItemEditor createEditor(OrderItem value) {
-		OrderItemEditor editor = new OrderItemEditor(/*productDataProvider,*/productService, productAmountService);
+		OrderItemEditor editor = new OrderItemEditor(/*productDataProvider,*/productService, productAmountService,materialService);
 		getElement().appendChild(editor.getElement());
 		editor.addPriceChangeListener(e -> updateTotalPriceOnItemPriceChange(e.getOldValue(), e.getNewValue()));
 		editor.addProductChangeListener(e -> productChanged(e.getSource(), e.getProduct()));

@@ -1,7 +1,6 @@
 package com.roofapp.backend.service;
 
 import com.roofapp.backend.dao.roofdb.ProductType;
-import com.roofapp.backend.dao.roofdb.entity.Contractor;
 import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.dao.roofdb.entity.User;
 import com.roofapp.backend.dao.roofdb.repositories.ProductRepository;
@@ -104,8 +103,8 @@ public class ProductService implements FilterableCrudService<Product>  {
     }
 
 
-    public List<Product> findAllOrderName() {
-        return productRepository.findAllByOrderByName();
+    public List<Product> findAllOrderTypeAndName() {
+        return productRepository.findAllByOrderByTypeAndName();
     }
 
 }

@@ -21,4 +21,6 @@ public interface MaterialService {
     List<Material> findByWidthEqualsAndCoverEqualsAndMaterialClassEquals(Width width, MaterialCover materialCover, MaterialClass materialClass);
 
     List<Material> findAllByCreatedAfter(Date date);
+
+    List<Material> findAllByRemains();
 }

@@ -1,9 +1,10 @@
 package com.roofapp.ui.views.orderedit;
 
 import com.roofapp.backend.dao.roofdb.*;
+import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.dao.roofdb.entity.OrderItem;
 import com.roofapp.backend.dao.roofdb.entity.Product;
-import com.roofapp.backend.dao.roofdb.entity.ProductAmount;
+import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
 import com.roofapp.ui.views.order.events.*;
@@ -18,18 +19,18 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
-import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.templatemodel.TemplateModel;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Tag("order-item-editor")
@@ -84,13 +85,13 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
     private BeanValidationBinder<OrderItem> binder = new BeanValidationBinder<>(OrderItem.class);
 
-    public OrderItemEditor(/*DataProvider<Product, String> productDataProvider*/ProductService productService, ProductAmountService productAmountService) {
+    public OrderItemEditor(/*DataProvider<Product, String> productDataProvider*/ProductService productService, ProductAmountService productAmountService, MaterialService materialService) {
         this.productAmountService = productAmountService;
         this.fieldSupport = new AbstractFieldSupport<>(this, null,
                 Objects::equals, c -> {
         });
         //    products.setDataProvider(productDataProvider);
-        products.setItems(productService.findAllOrderName());
+        products.setItems(productService.findAllOrderTypeAndName());
 
         products.addValueChangeListener(e -> {
             setPrice();
@@ -117,40 +118,67 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         amount.setRequiredIndicatorVisible(true);
 
 
-        width.setItems(Width.values());
+
+        List<Material> materials = materialService.findAllByRemains();
+
+        width.setItems(materials.stream().map(i->i.getWidth()).collect(Collectors.toList()));
         width.setLabel("Толшина");
         width.addValueChangeListener(e -> {
             setPrice();
+            materialCover.setItems(materials.stream()
+                    .filter(i->i.getWidth().equals(e.getValue()))
+                    .map(i->i.getCover())
+                    .collect(Collectors.toList()));
+            materialClass.setItems(new ArrayList<>());
+            materialColor.setItems(new ArrayList<>());
         });
         width.setRequired(true);
         binder.forField(width).bind("width");
 
-        materialClass.setItems(MaterialClass.values());
-        materialClass.setLabel("Класс");
-        materialClass.addValueChangeListener(e -> {
-            setPrice();
-        });
-        materialClass.setRequired(true);
-        binder.forField(materialClass).bind("materialClass");
-
-        materialCover.setItems(MaterialCover.values());
+        //   materialCover.setItems(MaterialCover.values());
         materialCover.setLabel("Покрытие");
         materialCover.addValueChangeListener(e -> {
             setPrice();
+            materialClass.setItems(materials.stream()
+                    .filter(i->i.getWidth().equals(width.getValue()))
+                    .filter(i->i.getCover().equals(e.getValue()))
+                    .map(i->i.getMaterialClass())
+                    .collect(Collectors.toList()));
+            materialColor.setItems(new ArrayList<>());
+
         });
         //У цинка не блокируем выбор цвета
         materialCover.addValueChangeListener(e -> {
-            if (e.getValue().ordinal() == 0) {
-                materialColor.setEnabled(false);
-            } else {
-                materialColor.setEnabled(true);
+            if(e.getValue() !=null) {
+                if (e.getValue().ordinal() == 0) {
+                    materialColor.setEnabled(false);
+                } else {
+                    materialColor.setEnabled(true);
+                }
             }
         });
 
         materialCover.setRequired(true);
         binder.forField(materialCover).bind("materialCover");
 
-        materialColor.setItems(MaterialColor.values());
+
+      //  materialClass.setItems(MaterialClass.values());
+        materialClass.setLabel("Класс");
+        materialClass.addValueChangeListener(e -> {
+            setPrice();
+            materialColor.setItems(materials.stream()
+                    .filter(i->i.getWidth().equals(width.getValue()))
+                    .filter(i->i.getCover().equals(materialCover.getValue()))
+                    .filter(i->i.getMaterialClass().equals(e.getValue()))
+                    .map(i->i.getMaterialColor())
+                    .collect(Collectors.toList()));
+        });
+        materialClass.setRequired(true);
+        binder.forField(materialClass).bind("materialClass");
+
+
+
+     //   materialColor.setItems(MaterialColor.values());
         materialColor.setLabel("Цвет");
         materialColor.addValueChangeListener(e -> {
             setPrice();
