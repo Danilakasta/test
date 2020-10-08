@@ -82,8 +82,8 @@ public class ProductAmountDataProvider extends ListDataProvider<ProductAmount> {
         }
         this.filterText = filterText.trim().toLowerCase(Locale.ENGLISH);
 
-        setFilter(product -> passesFilter(product.getProduct().getName(), this.filterText)
-                        || passesFilter(product.getProduct().getType(), this.filterText)
+        setFilter(product -> passesFilter(product.getWidth(), this.filterText)
+                        || passesFilter(product.getMaterialClass(), this.filterText)
                 //    || passesFilter(product.getCategory(), this.filterText)
         );
     }

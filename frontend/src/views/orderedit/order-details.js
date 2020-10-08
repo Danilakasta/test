@@ -228,7 +228,7 @@ class OrderDetails extends window.ScrollShadowMixin(PolymerElement) {
         <iron-icon icon="vaadin:check" slot="suffix"></iron-icon>
         Подтвердить заказ</vaadin-button>
       <vaadin-button slot="right" id="edit" theme="primary" hidden="[[review]]">
-        Исменить
+        Изменить
         <iron-icon icon="vaadin:edit" slot="suffix"></iron-icon>
       </vaadin-button>
     </buttons-bar>

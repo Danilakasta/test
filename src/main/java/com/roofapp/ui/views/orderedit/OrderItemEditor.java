@@ -89,7 +89,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         this.fieldSupport = new AbstractFieldSupport<>(this, null,
                 Objects::equals, c -> {
         });
-    //    products.setDataProvider(productDataProvider);
+        //    products.setDataProvider(productDataProvider);
         products.setItems(productService.findAllOrderName());
 
         products.addValueChangeListener(e -> {
@@ -199,28 +199,20 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         Product product = products.getValue();
         Double heightVal = height.getValue();
         if (product != null && heightVal != null)
-            materialSquaring.setText(String.format("%.2f",product.getSquareMeters() * heightVal * amount.getValue()) + " кв.м.");
+            materialSquaring.setText(String.format("%.2f", product.getSquareMeters() * heightVal * amount.getValue()) + " кв.м.");
     }
 
 
     private Double findProductPrice() {
-        if (!ObjectUtils.isEmpty(products.getValue())
-                && !ObjectUtils.isEmpty(width.getValue())
-                && !ObjectUtils.isEmpty(materialClass.getValue())
-                && !ObjectUtils.isEmpty(materialCover.getValue())) {
-            ProductAmount productAmount = productAmountService.findProductAmount(products.getValue(),
-                    width.getValue(),
-                    materialClass.getValue(),
-                    materialCover.getValue()
-            );
-
-            return (productAmount.getPrice()/100 * productAmount.getSelfPrice()) + productAmount.getSelfPrice();
+        if ( !width.isEmpty() && !materialClass.isEmpty() && !materialCover.isEmpty()) {
+            return productAmountService.findProductPrice( width.getValue(), materialClass.getValue(), materialCover.getValue());
         }
         return 0d;
     }
 
 
     private void setPrice() {
+        setMaterialSquaring();
         Double oldValue = totalPrice;
         Double selectedAmount = amount.getValue();
         Product product = products.getValue();

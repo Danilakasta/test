@@ -12,6 +12,7 @@ import com.roofapp.ui.dataproviders.DataProviderUtil;
 import com.roofapp.ui.events.CancelEvent;
 import com.roofapp.ui.utils.converters.LocalTimeConverter;
 import com.roofapp.ui.views.order.events.ReviewEvent;
+import com.roofapp.ui.views.order.events.TotalPriceChangeEvent;
 import com.roofapp.ui.views.order.events.ValueChangeEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
@@ -166,9 +167,10 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
         binder.bind(customerName, "customer");
 
 
-        discount = new ComboBox<>();
         discount.setDataProvider(DataProvider.ofItems(Discount.values()));
         discount.setItemLabelGenerator(createItemLabelGenerator(Discount::getDisplayName));
+
+      //  discount.addValueChangeListener(e-> setTotalPrice());
         binder.bind(discount, "discount");
 
         //	customerNumber.setRequired(true);
@@ -188,6 +190,7 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
             }
         });
     }
+
 
     public boolean hasChanges() {
         return binder.hasChanges() || itemsEditor.hasChanges();
@@ -235,8 +238,9 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
         return addListener(CancelEvent.class, listener);
     }
 
+
     private void setTotalPrice(Double totalPrice) {
-        getModel().setTotalPrice(new BigDecimal(totalPrice).setScale(2, RoundingMode.HALF_UP).toString());
+        getModel().setTotalPrice(new BigDecimal(totalPrice * discount.getValue().getDiscount() + totalPrice).setScale(2, RoundingMode.HALF_UP).toString());
         //getModel().setTotalPrice(/*FormattingUtils.formatAsCurrency(*/totalPrice.toString()/*)*/);
     }
 

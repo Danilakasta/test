@@ -22,8 +22,8 @@ public class ProductAmountGrid extends Grid<ProductAmount> {
 
         setSizeFull();
 
-        addColumn(ProductAmount::getProduct).setHeader("Название")
-                .setFlexGrow(10).setSortable(true).setKey("name");
+     //   addColumn(ProductAmount::getProduct).setHeader("Название")
+      //          .setFlexGrow(10).setSortable(true).setKey("name");
 
         // Format and add " €" to price
         final DecimalFormat decimalFormat = new DecimalFormat();
@@ -40,14 +40,6 @@ public class ProductAmountGrid extends Grid<ProductAmount> {
                         .comparing(ProductAmount::getWidth))
                 .setFlexGrow(5).setKey("width");
 
-        final String materialClassTemplate = "[[item.materialClass]]";
-        addColumn(TemplateRenderer.<ProductAmount>of(materialClassTemplate)
-                .withProperty("materialClass",
-                        product -> product.getMaterialClass().toString()))
-                .setHeader("Клас")
-                .setComparator(Comparator
-                        .comparing(ProductAmount::getMaterialClass))
-                .setFlexGrow(5).setKey("materialClass");
 
         final String materialCoverTemplate = "[[item.materialCover]]";
         addColumn(TemplateRenderer.<ProductAmount>of(materialCoverTemplate)
@@ -58,16 +50,30 @@ public class ProductAmountGrid extends Grid<ProductAmount> {
                         .comparing(ProductAmount::getMaterialCover))
                 .setFlexGrow(5).setKey("materialCover");
 
-        addColumn(product -> decimalFormat.format(product.getPrice()) + " %")
-                .setHeader("% надбавки").setTextAlign(ColumnTextAlign.END)
-                .setComparator(Comparator.comparing(ProductAmount::getPrice))
-                .setFlexGrow(3).setKey("price");
+        final String materialClassTemplate = "[[item.materialClass]]";
+        addColumn(TemplateRenderer.<ProductAmount>of(materialClassTemplate)
+                .withProperty("materialClass",
+                        product -> product.getMaterialClass().toString()))
+                .setHeader("Клас")
+                .setComparator(Comparator
+                        .comparing(ProductAmount::getMaterialClass))
+                .setFlexGrow(5).setKey("materialClass");
 
 
         addColumn(product -> decimalFormat.format(product.getSelfPrice()) + " p")
                 .setHeader("Себестоймость р. ").setTextAlign(ColumnTextAlign.END)
                 .setComparator(Comparator.comparing(ProductAmount::getSelfPrice))
                 .setFlexGrow(3).setKey("selfPrice");
+
+        addColumn(product -> decimalFormat.format(product.getPrice()) + " %")
+                .setHeader("% надбавки").setTextAlign(ColumnTextAlign.END)
+                .setComparator(Comparator.comparing(ProductAmount::getPrice))
+                .setFlexGrow(3).setKey("price");
+
+        addColumn(product -> decimalFormat.format((product.getSelfPrice()*product.getPrice()/100)+product.getSelfPrice()) + " p")
+                .setHeader("Стоймость").setTextAlign(ColumnTextAlign.END);
+              //  .setComparator(Comparator.comparing(ProductAmount::getPrice))
+               // .setFlexGrow(3).setKey("price");
 
         // If the browser window size changes, check if all columns fit on
         // screen
@@ -78,23 +84,11 @@ public class ProductAmountGrid extends Grid<ProductAmount> {
 
     private void setColumnVisibility(int width) {
         if (width > 800) {
-            getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
-       //     getColumnByKey("type").setVisible(true);
-//            getColumnByKey("stock").setVisible(true);
-          //  getColumnByKey("category").setVisible(true);
         } else if (width > 550) {
-            getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
-         //   getColumnByKey("type").setVisible(false);
-         //   getColumnByKey("stock").setVisible(false);
-         //   getColumnByKey("category").setVisible(true);
         } else {
-            getColumnByKey("name").setVisible(true);
             getColumnByKey("price").setVisible(true);
-          //  getColumnByKey("type").setVisible(false);
-      //      getColumnByKey("stock").setVisible(false);
-          //  getColumnByKey("category").setVisible(false);
         }
     }
 

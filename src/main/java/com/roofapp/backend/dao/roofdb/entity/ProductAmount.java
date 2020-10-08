@@ -1,10 +1,7 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
 import com.roofapp.backend.dao.roofdb.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,12 +15,13 @@ import javax.validation.constraints.Min;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ProductAmount extends AbstractEntity {
 
 
-    @ManyToOne
-    @JoinColumn(name="product_id",referencedColumnName = "id")
-    private Product product;
+   // @ManyToOne
+ //   @JoinColumn(name="product_id",referencedColumnName = "id")
+  //  private Product product;
 
 
     private Width width ;
@@ -48,7 +46,7 @@ public class ProductAmount extends AbstractEntity {
 
     @Override
     public String toString() {
-        return product.getName() + " " + width /*+ " " + materialColor*/;
+        return materialClass  + " " + width + " " +   materialCover/*+ " " + materialColor*/;
     }
 
 

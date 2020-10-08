@@ -7,10 +7,13 @@ import com.roofapp.backend.dao.roofdb.entity.Material;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.w3c.dom.stylesheets.LinkStyle;
 
+import java.util.Date;
 import java.util.List;
 
 public interface MaterialRepository extends JpaRepository<Material, Long> {
 
     List<Material> findAllByWidthEqualsAndCoverEqualsAndMaterialClassEquals(Width width, MaterialCover materialCover, MaterialClass materialClass);
+
+    List<Material> findAllByCreatedAfter(Date date);
 
 }

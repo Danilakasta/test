@@ -16,10 +16,5 @@ public interface ProductAmountRepository extends JpaRepository<ProductAmount, Lo
 
     Page<ProductAmount> findBy(Pageable page);
 
-  //  Page<ProductAmount> findByNameLikeIgnoreCase(String name, Pageable page);
-
- //   int countByNameLikeIgnoreCase(String name);
-
-
-    ProductAmount findByProductAndWidthAndMaterialClassAndMaterialCover(Product product, Width width, MaterialClass materialClass, MaterialCover materialCover);
+    ProductAmount findByWidthAndMaterialClassAndMaterialCover(Width width, MaterialClass materialClass, MaterialCover materialCover);
 }

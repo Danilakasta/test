@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -37,24 +38,35 @@ public class MaterialServiceImpl implements MaterialService {
     public Material findById(Long id) {
         try {
             return materialRepository.findById(id).get();
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     @Override
     public void delete(Material item) {
-       materialRepository.delete(item);
+        materialRepository.delete(item);
     }
 
 
     @Override
     public List<Material> findByWidthEqualsAndCoverEqualsAndMaterialClassEquals(Width width, MaterialCover materialCover, MaterialClass materialClass) {
         try {
-            return materialRepository.findAllByWidthEqualsAndCoverEqualsAndMaterialClassEquals(width,materialCover, materialClass);
-        }catch (Exception e){
+            return materialRepository.findAllByWidthEqualsAndCoverEqualsAndMaterialClassEquals(width, materialCover, materialClass);
+        } catch (Exception e) {
             return new ArrayList<>();
         }
     }
+
+
+    @Override
+    public List<Material> findAllByCreatedAfter(Date date) {
+        try {
+            return materialRepository.findAllByCreatedAfter(date);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
 
 }

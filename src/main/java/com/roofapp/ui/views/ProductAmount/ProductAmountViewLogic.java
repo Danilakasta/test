@@ -98,7 +98,7 @@ public class ProductAmountViewLogic implements Serializable {
         view.clearSelection();
         view.updateProduct(product);
         setFragmentParameter("");
-        view.showNotification(product.getProduct().getName()
+        view.showNotification(product.getWidth()
                 + (newProduct ? " добавлено" : " сохранено"));
     }
 
@@ -106,7 +106,7 @@ public class ProductAmountViewLogic implements Serializable {
         view.clearSelection();
         view.removeProduct(product);
         setFragmentParameter("");
-        view.showNotification(product.getProduct().getName() + " удалено");
+        view.showNotification(product.getWidth() + " удалено");
     }
 
     public void editProduct(ProductAmount product) {

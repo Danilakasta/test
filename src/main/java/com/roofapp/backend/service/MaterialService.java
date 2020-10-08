@@ -5,6 +5,7 @@ import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.Material;
 
+import java.util.Date;
 import java.util.List;
 
 public interface MaterialService {
@@ -18,4 +19,6 @@ public interface MaterialService {
     void delete(Material item);
 
     List<Material> findByWidthEqualsAndCoverEqualsAndMaterialClassEquals(Width width, MaterialCover materialCover, MaterialClass materialClass);
+
+    List<Material> findAllByCreatedAfter(Date date);
 }

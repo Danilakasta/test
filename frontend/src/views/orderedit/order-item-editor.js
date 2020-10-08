@@ -15,6 +15,7 @@ class OrderItemEditor extends PolymerElement {
     <style include="shared-styles">
       .product {
         margin-bottom: 1em;
+        box-shadow: 0 -3px 3px -3px var(--lumo-shade-20pct);
       }
 
       .delete {
@@ -62,7 +63,7 @@ class OrderItemEditor extends PolymerElement {
       <vaadin-button class="delete self-start" id="delete" colspan="2" index="[[index]]">
         <iron-icon icon="vaadin:close-small"></iron-icon>
       </vaadin-button>
-      
+
       
     </vaadin-form-layout>
 

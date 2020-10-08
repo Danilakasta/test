@@ -3,10 +3,11 @@ package com.roofapp.backend.service;
 import com.roofapp.backend.dao.roofdb.MaterialClass;
 import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.Width;
-import com.roofapp.backend.dao.roofdb.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.dao.roofdb.entity.ProductAmount;
 import com.roofapp.backend.dao.roofdb.entity.User;
 import com.roofapp.backend.dao.roofdb.repositories.ProductAmountRepository;
+import com.roofapp.backend.utils.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -23,39 +24,48 @@ import java.util.Optional;
 public class ProductAmountService implements FilterableCrudService<ProductAmount> {
 
 
-    private final ProductAmountRepository productRepository;
+    private final ProductAmountRepository productAmountRepository;
+    private final MaterialService materialService;
 
     @Autowired
-    public ProductAmountService(ProductAmountRepository productRepository) {
-        this.productRepository = productRepository;
+    public ProductAmountService(ProductAmountRepository productRepository, MaterialService materialService) {
+        this.productAmountRepository = productRepository;
+        this.materialService = materialService;
     }
 
     public void save(ProductAmount product) {
-        productRepository.save(product);
+        productAmountRepository.save(product);
     }
 
 
     public List<ProductAmount> findAll() {
-        return productRepository.findAll();
+        return productAmountRepository.findAll();
     }
 
-    public ProductAmount findProductAmount(Product product, Width width, MaterialClass materialClass, MaterialCover materialCover) {
-        ProductAmount productAmount = productRepository.findByProductAndWidthAndMaterialClassAndMaterialCover(product, width, materialClass, materialCover);
+    public ProductAmount findProductAmount(Width width, MaterialCover materialCover, MaterialClass materialClass) {
+        ProductAmount productAmount = productAmountRepository.findByWidthAndMaterialClassAndMaterialCover(width, materialClass, materialCover);
 
-        return !ObjectUtils.isEmpty(productAmount) ? productAmount : ProductAmount.builder().price(0D).build();
+        return productAmount;
     }
 
+    public Double findProductPrice(Width width, MaterialClass materialClass, MaterialCover materialCover) {
+
+        ProductAmount productAmount = findProductAmount(width, materialCover, materialClass);
+        if (productAmount != null)
+            return (productAmount.getPrice() / 100 * productAmount.getSelfPrice()) + productAmount.getSelfPrice();
+        return 0D;
+    }
 
     public ProductAmount findById(Long id) {
         try {
-            return productRepository.findById(id).get();
+            return productAmountRepository.findById(id).get();
         } catch (Exception e) {
             return null;
         }
     }
 
     public void delete(ProductAmount product) {
-        productRepository.delete(product);
+        productAmountRepository.delete(product);
     }
 
 
@@ -83,12 +93,12 @@ public class ProductAmountService implements FilterableCrudService<ProductAmount
 
 
     public Page<ProductAmount> find(Pageable pageable) {
-        return productRepository.findBy(pageable);
+        return productAmountRepository.findBy(pageable);
     }
 
     @Override
     public JpaRepository<ProductAmount, Long> getRepository() {
-        return productRepository;
+        return productAmountRepository;
     }
 
     @Override
@@ -106,5 +116,21 @@ public class ProductAmountService implements FilterableCrudService<ProductAmount
         }
 
     }
+
+
+    /**
+     * Расчет себестоймости
+     */
+    public Double calculateSelfPrice(Width width, MaterialCover materialCover, MaterialClass materialClass) {
+        Double selfPriceDouble = new Double(0D);
+        if (width != null && materialCover != null && materialClass != null) {
+            List<Material> materials = materialService.findByWidthEqualsAndCoverEqualsAndMaterialClassEquals(width, materialCover, materialClass);
+            Double allPrice = materials.stream().mapToDouble(f -> f.getPriceOneTone() * f.getWeightOfBay()).sum();
+            Double allLength = materials.stream().mapToDouble(f -> f.getLength()).sum();
+            selfPriceDouble = allPrice / allLength;
+        }
+        return Helper.aroundDouble(selfPriceDouble);
+    }
+
 
 }

@@ -2,10 +2,15 @@ package com.roofapp.backend.dao.roofdb.entity;
 
 import com.roofapp.backend.dao.roofdb.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity(name = "Materials")
 @Data
@@ -62,13 +67,14 @@ public class Material extends AbstractEntity {
 
     //Вес бухты кг
     @Column(name = "weight_of_bay")
+    @NotNull
     private Double weightOfBay;
 
     //Длинна паспортная
+    @NotNull
     private Integer length;
     //Себестоймость погонного метра теор
     @Column(name = "price_one_metre")
-
     private Double priceOneMetre;
 
 
@@ -83,6 +89,17 @@ public class Material extends AbstractEntity {
     private Double used;
     //остаток
     private Double remains;
+
+
+    @Column(name = "created")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
+    @Column(name = "modified")
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modified;
 
     @Override
     public String toString(){
