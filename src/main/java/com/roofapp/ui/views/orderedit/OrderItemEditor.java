@@ -7,6 +7,7 @@ import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
+import com.roofapp.backend.utils.Helper;
 import com.roofapp.ui.views.order.events.*;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
@@ -243,6 +244,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         binder.forField(comment).bind("comment");
 
         size.setLabel("Размеры");
+        size.setPlaceholder("10+10+20...");
         size.addValueChangeListener(e -> {
             setAdditionalLength(e);
             setPrice();
@@ -267,20 +269,20 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
     }
 
     private void setAdditionalLength(ComponentValueChangeEvent event) {
-        Integer result = calculateAdditionalWidth();
-        comment.setValue(result + " мм " +  "1/"+(products.getValue().getWidth()* 1000) / result + " листа");
+        Double result = calculateAdditionalWidth();
+        comment.setValue(result + " мм " +  "1/"+ Helper.aroundToTheWhole((products.getValue().getWidth()* 1000) / result) + " листа");
     }
 
-    private Integer calculateAdditionalWidth() {
+    private Double calculateAdditionalWidth() {
         ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
         if (size != null && size.getValue() != null) {
             try {
-                return Integer.valueOf(engine.eval(size.getValue()).toString());
+                return Double.valueOf(engine.eval(size.getValue()).toString());
             } catch (Exception e) {
                 log.warning("Calculator mScriptEngine error: " + e.getMessage());
             }
         }
-        return 0;
+        return 0D;
 
     }
 
