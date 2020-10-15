@@ -49,14 +49,16 @@ class OrderItemEditor extends PolymerElement {
       
         <vaadin-number-field  id="price" colspan="2" class="money">[[price]]</vaadin-number-field>
         <div id="materialSquaring" colspan="2" >[[materialSquaring]]</div>
-        <!--<vaadin-text-field id="comment" colspan="12" placeholder="Details" index="[[index]]"></vaadin-text-field>-->
-        <vaadin-horizontal-layout id="layWithParams" colspan="16">
+        <vaadin-horizontal-layout id="layProfileParams" colspan="16">
             <vaadin-combo-box id="width" colspan="2" index="[[index]]" style="padding-right: 10px" ></vaadin-combo-box>  
             <vaadin-combo-box id="materialCover" colspan="2" index="[[index]]" style="padding-right: 10px"></vaadin-combo-box>
             <vaadin-combo-box id="materialClass" colspan="2" index="[[index]]" style="padding-right: 10px"></vaadin-combo-box>
             <vaadin-combo-box id="materialColor" colspan="2" index="[[index]]" style="padding-right: 10px"></vaadin-combo-box>
             <vaadin-number-field id="height" colspan="2" index="[[index]]"></vaadin-number-field>  
-          <!--  <vaadin-text-field id="materialSquaring" colspan="2" index="[[index]]"></vaadin-text-field>  -->
+        </vaadin-horizontal-layout>
+        <vaadin-horizontal-layout id="layAdditionalParams" colspan="16">
+            <vaadin-text-field  id="size" colspan="4" index="[[index]]" ></vaadin-text-field>  
+            <vaadin-text-field  id="comment" colspan="8" index="[[index]]" ></vaadin-text-field>  
         </vaadin-horizontal-layout>
       </vaadin-form-layout>
 

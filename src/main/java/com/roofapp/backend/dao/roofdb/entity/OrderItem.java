@@ -56,6 +56,9 @@ public class OrderItem extends AbstractEntity {
 
 	private Double height;
 
+
+	private String size;
+
 	@NotNull
 	@Column(name = "total_price")
 	private Double price;

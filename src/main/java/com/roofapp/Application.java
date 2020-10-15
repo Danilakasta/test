@@ -13,6 +13,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+//https://vaadin.com/directory#addon/canvas:vaadin
 /**
  * The entry point of the Spring Boot application.
  */
