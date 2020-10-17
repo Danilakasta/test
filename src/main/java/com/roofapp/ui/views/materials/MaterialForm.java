@@ -248,10 +248,6 @@ public class MaterialForm extends Div {
         length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         length.setValueChangeMode(ValueChangeMode.EAGER);
 
-        length.addValueChangeListener(e -> {
-            setPriceOneMetre();
-        });
-
 
         priceOneMetre = new NumberField("Себеc. теор");
         priceOneMetre.setSuffixComponent(new Span("р пог.м."));
@@ -290,6 +286,12 @@ public class MaterialForm extends Div {
       //  remains.setEnabled(false);
         remains.setWidth("100%");
         remains.setValueChangeMode(ValueChangeMode.EAGER);
+        length.addValueChangeListener(e -> {
+            setPriceOneMetre();
+            remains.setValue(Double.valueOf(e.getValue()));
+        });
+
+
         content.add(remains);
 
 

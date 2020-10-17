@@ -111,7 +111,7 @@ public class MaterialsGrid extends Grid<Material> {
         addColumn(Material::getUsed).setHeader("Израсходовано")
                 .setFlexGrow(5).setSortable(true).setKey("used");
 
-        addColumn(Material::getUsed).setHeader("остаток")
+        addColumn(Material::getRemains).setHeader("остаток")
                 .setFlexGrow(5).setSortable(true).setKey("remains");
 
 
