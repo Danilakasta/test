@@ -28,7 +28,7 @@ import com.vaadin.flow.router.Route;
 //@RouteAlias(value = "", layout = MainLayout.class)
 public class ManufactureView extends HorizontalLayout
         implements HasUrlParameter<String> {
-    public static final String VIEW_NAME = "Произвоодство";
+    public static final String VIEW_NAME = "Производство";
 
 
     private final OrderItemsService itemService;

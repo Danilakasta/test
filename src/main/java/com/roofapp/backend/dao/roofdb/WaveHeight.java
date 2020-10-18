@@ -22,6 +22,9 @@ public enum WaveHeight {
         this.height = height;
     }
 
+    public String getHeight(){
+        return height;
+    }
     @Override
     public String toString() {
         return height.toString();

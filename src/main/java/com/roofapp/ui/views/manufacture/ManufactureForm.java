@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -60,10 +61,10 @@ public class ManufactureForm extends Div {
     //  private final TextField product;
     private final WarehouseItemService warehouseItemService;
     private final MaterialService materialService;
-    private final  OrderService orderService;
+    private final OrderService orderService;
     private Button save;
     private Button ok;
- // private Button discard;
+    // private Button discard;
     private Button cancel;
     /*  private final Button delete;*/
 
@@ -117,6 +118,8 @@ public class ManufactureForm extends Div {
         }
     }
 
+    private final MachineService machineService;
+
     @Autowired
     public ManufactureForm(ManufactureViewLogic viewLogic,
                            OrderItemsService itemService,
@@ -128,6 +131,7 @@ public class ManufactureForm extends Div {
         this.warehouseItemService = warehouseItemService;
         this.materialService = materialService;
         this.orderService = orderService;
+        this.machineService = machineService;
         setClassName("manufacture-form");
 
         content = new VerticalLayout();
@@ -148,8 +152,8 @@ public class ManufactureForm extends Div {
         machineSelect.setLabel("Выберите станок");
         machineSelect.setItems(machineService.findAll());
         machineSelect.setWidth("100%");
-        content.add(  machineSelect);
-
+        machineSelect.setReadOnly(true);
+        content.add(machineSelect);
 
 
         materialSelect = new ComboBox<Material>();
@@ -158,8 +162,8 @@ public class ManufactureForm extends Div {
         materialSelect.setWidth("100%");
         content.add(materialSelect);
 
-        machineSelect.addValueChangeListener(e->save.setEnabled(!materialSelect.isEmpty() && !machineSelect.isEmpty()));
-        materialSelect.addValueChangeListener(e->save.setEnabled(!materialSelect.isEmpty() && !machineSelect.isEmpty()));
+        machineSelect.addValueChangeListener(e -> save.setEnabled(!materialSelect.isEmpty() && !machineSelect.isEmpty()));
+        materialSelect.addValueChangeListener(e -> save.setEnabled(!materialSelect.isEmpty() && !machineSelect.isEmpty()));
 
 
         /*final HorizontalLayout horizontalLayout = new HorizontalLayout(machineSelect, materialSelect);
@@ -173,8 +177,8 @@ public class ManufactureForm extends Div {
 
         //binder.bindInstanceFields(this);
         binder.addStatusChangeListener(event -> {
-          //  final boolean isValid = !event.hasValidationErrors();
-         //   final boolean hasChanges = binder.hasChanges();
+            //  final boolean isValid = !event.hasValidationErrors();
+            //   final boolean hasChanges = binder.hasChanges();
             //   discard.setEnabled(hasChanges);
         });
 
@@ -190,7 +194,7 @@ public class ManufactureForm extends Div {
         });
         save.setEnabled(false);
         save.addClickShortcut(Key.KEY_S, KeyModifier.CONTROL);
-      //  content.add(save);
+        //  content.add(save);
 
 
 /*
@@ -206,12 +210,12 @@ public class ManufactureForm extends Div {
         getElement()
                 .addEventListener("keydown", event -> viewLogic.cancel())
                 .setFilter("event.key == 'Escape'");
-      //  content.add(cancel);
+        //  content.add(cancel);
 
 
-        final HorizontalLayout horizontalLayout = new HorizontalLayout(  cancel ,save);
+        final HorizontalLayout horizontalLayout = new HorizontalLayout(cancel, save);
         horizontalLayout.setWidth("100%");
-        horizontalLayout.setFlexGrow(1,  cancel ,save);
+        horizontalLayout.setFlexGrow(1, cancel, save);
         content.add(horizontalLayout);
 
 
@@ -250,6 +254,8 @@ public class ManufactureForm extends Div {
         } catch (Exception e) {
 
         }
+
+        findMachine(editItem);
     }
 
     public void emulateManufactureWork() {
@@ -307,18 +313,30 @@ public class ManufactureForm extends Div {
 
     private void useMaterial() {
         Material material = materialSelect.getValue();
-        material.setUsed(material.getUsed()+item.getHeight()*item.getQuantity());
-        material.setRemains(material.getLength() - (item.getHeight()*item.getQuantity()));
+        material.setUsed(material.getUsed() + item.getHeight() * item.getQuantity());
+        material.setRemains(material.getLength() - (item.getHeight() * item.getQuantity()));
         materialService.save(material);
     }
 
 
+    private void changeOrderState() {
+        Optional<Order> order = orderService.findById(item.getOrderId());
+        order.get().setState(OrderState.READY);
+        orderService.saveOrder(order.get());
 
-    private void changeOrderState(){
-       Optional<Order> order =  orderService.findById(item.getOrderId());
-       order.get().setState(OrderState.READY);
-       orderService.saveOrder(order.get());
+        //   item.setOrderType(OrderType.MANUFACTURED);
+    }
 
-    //   item.setOrderType(OrderType.MANUFACTURED);
+    private void findMachine(OrderItem editItem) {
+        machineSelect.clear();
+        try {
+            if (machineService != null && editItem != null) {
+                List<Machine> machine = machineService.findAll();
+                machine.forEach(item -> {
+                    if (item.getWaveHeight().getHeight().equals(editItem.getProduct().getName().replace("Профнастил ", "")))
+                        machineSelect.setValue(item);
+                });
+            }
+        }catch (Exception e){}
     }
 }

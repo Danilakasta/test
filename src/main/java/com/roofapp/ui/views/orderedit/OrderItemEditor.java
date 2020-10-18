@@ -232,7 +232,8 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         //   products.setRequired(true);
 
 
-        price.setEnabled(false);
+      //  price.setEnabled(false);
+        price.setReadOnly(true);
         price.setLabel("Цена");
         binder.forField(price).bind("price");
 
@@ -264,13 +265,18 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
     private void setMaterialSquaring() {
         Product product = products.getValue();
         Double heightVal = height.getValue();
-        if (product != null && product.getSquareMeters() != null && heightVal != null && amount != null)
-            materialSquaring.setText(String.format("%.2f", product.getSquareMeters() * heightVal * amount.getValue()) + " кв.м.");
+        if (product != null && heightVal != null && amount != null){
+            if (product.getSquareMeters() != null)
+                materialSquaring.setText(String.format("%.2f", product.getSquareMeters() * heightVal * amount.getValue()) + " кв.м.");
+
+            if (product.getType().equals(ProductType.ADDITIONAL_ELEMENTS))
+                materialSquaring.setText(String.format("%.2f", calculateAdditionalWidth()/1000 * heightVal * amount.getValue()) + " кв.м.");
+        }
     }
 
     private void setAdditionalLength(ComponentValueChangeEvent event) {
         Double result = calculateAdditionalWidth();
-        comment.setValue(result + " мм " +  "1/"+ Helper.aroundToTheWhole((products.getValue().getWidth()* 1000) / result) + " листа");
+        comment.setValue(result + " мм " + "1/" + Helper.aroundToTheWhole((products.getValue().getWidth() * 1000) / result) + " листа");
     }
 
     private Double calculateAdditionalWidth() {
@@ -309,7 +315,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
                     }
                 } else if (product.getType().equals(ProductType.ADDITIONAL_ELEMENTS)) {
                     if (!ObjectUtils.isEmpty(height.getValue()) && !ObjectUtils.isEmpty(product.getSquareMeters())) {
-                        totalPrice = new BigDecimal(selectedAmount * (findProductPrice()) * calculateAdditionalWidth()/1000 * height.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+                        totalPrice = new BigDecimal(selectedAmount * (findProductPrice()) * calculateAdditionalWidth() / 1000 * height.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
 
                     }
                 } else {
