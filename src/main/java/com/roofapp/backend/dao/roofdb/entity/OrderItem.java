@@ -1,12 +1,9 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.roofapp.backend.dao.roofdb.*;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;

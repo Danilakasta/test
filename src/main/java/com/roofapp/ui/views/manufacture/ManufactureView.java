@@ -59,7 +59,6 @@ public class ManufactureView extends HorizontalLayout
         form = new ManufactureForm(viewLogic,  itemService,machineService,materialService,warehouseItemService,orderService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add(new H2(this.VIEW_NAME));
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
         barAndGridLayout.setFlexGrow(1, grid);

@@ -1,50 +1,37 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
-import com.roofapp.backend.dao.roofdb.MachineType;
-import com.roofapp.backend.dao.roofdb.WaveHeight;
-import com.roofapp.backend.dao.roofdb.Width;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import lombok.Data;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
-
+@EqualsAndHashCode
+@ToString
 public class Machine extends AbstractEntity {
 
-
+    @NotNull(message = "Заполните тип станка")
     private String name;
 
-    private int weight = 0;
-
+    @NotNull(message = "Заполнитедлинну стана")
     private int length = 0;
 
-    @NotNull
-    private MachineType type;
 
-    @NotNull
-    private Width width = Width.W28;
-
-    @NotNull
-    @Column(name = "wave_height")
-    private WaveHeight waveHeight;
-
-    //Торцовка
-    private Integer trimming;
-
-    //Запрещеные размеры
-    @Column(name = "forbidden_size")
-    private ForbiddenSize forbiddenSize;
-
-    //Ширина изделия
-    @Column(name = "product_width")
-
-    private Integer productWidth;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinTable(name = "machine_width",
+            joinColumns = @JoinColumn(name = "machine_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "width_id", nullable = false))
+    @NotNull(message = "Заполните допустимые толщины")
+    private Set<Width> allowableSize = new HashSet<>();
 
     @Override
     public String toString() {
-        return name  +" "+ type.toString()+" Волна "+waveHeight.toString();
+        return name;
     }
 }

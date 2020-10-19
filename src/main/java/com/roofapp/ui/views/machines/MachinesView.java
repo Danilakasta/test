@@ -1,6 +1,7 @@
 package com.roofapp.ui.views.machines;
 
 import com.roofapp.backend.dao.roofdb.entity.Machine;
+import com.roofapp.backend.service.GuidesService;
 import com.roofapp.backend.service.MachineService;
 import com.roofapp.ui.MainLayout;
 import com.roofapp.ui.dataproviders.GridDataProvider;
@@ -39,13 +40,13 @@ public class MachinesView extends HorizontalLayout
     private final MachineForm form;
     private TextField filter;
 
-    private final MachineViewLogic viewLogic = new MachineViewLogic(this);
+    private final MachineViewLogic viewLogic ;
 
     private Button newProduct;
 
 
 
-    public MachinesView(MachineService machineService) {
+    public MachinesView(MachineService machineService, GuidesService guidesService) {
        // this.machineService = machineService;
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();
@@ -53,17 +54,17 @@ public class MachinesView extends HorizontalLayout
         final HorizontalLayout topLayout = createTopBar();
         dataProvider = new GridDataProvider(machineService);
 
+        viewLogic = new MachineViewLogic(this,machineService);
+
         grid = new MachinesGrid();
         grid.setDataProvider(this.dataProvider);
 
         grid.asSingleSelect().addValueChangeListener(
                 event -> viewLogic.rowSelected(event.getValue()));
 
-        form = new MachineForm(viewLogic);
+        form = new MachineForm(viewLogic,guidesService);
 
         final VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add(new H2(this.VIEW_NAME));
-
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
         barAndGridLayout.setFlexGrow(1, grid);

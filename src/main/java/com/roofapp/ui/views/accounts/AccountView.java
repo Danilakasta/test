@@ -65,7 +65,6 @@ public class AccountView extends HorizontalLayout
         form = new AccountForm(viewLogic, service,contractorService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add( new H4(this.VIEW_NAME));
 
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);

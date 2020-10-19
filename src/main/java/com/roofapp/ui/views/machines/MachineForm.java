@@ -2,8 +2,9 @@ package com.roofapp.ui.views.machines;
 
 import com.roofapp.backend.dao.roofdb.MachineType;
 import com.roofapp.backend.dao.roofdb.WaveHeight;
-import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.Machine;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
+import com.roofapp.backend.service.GuidesService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -18,8 +19,16 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.gatanaso.MultiselectComboBox;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * A form for editing a single Machine.
@@ -31,10 +40,7 @@ public class MachineForm extends Div {
     private VerticalLayout content;
     private TextField name;
     private IntegerField length;
-    private Select<MachineType> type;
-    private Select<Width> width;
-    private Select<WaveHeight> waveHeight;
-    private IntegerField trimming;
+    private MultiselectComboBox<Width> allowableSize;
 
     private Binder<Machine> binder;
     private Machine currentMachine;
@@ -47,16 +53,13 @@ public class MachineForm extends Div {
 
 
     private final MachineViewLogic viewLogic;
-
-  //  public void setViewLogic(MachineViewLogic viewLogic) {
-     //   this.viewLogic = viewLogic;
-   // }
-
+    private final GuidesService guidesService;
 
 
     @Autowired
-    public MachineForm(MachineViewLogic viewLogic) {
+    public MachineForm(MachineViewLogic viewLogic, GuidesService guidesService) {
         this.viewLogic = viewLogic;
+        this.guidesService = guidesService;
         addFormItems();
         setBinder();
         addButtonBar();
@@ -71,53 +74,24 @@ public class MachineForm extends Div {
         content.addClassName("product-form-content");
         add(content);
 
-        name = new TextField("Название");
-        name.setWidth("50%");
+        name = new TextField("Тип станка");
+        name.setWidth("100%");
         name.setRequired(true);
-        name.setValueChangeMode(ValueChangeMode.EAGER);
+        content.add(name);
 
-        waveHeight = new Select<>();
-        waveHeight.setLabel("Высота волны");
-        waveHeight.setWidth("25%");
-        waveHeight.setItems(WaveHeight.values());
-
-        type = new Select<>();
-        type.setLabel("Тип проката");
-        type.setWidth("25%");
-        type.setItems(MachineType.values());
-
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(name, waveHeight, type);
-        horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(1, name, waveHeight, type);
-        content.add(horizontalLayout2);
-
-
-        width = new Select<>();
-        width.setLabel("Допустимая толщина мет");
-        width.setWidth("100%");
-        width.setItems(Width.values());
-
-        // content.add(materialColor);
-        length = new IntegerField("Длинна стана м.");
+        length = new IntegerField("Длинна стана");
         length.setWidth("100%");
         length.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         length.setValueChangeMode(ValueChangeMode.EAGER);
+        length.setSuffixComponent(new Span("м."));
+        content.add(length);
 
-        final HorizontalLayout horizontalLayout3 = new HorizontalLayout(width, length);
-        horizontalLayout3.setWidth("100%");
-        horizontalLayout3.setFlexGrow(1, width, length);
-        content.add(horizontalLayout3);
+        allowableSize = new MultiselectComboBox();
+        allowableSize.setLabel("Допустимые толщины");
+        allowableSize.setWidth("200px");
+        allowableSize.setItems(guidesService.getAllWidth());
+        content.add(allowableSize);
 
-
-        trimming = new IntegerField("Торцовка");
-        trimming.setWidth("50%");
-        trimming.setSuffixComponent(new Span("см."));
-        trimming.setValueChangeMode(ValueChangeMode.EAGER);
-
-        final HorizontalLayout horizontalLayout4 = new HorizontalLayout(trimming);
-        horizontalLayout4.setWidth("50%");
-        horizontalLayout4.setFlexGrow(1, trimming);
-        content.add(horizontalLayout4);
 
     }
 
@@ -125,8 +99,6 @@ public class MachineForm extends Div {
         binder = new BeanValidationBinder<>(Machine.class);
         binder.bindInstanceFields(this);
 
-
-        // enable/disable save button while editing
         binder.addStatusChangeListener(event -> {
             final boolean isValid = !event.hasValidationErrors();
             final boolean hasChanges = binder.hasChanges();

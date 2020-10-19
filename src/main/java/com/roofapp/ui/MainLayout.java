@@ -30,6 +30,8 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
@@ -84,71 +86,84 @@ public class MainLayout extends AppLayout implements RouterLayout {
         //  top.add(image, title);
         top.add(title);
         addToNavbar(top);
+
+        Tabs tabs = new Tabs();
+        tabs.setOrientation(Tabs.Orientation.VERTICAL);
+        tabs.setClassName("menu-link");
+
+     /*    RouterLink routerLink = new RouterLink("Заказы", OrderView.class);
+        routerLink.add(VaadinIcon.EDIT.create());
+        Tab tab = new Tab(routerLink);
+        tabs.add(tab);
+
+        addToDrawer( tabs);
+*/
+
         if (currentUser.getUser().getRole().equals(Role.ADMIN) ||
                 currentUser.getUser().getRole().equals(Role.DIRECTOR) ||
                 currentUser.getUser().getRole().equals(Role.MANAGER))
-            addToDrawer(createMenuLink(OrderView.class, "Заказы",
+            tabs.add(createMenuLink(OrderView.class, "Заказы",
                     VaadinIcon.EDIT.create()));
         if (currentUser.getUser().getRole().equals(Role.ADMIN)
                 || currentUser.getUser().getRole().equals(Role.DIRECTOR)
                 || currentUser.getUser().getRole().equals(Role.MANAGER))
-            addToDrawer(createMenuLink(ContractorsView.class, ContractorsView.VIEW_NAME,
+            tabs.add(createMenuLink(ContractorsView.class, ContractorsView.VIEW_NAME,
                     VaadinIcon.USER_CARD.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN)
                 || currentUser.getUser().getRole().equals(Role.DIRECTOR)
                 || currentUser.getUser().getRole().equals(Role.MANAGER))
-            addToDrawer(createMenuLink(AccountView.class, AccountView.VIEW_NAME,
+            tabs.add(createMenuLink(AccountView.class, AccountView.VIEW_NAME,
                     VaadinIcon.CASH.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN)
-                || currentUser.getUser().getRole().equals(Role.DIRECTOR) )
-            addToDrawer(createMenuLink(ProductView.class, ProductView.VIEW_NAME,
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR))
+            tabs.add(createMenuLink(ProductView.class, ProductView.VIEW_NAME,
                     VaadinIcon.BARCODE.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN)
-                || currentUser.getUser().getRole().equals(Role.DIRECTOR) )
-            addToDrawer(createMenuLink(ProductAmountView.class, ProductAmountView.VIEW_NAME,
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR))
+            tabs.add(createMenuLink(ProductAmountView.class, ProductAmountView.VIEW_NAME,
                     VaadinIcon.TABLE.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN)
-                || currentUser.getUser().getRole().equals(Role.DIRECTOR) )
-            addToDrawer(createMenuLink(MaterialsView.class, MaterialsView.VIEW_NAME,
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR))
+            tabs.add(createMenuLink(MaterialsView.class, MaterialsView.VIEW_NAME,
                     VaadinIcon.VIEWPORT.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN)
-                || currentUser.getUser().getRole().equals(Role.DIRECTOR) )
-            addToDrawer(createMenuLink(MachinesView.class, MachinesView.VIEW_NAME,
+                || currentUser.getUser().getRole().equals(Role.DIRECTOR))
+            tabs.add(createMenuLink(MachinesView.class, MachinesView.VIEW_NAME,
                     VaadinIcon.WORKPLACE.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN)
                 || currentUser.getUser().getRole().equals(Role.DIRECTOR) ||
                 currentUser.getUser().getRole().equals(Role.MACHINE_ENGINEER))
-            addToDrawer(createMenuLink(ManufactureView.class, ManufactureView.VIEW_NAME,
+            tabs.add(createMenuLink(ManufactureView.class, ManufactureView.VIEW_NAME,
                     VaadinIcon.ADD_DOCK.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN)
                 || currentUser.getUser().getRole().equals(Role.DIRECTOR) ||
                 currentUser.getUser().getRole().equals(Role.MACHINE_ENGINEER))
-            addToDrawer(createMenuLink(WarehouseView.class, WarehouseView.VIEW_NAME,
+            tabs.add(createMenuLink(WarehouseView.class, WarehouseView.VIEW_NAME,
                     VaadinIcon.STORAGE.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN))
-            addToDrawer(createMenuLink(UserView.class, UserView.VIEW_NAME,
+            tabs.add(createMenuLink(UserView.class, UserView.VIEW_NAME,
                     VaadinIcon.USERS.create()));
 
         //   addToDrawer(createMenuLink(DeliveriesView.class, DeliveriesView .VIEW_NAME,
         //         VaadinIcon.INFO_CIRCLE.create()));
-        if (currentUser.getUser().getRole().equals(Role.ADMIN)||
+        if (currentUser.getUser().getRole().equals(Role.ADMIN) ||
                 currentUser.getUser().getRole().equals(Role.DIRECTOR))
-            addToDrawer(createMenuLink(ConcurrentProductView.class, ConcurrentProductView.VIEW_NAME,
+            tabs.add(createMenuLink(ConcurrentProductView.class, ConcurrentProductView.VIEW_NAME,
                     VaadinIcon.CASH.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN))
-            addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
+            tabs.add(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
                     VaadinIcon.INFO_CIRCLE.create()));
 
-
+        addToDrawer(tabs);
 
 
         // Create logout button but don't add it yet; admin view might be added
@@ -166,15 +181,16 @@ public class MainLayout extends AppLayout implements RouterLayout {
         UI.getCurrent().navigate("");
     }
 
-    private RouterLink createMenuLink(Class<? extends Component> viewClass,
-                                      String caption, Icon icon) {
+    private Tab createMenuLink(Class<? extends Component> viewClass,
+                               String caption, Icon icon) {
         final RouterLink routerLink = new RouterLink(null, viewClass);
-        routerLink.setClassName("menu-link");
+      //  routerLink.setClassName("menu-link");
         routerLink.add(icon);
         routerLink.add(new Span(caption));
-        icon.setSize("24px");
-        return routerLink;
+        icon.setSize("25px");
+        return new Tab(routerLink);
     }
+
 
     private Button createMenuButton(String caption, Icon icon) {
         final Button routerButton = new Button(caption);

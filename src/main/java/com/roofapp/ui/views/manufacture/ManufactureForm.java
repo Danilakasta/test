@@ -333,7 +333,7 @@ public class ManufactureForm extends Div {
             if (machineService != null && editItem != null) {
                 List<Machine> machine = machineService.findAll();
                 machine.forEach(item -> {
-                    if (item.getWaveHeight().getHeight().equals(editItem.getProduct().getName().replace("Профнастил ", "")))
+                    if (item.getName().equals(editItem.getProduct().getName().replace("Профнастил ", "")))
                         machineSelect.setValue(item);
                 });
             }

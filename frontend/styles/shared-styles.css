@@ -33,69 +33,68 @@ body {
 }
 
 .menu-link {
-    display: block;
-    margin: 0 auto;
-    padding: 10px 37px;
-    transition: transform 300ms;
-
-    font-family: var(--lumo-font-family);
-    font-size: var(--lumo-font-size-m);
-    font-weight: 500;
-    color: var(--lumo-secondary-text-color);
+    /* display: block;
+    margin: 0 auto;*/
+    padding: 5px 37px;
+/*  transition: transform 300ms;
+  font-family: var(--lumo-font-family);
+  font-size: var(--lumo-font-size-m);
+  font-weight: 500;
+  color: var(--lumo-secondary-text-color);*/
 }
 
 .menu-link:hover {
-    text-decoration: none;
-    color: #b48484;
+  text-decoration: none;
+  color: #b48484;
 }
 
 .menu-link span {
-    padding-left: 5px;
+  padding-left: 5px;
 }
 
 .menu-button {
-    padding: 10px 42px;
-    color: var(--lumo-secondary-text-color);
+  padding: 10px 42px;
+  color: var(--lumo-secondary-text-color);
 }
 
 .product-form {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    height: 100%;
-    overflow: auto;
-    background: var(--lumo-base-color);
-    box-shadow: var(--overlay-box-shadow);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  overflow: auto;
+  background: var(--lumo-base-color);
+  box-shadow: var(--overlay-box-shadow);
 }
 
 .manufacture-form {
-    z-index: 2;
-    width: 600px;
-    height: 600px;
-    position: fixed;
-    top: 100px;
-    right: 0px;
-    left: 200px;
+  z-index: 2;
+  width: 600px;
+  height: 600px;
+  position: fixed;
+  top: 100px;
+  right: 0px;
+  left: 200px;
 
 
-    bottom: var(--vaadin-overlay-viewport-bottom);
+  bottom: var(--vaadin-overlay-viewport-bottom);
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: auto;
-    background: var(--lumo-base-color);
-    box-shadow: 0 0 0 1px var(--lumo-shade-5pct), var(--lumo-box-shadow-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  background: var(--lumo-base-color);
+  box-shadow: 0 0 0 1px var(--lumo-shade-5pct), var(--lumo-box-shadow-xl);
 }
 
 .product-form-content {
-    margin-top: var(--_vaadin-app-layout-navbar-offset-size);
+  margin-top: var(--_vaadin-app-layout-navbar-offset-size);
 }
 
-/* 
- * Special rules for narrow screens (responsive design rules)
- */
+/*
+* Special rules for narrow screens (responsive design rules)
+*/
 @media (max-width: 800px), (max-height: 600px) {
 
     /*

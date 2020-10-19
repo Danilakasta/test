@@ -3,7 +3,7 @@ package com.roofapp.ui.views.machines;
 //import com.roofapp.authentication.AccessControl;
 //import com.roofapp.authentication.AccessControlFactory;
 import com.roofapp.backend.dao.roofdb.entity.Machine;
-import com.roofapp.backend.dao.roofdb.entity.AbstractEntity;
+import com.roofapp.backend.service.MachineService;
 import com.vaadin.flow.component.UI;
 
 import java.io.Serializable;
@@ -20,9 +20,11 @@ import java.io.Serializable;
 public class MachineViewLogic<T> implements Serializable {
 
     private final MachinesView view;
+    private final MachineService machineService;
 
-    public MachineViewLogic( MachinesView simpleCrudView) {
+    public MachineViewLogic(MachinesView simpleCrudView, MachineService machineService) {
         view = simpleCrudView;
+        this.machineService = machineService;
     }
 
     /**
@@ -78,7 +80,7 @@ public class MachineViewLogic<T> implements Serializable {
                 // Ensure this is selected even if coming directly here from
                 // login
                 try {
-                    final int pid = Integer.parseInt(id);
+                    final Long pid = Long.parseLong(id);
                     final Machine Machine = findMachine(pid);
                     view.selectRow(Machine);
                 } catch (final NumberFormatException e) {
@@ -89,16 +91,16 @@ public class MachineViewLogic<T> implements Serializable {
         }
     }
 
-    private Machine findMachine(int id) {
-        return null;// DataService.get().getMachineById(MachineId);
+    private Machine findMachine(Long id) {
+        return machineService.findById(id);// DataService.get().getMachineById(MachineId);
     }
 
-    public void saveMachine(AbstractEntity item) {
+    public void saveMachine(Machine item) {
         final boolean newMachine = item.isNew();
         view.clearSelection();
-        //view.update(item);
+        view.update(item);
         setFragmentParameter("");
-        view.showNotification(item.getId()
+        view.showNotification(item.toString()
                 + (newMachine ? " добавлено" : " сохранено"));
     }
 
@@ -106,7 +108,7 @@ public class MachineViewLogic<T> implements Serializable {
         view.clearSelection();
         view.remove(Machine);
         setFragmentParameter("");
-        view.showNotification(Machine.getName() + " удалено");
+        view.showNotification(Machine.getName().toString() + " удалено");
     }
 
     public void editMachine(Machine Machine) {

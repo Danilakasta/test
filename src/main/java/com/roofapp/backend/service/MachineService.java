@@ -18,33 +18,33 @@ import java.util.Optional;
 public class MachineService implements FilterableCrudService<Machine>  {
 
 
-    private final MachineRepository MachineRepository;
+    private final MachineRepository machineRepository;
 
     @Autowired
     public MachineService(MachineRepository MachineRepository) {
-        this.MachineRepository = MachineRepository;
+        this.machineRepository = MachineRepository;
     }
 
     public void save(Machine Machine) {
-        MachineRepository.save(Machine);
+        machineRepository.save(Machine);
     }
 
 
     public List<Machine> findAll() {
-        return MachineRepository.findAll();
+        return machineRepository.findAllByOrderById();
     }
 
 
     public Machine findById(Long id) {
         try {
-            return MachineRepository.findById(id).get();
+            return machineRepository.findById(id).get();
         }catch (Exception e){
             return null;
         }
     }
 
     public void delete(Machine Machine) {
-       MachineRepository.delete(Machine);
+       machineRepository.delete(Machine);
     }
 
 
@@ -52,7 +52,7 @@ public class MachineService implements FilterableCrudService<Machine>  {
     public Page<Machine> findAnyMatching(Optional<String> filter, Pageable pageable) {
         if (filter.isPresent()) {
             String repositoryFilter = "%" + filter.get() + "%";
-            return MachineRepository.findByNameLikeIgnoreCase(repositoryFilter, pageable);
+            return machineRepository.findByNameLikeIgnoreCase(repositoryFilter, pageable);
         } else {
             return find(pageable);
         }
@@ -62,7 +62,7 @@ public class MachineService implements FilterableCrudService<Machine>  {
     public long countAnyMatching(Optional<String> filter) {
         if (filter.isPresent()) {
             String repositoryFilter = "%" + filter.get() + "%";
-            return MachineRepository.countByNameLikeIgnoreCase(repositoryFilter);
+            return machineRepository.countByNameLikeIgnoreCase(repositoryFilter);
         } else {
             return count();
         }
@@ -70,12 +70,12 @@ public class MachineService implements FilterableCrudService<Machine>  {
 
 
     public Page<Machine> find(Pageable pageable) {
-        return MachineRepository.findBy(pageable);
+        return machineRepository.findByOrderById(pageable);
     }
 
     @Override
     public JpaRepository<Machine, Long> getRepository() {
-        return MachineRepository;
+        return machineRepository;
     }
 
     @Override

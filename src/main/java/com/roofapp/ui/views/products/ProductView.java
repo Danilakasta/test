@@ -56,7 +56,6 @@ public class ProductView extends HorizontalLayout
         form = new ProductForm(viewLogic, productService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add(new H2(this.VIEW_NAME));
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
         barAndGridLayout.setFlexGrow(1, grid);

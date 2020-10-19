@@ -1,6 +1,7 @@
 package com.roofapp.ui.views.machines;
 
 import com.roofapp.backend.dao.roofdb.entity.Machine;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
@@ -27,47 +28,19 @@ public class MachinesGrid extends Grid<Machine> {
     }
 
    public void addGridColumn(){
-        addColumn(Machine::getName).setHeader("Название")
-                .setFlexGrow(20).setSortable(true).setKey("name");
+        addColumn(Machine::getName).setHeader("Тип станка").setWidth("100px")
+                .setFlexGrow(10).setSortable(true).setKey("name").setResizable(true);
 
-        final String widthTemplateTemplate = "[[item.waveHeight]]";
-        addColumn(TemplateRenderer.<Machine>of(widthTemplateTemplate)
-                .withProperty("waveHeight",
-                        item -> item.getWaveHeight().toString()))
-                .setHeader("Тип волны")
-                .setComparator(Comparator
-                        .comparing(Machine::getWaveHeight))
-                .setFlexGrow(5).setKey("waveHeight");
+       addColumn(Machine::getLength).setHeader("Длинна станка").setWidth("50px")
+               .setFlexGrow(5).setSortable(true).setKey("length").setResizable(true);
 
-
-        final String typeTemplate = "[[item.type]]";
-        addColumn(TemplateRenderer.<Machine>of(typeTemplate)
-                .withProperty("type",
-                        item ->  item.getType().toString()))
-                .setHeader("Тип проката")
-                .setComparator(Comparator
-                        .comparing(Machine::getType))
-                .setFlexGrow(5).setKey("type");
-
-        final String widthTemplate = "[[item.width]]";
-        addColumn(TemplateRenderer.<Machine>of(widthTemplate)
-                .withProperty("width",
-                        item -> item.getWidth().toString()))
-                .setHeader("Допуст.толщ.метала")
-                .setComparator(Comparator
-                        .comparing(Machine::getWidth))
-                .setFlexGrow(5).setKey("width");
-
-        addColumn(product -> product.getLength() == 0 ? "-"
-                : Integer.toString(product.getLength()))
-                .setHeader("Длина стана м.")
-                .setTextAlign(ColumnTextAlign.END)
-                .setComparator(
-                        Comparator.comparingInt(Machine::getLength))
-                .setFlexGrow(3).setKey("length");
-
-
-    }
+       addColumn(TemplateRenderer.<Machine>of("[[item.allowableSize]]")
+               .withProperty("allowableSize",
+                       machine -> machine.getAllowableSize().stream().min(Comparator.comparing(Width::getValue)).get()+"-"+
+                               machine.getAllowableSize().stream().max(Comparator.comparing(Width::getValue)).get()))
+               .setHeader("Допустимые толщины")
+               .setFlexGrow(5).setKey("allowableSize");
+   }
 
     @Override
     protected void onAttach(AttachEvent attachEvent) {
