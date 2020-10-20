@@ -28,10 +28,10 @@ public class MachinesGrid extends Grid<Machine> {
     }
 
    public void addGridColumn(){
-        addColumn(Machine::getName).setHeader("Тип станка").setWidth("100px")
+        addColumn(Machine::getName).setHeader("Тип станка").setWidth("50px")
                 .setFlexGrow(10).setSortable(true).setKey("name").setResizable(true);
 
-       addColumn(Machine::getLength).setHeader("Длинна станка").setWidth("50px")
+       addColumn(Machine::getLength).setHeader("Длинна станка").setWidth("20px")
                .setFlexGrow(5).setSortable(true).setKey("length").setResizable(true);
 
        addColumn(TemplateRenderer.<Machine>of("[[item.allowableSize]]")
@@ -50,6 +50,7 @@ public class MachinesGrid extends Grid<Machine> {
 
 
     public void refresh(Machine item) {
+
         getDataCommunicator().refresh(item);
     }
 

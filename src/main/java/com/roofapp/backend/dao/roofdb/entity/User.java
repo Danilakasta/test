@@ -120,4 +120,10 @@ public class User extends AbstractEntity {
 	public int hashCode() {
 		return Objects.hash(super.hashCode(), email, firstName, lastName, role, locked);
 	}
+
+	@Override
+	public String toString(){
+		return firstName +" "+ lastName +" "+ email;
+	}
+
 }

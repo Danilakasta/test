@@ -15,4 +15,5 @@ public interface MachineRepository extends JpaRepository<Machine, Long> {
     int countByNameLikeIgnoreCase(String name);
 
     List<Machine> findAllByOrderById();
+
 }

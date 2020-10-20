@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //https://vaadin.com/directory#addon/canvas:vaadin
@@ -18,7 +19,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * The entry point of the Spring Boot application.
  */
 ///@Profile("production")
-//@ComponentScan({"com.roofapp.backend.service", "com.roofapp.config"})
 
 @SpringBootApplication(scanBasePackageClasses = {SecurityConfiguration.class, MainLayout.class, Application.class,
         UserService.class }, exclude = ErrorMvcAutoConfiguration.class)

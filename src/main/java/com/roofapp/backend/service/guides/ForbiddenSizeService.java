@@ -1,8 +1,9 @@
-package com.roofapp.backend.service;
+package com.roofapp.backend.service.guides;
 
-import com.roofapp.backend.dao.roofdb.entity.ForbiddenSize;
+import com.roofapp.backend.dao.roofdb.entity.guides.ForbiddenSize;
 import com.roofapp.backend.dao.roofdb.entity.User;
 import com.roofapp.backend.dao.roofdb.repositories.ForbiddenSizeRepository;
+import com.roofapp.backend.service.FilterableCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -69,7 +70,7 @@ public class ForbiddenSizeService implements FilterableCrudService<ForbiddenSize
 
     @Override
     public List<ForbiddenSize> findAll() {
-        return null;
+        return forbiddenSizeRepository.findAll();
     }
 
     public List<ForbiddenSize> getFindAll() {

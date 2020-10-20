@@ -1,7 +1,7 @@
 package com.roofapp.ui.views.machines;
 
 import com.roofapp.backend.dao.roofdb.entity.Machine;
-import com.roofapp.backend.service.GuidesService;
+import com.roofapp.backend.service.guides.WidthGuideService;
 import com.roofapp.backend.service.MachineService;
 import com.roofapp.ui.MainLayout;
 import com.roofapp.ui.dataproviders.GridDataProvider;
@@ -10,7 +10,6 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -46,7 +45,7 @@ public class MachinesView extends HorizontalLayout
 
 
 
-    public MachinesView(MachineService machineService, GuidesService guidesService) {
+    public MachinesView(MachineService machineService, WidthGuideService guidesService) {
        // this.machineService = machineService;
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();

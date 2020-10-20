@@ -1,34 +1,23 @@
 package com.roofapp.ui.views.machines;
 
-import com.roofapp.backend.dao.roofdb.MachineType;
-import com.roofapp.backend.dao.roofdb.WaveHeight;
 import com.roofapp.backend.dao.roofdb.entity.Machine;
 import com.roofapp.backend.dao.roofdb.entity.guides.Width;
-import com.roofapp.backend.service.GuidesService;
+import com.roofapp.backend.service.guides.WidthGuideService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.gatanaso.MultiselectComboBox;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * A form for editing a single Machine.
@@ -53,11 +42,11 @@ public class MachineForm extends Div {
 
 
     private final MachineViewLogic viewLogic;
-    private final GuidesService guidesService;
+    private final WidthGuideService guidesService;
 
 
     @Autowired
-    public MachineForm(MachineViewLogic viewLogic, GuidesService guidesService) {
+    public MachineForm(MachineViewLogic viewLogic, WidthGuideService guidesService) {
         this.viewLogic = viewLogic;
         this.guidesService = guidesService;
         addFormItems();

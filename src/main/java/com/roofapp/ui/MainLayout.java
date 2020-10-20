@@ -9,6 +9,7 @@ import com.roofapp.app.security.CurrentUser;
 import com.roofapp.backend.dao.roofdb.Role;
 import com.roofapp.ui.views.ProductAmount.ProductAmountView;
 import com.roofapp.ui.views.accounts.AccountView;
+import com.roofapp.ui.views.guides.GuidesView;
 import com.roofapp.ui.views.machines.MachinesView;
 import com.roofapp.ui.views.manufacture.ManufactureView;
 import com.roofapp.ui.views.marketAnalysis.ConcurrentProductView;
@@ -148,6 +149,8 @@ public class MainLayout extends AppLayout implements RouterLayout {
             tabs.add(createMenuLink(WarehouseView.class, WarehouseView.VIEW_NAME,
                     VaadinIcon.STORAGE.create()));
 
+
+
         if (currentUser.getUser().getRole().equals(Role.ADMIN))
             tabs.add(createMenuLink(UserView.class, UserView.VIEW_NAME,
                     VaadinIcon.USERS.create()));
@@ -158,6 +161,10 @@ public class MainLayout extends AppLayout implements RouterLayout {
                 currentUser.getUser().getRole().equals(Role.DIRECTOR))
             tabs.add(createMenuLink(ConcurrentProductView.class, ConcurrentProductView.VIEW_NAME,
                     VaadinIcon.CASH.create()));
+
+        if (currentUser.getUser().getRole().equals(Role.ADMIN))
+            tabs.add(createMenuLink(GuidesView.class, GuidesView.VIEW_NAME,
+                    VaadinIcon.COG.create()));
 
         if (currentUser.getUser().getRole().equals(Role.ADMIN))
             tabs.add(createMenuLink(AboutView.class, AboutView.VIEW_NAME,

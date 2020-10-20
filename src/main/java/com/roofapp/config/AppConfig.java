@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableScheduling
-public class appConfig {
+public class AppConfig {
 
 
 }
