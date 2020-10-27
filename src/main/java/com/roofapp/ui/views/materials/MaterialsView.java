@@ -2,6 +2,7 @@ package com.roofapp.ui.views.materials;
 
 import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.service.MaterialService;
+import com.roofapp.backend.service.guides.WidthGuideService;
 import com.roofapp.ui.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
@@ -41,7 +42,7 @@ public class MaterialsView extends HorizontalLayout
 
     private MaterialDataProvider dataProvider;
 
-    public MaterialsView(MaterialService materialService) {
+    public MaterialsView(MaterialService materialService, WidthGuideService widthGuideService) {
         this.productService = materialService;
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();
@@ -52,7 +53,7 @@ public class MaterialsView extends HorizontalLayout
         // Allows user to select a single row in the grid.
         grid.asSingleSelect().addValueChangeListener(
                 event -> viewLogic.rowSelected(event.getValue()));
-       form = new MaterialForm(viewLogic,materialService);
+       form = new MaterialForm(viewLogic,materialService,widthGuideService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);

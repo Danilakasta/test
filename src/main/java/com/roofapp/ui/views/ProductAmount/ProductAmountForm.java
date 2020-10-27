@@ -2,11 +2,12 @@ package com.roofapp.ui.views.ProductAmount;
 
 import com.roofapp.backend.dao.roofdb.MaterialClass;
 import com.roofapp.backend.dao.roofdb.MaterialCover;
-import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.ProductAmount;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
+import com.roofapp.backend.service.guides.WidthGuideService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -26,7 +27,6 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -123,8 +123,8 @@ public class ProductAmountForm extends Div {
     @Autowired
     public ProductAmountForm(ProductAmountViewLogic viewLogic,
                              ProductAmountService productAmountService,
-                             ProductService productService,
-                             MaterialService materialService) {
+                             MaterialService materialService,
+                             WidthGuideService widthGuideService) {
         this.productAmountService = productAmountService;
         this.materialService = materialService;
         setClassName("product-form");
@@ -145,7 +145,7 @@ public class ProductAmountForm extends Div {
         width = new Select<>();
         width.setWidth("100%");
         width.setLabel("Толщина метала");
-        width.setItems(Width.values());
+        width.setItems(widthGuideService.getAllWidth());
         width.addValueChangeListener(e -> calculateSelfPrice());
 
         materialClass = new Select<>();

@@ -4,6 +4,7 @@ import com.roofapp.backend.dao.roofdb.entity.ProductAmount;
 import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
+import com.roofapp.backend.service.guides.WidthGuideService;
 import com.roofapp.ui.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
@@ -46,7 +47,7 @@ public class ProductAmountView extends HorizontalLayout
 
     private ProductAmountDataProvider dataProvider;
 
-    public ProductAmountView(ProductAmountService  productAmountService, ProductService productService, MaterialService materialService) {
+    public ProductAmountView(ProductAmountService  productAmountService, ProductService productService, MaterialService materialService, WidthGuideService widthGuideService) {
         this.productAmountService = productAmountService;
         this.productService = productService;
         // Sets the width and the height of InventoryView to "100%".
@@ -58,7 +59,7 @@ public class ProductAmountView extends HorizontalLayout
         // Allows user to select a single row in the grid.
         grid.asSingleSelect().addValueChangeListener(
                 event -> viewLogic.rowSelected(event.getValue()));
-        form = new ProductAmountForm(viewLogic, productAmountService,productService,materialService);
+        form = new ProductAmountForm(viewLogic, productAmountService,materialService, widthGuideService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);

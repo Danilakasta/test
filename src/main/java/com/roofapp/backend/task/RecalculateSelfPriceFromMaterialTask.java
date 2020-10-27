@@ -30,7 +30,7 @@ public class RecalculateSelfPriceFromMaterialTask {
 
 
     @ConditionalOnProperty(value = "scheduling.enabled")
-  //  @Scheduled(fixedDelay = 6000)
+   // @Scheduled(fixedDelay = 6000)
     public void calculate() {
      //   List<Material> materials = materialService.findAllByCreatedAfter(new Date(System.currentTimeMillis() - 60000 * 10*10000));
 

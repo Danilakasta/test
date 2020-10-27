@@ -2,10 +2,10 @@ package com.roofapp.backend.service;
 
 import com.roofapp.backend.dao.roofdb.MaterialClass;
 import com.roofapp.backend.dao.roofdb.MaterialCover;
-import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.dao.roofdb.entity.ProductAmount;
 import com.roofapp.backend.dao.roofdb.entity.User;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.dao.roofdb.repositories.ProductAmountRepository;
 import com.roofapp.backend.utils.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Optional;

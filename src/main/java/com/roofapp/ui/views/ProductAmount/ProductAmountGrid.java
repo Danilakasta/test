@@ -36,8 +36,8 @@ public class ProductAmountGrid extends Grid<ProductAmount> {
                 .withProperty("width",
                         product -> product.getWidth().toString()))
                 .setHeader("Толщина метала")
-                .setComparator(Comparator
-                        .comparing(ProductAmount::getWidth))
+               /* .setComparator(Comparator
+                        .comparing(ProductAmount::getWidth))*/
                 .setFlexGrow(5).setKey("width");
 
 

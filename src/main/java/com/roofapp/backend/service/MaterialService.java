@@ -2,8 +2,8 @@ package com.roofapp.backend.service;
 
 import com.roofapp.backend.dao.roofdb.MaterialClass;
 import com.roofapp.backend.dao.roofdb.MaterialCover;
-import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.Material;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 
 import java.util.Date;
 import java.util.List;

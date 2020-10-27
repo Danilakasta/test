@@ -1,7 +1,6 @@
 package com.roofapp.ui.views.order.events;
 
-import com.roofapp.backend.dao.roofdb.Width;
-import com.roofapp.backend.dao.roofdb.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.ui.views.orderedit.OrderItemEditor;
 import com.vaadin.flow.component.ComponentEvent;
 

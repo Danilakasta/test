@@ -2,7 +2,7 @@ package com.roofapp.ui.views.marketAnalysis;
 
 import com.roofapp.backend.dao.roofdb.MaterialColor;
 import com.roofapp.backend.dao.roofdb.ProductType;
-import com.roofapp.backend.dao.roofdb.Width;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.dao.roofdb.entity.parser.SiteProduct;
 import com.roofapp.backend.service.SiteProductService;
 import com.vaadin.flow.component.Key;
@@ -140,7 +140,7 @@ public class ConcurrentProductForm extends Div {
         width = new Select<>();
         width.setLabel("Толщина");
         width.setWidth("100%");
-        width.setItems(Width.values());
+      //  width.setItems(Width.values());
         // content.add(materialColor);
 
         final HorizontalLayout horizontalLayout2 = new HorizontalLayout(type,

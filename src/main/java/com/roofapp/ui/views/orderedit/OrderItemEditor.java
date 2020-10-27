@@ -4,6 +4,7 @@ import com.roofapp.backend.dao.roofdb.*;
 import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.dao.roofdb.entity.OrderItem;
 import com.roofapp.backend.dao.roofdb.entity.Product;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
@@ -36,6 +37,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -152,8 +154,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             setPrice();
             materialCover.setItems(materials.stream()
                     .filter(i -> i.getWidth().equals(e.getValue()))
-                    .map(i -> i.getCover())
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.groupingBy(i->i.getCover())).keySet());
             materialClass.setItems(new ArrayList<>());
             materialColor.setItems(new ArrayList<>());
         });
@@ -167,8 +168,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             materialClass.setItems(materials.stream()
                     .filter(i -> i.getWidth().equals(width.getValue()))
                     .filter(i -> i.getCover().equals(e.getValue()))
-                    .map(i -> i.getMaterialClass())
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.groupingBy(i->i.getMaterialClass())).keySet());
             materialColor.setItems(new ArrayList<>());
 
         });
@@ -195,8 +195,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
                     .filter(i -> i.getWidth().equals(width.getValue()))
                     .filter(i -> i.getCover().equals(materialCover.getValue()))
                     .filter(i -> i.getMaterialClass().equals(e.getValue()))
-                    .map(i -> i.getMaterialColor())
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.groupingBy(i->i.getMaterialColor())).keySet());
         });
         materialClass.setRequired(true);
         binder.forField(materialClass).bind("materialClass");
@@ -276,7 +275,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
     private void setAdditionalLength(ComponentValueChangeEvent event) {
         Double result = calculateAdditionalWidth();
-        comment.setValue(result + " мм " + "1/" + Helper.aroundToTheWhole((products.getValue().getWidth() * 1000) / result) + " листа");
+        comment.setValue(result + " мм " + "1/" + Helper.aroundToTheWhole((products.getValue().getWidth().getValue() * 1000) / result) + " листа");
     }
 
     private Double calculateAdditionalWidth() {

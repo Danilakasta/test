@@ -1,13 +1,9 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
 import com.roofapp.backend.dao.roofdb.CargoType;
-import com.roofapp.backend.dao.roofdb.MaterialColor;
 import com.roofapp.backend.dao.roofdb.ProductType;
-import com.roofapp.backend.dao.roofdb.Width;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -40,8 +36,8 @@ public class Product extends AbstractEntity {
    // private MaterialColor materialColor = MaterialColor.RAL9016;
 
     //private Width width = Width.W28;
-
-    private Double width;
+    @ManyToOne( fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    private Width width;
 
    // м2 в 1п.м.
    @Column(name = "square_meters")

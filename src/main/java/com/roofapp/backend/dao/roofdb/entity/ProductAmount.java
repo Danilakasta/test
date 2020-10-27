@@ -1,11 +1,10 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
 import com.roofapp.backend.dao.roofdb.*;
-import com.roofapp.backend.dao.roofdb.Width;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -22,7 +21,7 @@ public class ProductAmount extends AbstractEntity {
  //   @JoinColumn(name="product_id",referencedColumnName = "id")
   //  private Product product;
 
-
+    @ManyToOne( fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private Width width ;
 
     @Column(name = "material_class")

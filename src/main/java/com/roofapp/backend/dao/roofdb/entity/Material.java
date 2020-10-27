@@ -1,17 +1,16 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
 import com.roofapp.backend.dao.roofdb.*;
-import com.roofapp.backend.dao.roofdb.Width;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "Materials")
 @Data
@@ -44,8 +43,8 @@ public class Material extends AbstractEntity {
     private MaterialClass materialClass ;
 
     //толшина
-    @NotNull
-    private Width width = Width.W28;
+    @ManyToOne( fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    private Width width ;
 
     @NotNull
     @Column(name = "width_fact")

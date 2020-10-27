@@ -57,8 +57,8 @@ public class MaterialsGrid extends Grid<Material> {
                 .withProperty("width",
                         Material -> Material.getWidth().toString()))
                 .setHeader("Толшина")
-                .setComparator(Comparator
-                        .comparing(Material::getWidth))
+             /*   .setComparator(Comparator
+                        .comparing(Material::getWidth))*/
                 .setFlexGrow(5).setKey("width");
 
 

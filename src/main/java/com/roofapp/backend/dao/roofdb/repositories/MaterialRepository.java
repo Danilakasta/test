@@ -2,10 +2,9 @@ package com.roofapp.backend.dao.roofdb.repositories;
 
 import com.roofapp.backend.dao.roofdb.MaterialClass;
 import com.roofapp.backend.dao.roofdb.MaterialCover;
-import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.Material;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.Date;
 import java.util.List;

@@ -3,9 +3,10 @@ package com.roofapp.ui.views.materials;
 import com.roofapp.backend.dao.roofdb.MaterialClass;
 import com.roofapp.backend.dao.roofdb.MaterialColor;
 import com.roofapp.backend.dao.roofdb.MaterialCover;
-import com.roofapp.backend.dao.roofdb.Width;
 import com.roofapp.backend.dao.roofdb.entity.Material;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.service.MaterialService;
+import com.roofapp.backend.service.guides.WidthGuideService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -121,7 +122,7 @@ public class MaterialForm extends Div {
     }
 
     @Autowired
-    public MaterialForm(MateriaslViewLogic viewLogic, MaterialService MaterialService) {
+    public MaterialForm(MateriaslViewLogic viewLogic, MaterialService MaterialService, WidthGuideService widthGuideService) {
         this.materialService = MaterialService;
         setClassName("product-form ");
 
@@ -188,7 +189,7 @@ public class MaterialForm extends Div {
         width = new Select<>();
         width.setLabel("Толщина теория");
         width.setWidth("100%");
-        width.setItems(Width.values());
+        width.setItems(widthGuideService.getAllWidth());
         width.addValueChangeListener(e -> {
             setTeorCoefficient();
         });
@@ -389,7 +390,7 @@ public class MaterialForm extends Div {
         Double teofCofDouble = 0D;
 
         if (!weightOfBay.isEmpty() && !width.isEmpty()) {
-            teofCofDouble = (weightOfBay.getValue() / width.getValue().getWidth() / weightOfMetalConst / specificWeightConst) * 1000;
+            teofCofDouble = (weightOfBay.getValue() / width.getValue().getValue() / weightOfMetalConst / specificWeightConst) * 1000;
             teorCoefficient.setValue(aroundDouble(teofCofDouble));
         } else
             teorCoefficient.setValue(teofCofDouble);
