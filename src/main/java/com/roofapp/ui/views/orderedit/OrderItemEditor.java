@@ -275,7 +275,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
     private void setAdditionalLength(ComponentValueChangeEvent event) {
         Double result = calculateAdditionalWidth();
-        comment.setValue(result + " мм " + "1/" + Helper.aroundToTheWhole((products.getValue().getWidth().getValue() * 1000) / result) + " листа");
+        comment.setValue(result + " мм " + "1/" + Helper.aroundToTheWhole((products.getValue().getWidth() * 1000) / result) + " листа");
     }
 
     private Double calculateAdditionalWidth() {
