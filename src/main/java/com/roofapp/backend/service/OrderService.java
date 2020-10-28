@@ -15,8 +15,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+//import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
@@ -24,6 +26,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 
 @Service
+@Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
 public class OrderService implements CrudService<Order> {
 
 	private final OrderRepository orderRepository;
@@ -39,7 +42,7 @@ public class OrderService implements CrudService<Order> {
 	private static final Set<OrderState> notAvailableStates = Collections.unmodifiableSet(
 			EnumSet.complementOf(EnumSet.of(OrderState.DELIVERED, OrderState.READY, OrderState.CANCELLED)));
 
-	@Transactional(rollbackOn = Exception.class)
+//	@Transactional(rollbackOn = Exception.class)
 	public Order saveOrder(User currentUser, Long id, BiConsumer<User, Order> orderFiller) {
 		Order order;
 		if (id == null) {
@@ -51,17 +54,18 @@ public class OrderService implements CrudService<Order> {
 		return orderRepository.save(order);
 	}
 
-	@Transactional(rollbackOn = Exception.class)
+	//@Transactional(rollbackOn = Exception.class)
 	public Order saveOrder(Order order) {
 		return orderRepository.save(order);
 	}
 
-	@Transactional(rollbackOn = Exception.class)
+//	@Transactional(rollbackOn = Exception.class)
 	public Order addComment(User currentUser, Order order, String comment) {
 		order.addHistoryItem(currentUser, comment);
 		return orderRepository.save(order);
 	}
 
+	@Transactional
 	public Page<Order> findAnyMatchingAfterDueDate(Optional<String> optionalFilter,
                                                    Optional<LocalDate> optionalFilterDate, Pageable pageable) {
 		if (optionalFilter.isPresent() && !optionalFilter.get().isEmpty()) {
@@ -80,11 +84,11 @@ public class OrderService implements CrudService<Order> {
 		}
 	}
 	
-	@Transactional
+	//@Transactional
 	public List<OrderSummary> findAnyMatchingStartingToday() {
 		return orderRepository.findByDueDateGreaterThanEqual(LocalDate.now());
 	}
-
+	@Transactional
 	public long countAnyMatchingAfterDueDate(Optional<String> optionalFilter, Optional<LocalDate> optionalFilterDate) {
 		if (optionalFilter.isPresent() && optionalFilterDate.isPresent()) {
 			return orderRepository.countByCustomerNameContainingIgnoreCaseAndDueDateAfter(optionalFilter.get(),
@@ -174,7 +178,7 @@ public class OrderService implements CrudService<Order> {
 	}
 
 	@Override
-	@Transactional
+//	@Transactional
 	public Order createNew(User currentUser) {
 		Order order = new Order(currentUser);
 		order.setDueTime(LocalTime.of(16, 0));
@@ -183,7 +187,7 @@ public class OrderService implements CrudService<Order> {
 	}
 
 
-	@Transactional
+	//@Transactional
 	public void createNewManufactureOrder(Order order) {
 
 		if(order.getState().equals(OrderState.NEW)) {
@@ -225,6 +229,7 @@ public class OrderService implements CrudService<Order> {
 	}
 
 	@Override
+	@Transactional
 	public List<Order> findAll() {
 		return orderRepository.findAll();
 	}

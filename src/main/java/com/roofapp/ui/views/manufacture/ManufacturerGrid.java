@@ -23,44 +23,43 @@ public class ManufacturerGrid extends Grid<OrderItem> {
     public ManufacturerGrid() {
 
         setSizeFull();
-        addColumn(orderItems-> Helper.dateFormat(orderItems.getOrder().getCreated())).setHeader("Дата заказа")
+      /*  addColumn(orderItems-> Helper.dateFormat(orderItems.getOrder().getCreated())).setHeader("Дата заказа")
                 .setFlexGrow(5).setSortable(true).setKey("created").setResizable(true);
 
 
-        addColumn(item-> Helper.dateFormat(item.getOrder().getDone())).setHeader("Дата готовности")
-                .setFlexGrow(5).setSortable(true).setKey("modified").setResizable(true);
-
         addColumn(item-> item.getOrder().getCustomer()).setHeader("Клиент")
                 .setFlexGrow(5).setSortable(true).setKey("castomer").setResizable(true);
-
+*/
         addColumn(orderItems -> orderItems.getId())
                 .setHeader("id ордера на производство")
-                .setFlexGrow(3).setKey("id");
+                .setFlexGrow(3).setKey("id").setResizable(true);;
 
         addColumn(orderItems -> orderItems.getProduct() )
                 .setHeader("Название продукта")
-                .setFlexGrow(3).setKey("name");
+                .setFlexGrow(3).setKey("name").setResizable(true);;
 
         addColumn(orderItems -> orderItems.getHeight() )
                 .setHeader("Длинна")
-                .setFlexGrow(3).setKey("height");
+                .setFlexGrow(3).setKey("height").setResizable(true);;
 
         addColumn(orderItems -> orderItems.getQuantity() )
                 .setHeader("кол-во")
-                .setFlexGrow(3).setKey("quantity");
+                .setFlexGrow(3).setKey("quantity").setResizable(true);;
 
         addColumn(orderItems -> orderItems.getMaterialCover() )
                 .setHeader("Покрытие")
-                .setFlexGrow(3).setKey("MaterialCover");
+                .setFlexGrow(3).setKey("MaterialCover").setResizable(true);;
 
         addColumn(orderItems -> orderItems.getMaterialColor() )
                 .setHeader("Цвет")
-                .setFlexGrow(3).setKey("MaterialColor");
+                .setFlexGrow(3).setKey("MaterialColor").setResizable(true);;
 
         addColumn(orderItems -> orderItems.getMaterialClass() )
                 .setHeader("Класс")
-                .setFlexGrow(3).setKey("MaterialClass");
+                .setFlexGrow(3).setKey("MaterialClass").setResizable(true);;
 
+     /*   addColumn(item-> Helper.dateFormat(item.getOrder().getDone())).setHeader("Дата готовности")
+                .setFlexGrow(5).setSortable(true).setKey("done").setResizable(true);*/
 
         UI.getCurrent().getPage().addBrowserWindowResizeListener(
                 e -> setColumnVisibility(e.getWidth()));

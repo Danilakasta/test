@@ -2,13 +2,19 @@ package com.roofapp.backend.dao.roofdb.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @MappedSuperclass
-@EqualsAndHashCode
+//@EqualsAndHashCode
 //@Data
+@Getter
+@Setter
+
 public abstract class AbstractEntity implements Serializable {
 
 	@Id
@@ -37,5 +43,18 @@ public abstract class AbstractEntity implements Serializable {
 	}
 
 	public AbstractEntity() {
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		AbstractEntity that = (AbstractEntity) o;
+		return Objects.equals(id, that.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
 	}
 }

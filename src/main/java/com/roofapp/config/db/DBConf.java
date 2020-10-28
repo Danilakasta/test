@@ -83,8 +83,8 @@ public abstract class DBConf {
       //  properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
       // properties.put("hibernate.current_session_context_class", env
          //      .getProperty("hibernate.current_session_context_class"));
-      //  properties.put("hibernate.enable_lazy_load_no_trans", env
-      //          .getProperty("hibernate.enable_lazy_load_no_trans"));
+        properties.put("hibernate.enable_lazy_load_no_trans", env
+                .getProperty("hibernate.enable_lazy_load_no_trans"));
       //  properties.put("hibernate.jdbc.lob.non_contextual_creation", env
          //       .getProperty("hibernate.jdbc.lob.non_contextual_creation"));
 
@@ -101,6 +101,8 @@ public abstract class DBConf {
                 .getProperty("hibernate.c3p0.max_statements"));
         properties.put("hibernate.proc.param_null_passing", env
                 .getProperty("hibernate.proc.param_null_passing", "true"));
+
+
 
 
         // switch fast or slow hibernate initialization. for production must be true
