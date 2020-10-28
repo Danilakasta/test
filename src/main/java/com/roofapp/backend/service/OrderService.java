@@ -186,12 +186,12 @@ public class OrderService implements CrudService<Order> {
 	@Transactional
 	public void createNewManufactureOrder(Order order) {
 
-		if(order.getState().equals(OrderState.MANUFACTURE)) {
+		if(order.getState().equals(OrderState.NEW)) {
 			Order manufactureOrder = new Order(null);
 			manufactureOrder.setDueDate(order.getDueDate());
 			manufactureOrder.setDueTime(order.getDueTime());
 			manufactureOrder.setCustomer(order.getCustomer());
-			manufactureOrder.setState(OrderState.NEW);
+			manufactureOrder.setState(OrderState.MANUFACTURE);
 			manufactureOrder.setParentId(order.getId());
 			manufactureOrder.setPickupLocation(pickupLocationService.findById(3L).get());
 			manufactureOrder.setOrderType(OrderType.MANUFACTURED);

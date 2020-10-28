@@ -245,7 +245,7 @@ public class ManufactureForm extends Div {
         binder.readBean(editItem);
 
         try {
-            orderInfo.setText("Заказ №" + editItem.getOrderId().toString());
+            orderInfo.setText("Заказ №" + editItem.getOrder().getId().toString());
             subOrderInfo.setText("Наряд на производство №" + editItem.getId().toString());
             productInfo.setText(editItem.getProduct().getName() + " Ширина заданная - " + editItem.getProduct().getWidth());
             sizeInfo.setText("Длинна - " + editItem.getHeight() + " Кол-во - " + editItem.getQuantity());
@@ -320,7 +320,7 @@ public class ManufactureForm extends Div {
 
 
     private void changeOrderState() {
-        Optional<Order> order = orderService.findById(item.getOrderId());
+        Optional<Order> order = orderService.findById(item.getOrder().getId());
         order.get().setState(OrderState.READY);
         orderService.saveOrder(order.get());
 

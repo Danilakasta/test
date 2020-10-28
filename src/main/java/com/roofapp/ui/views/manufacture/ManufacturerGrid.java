@@ -1,6 +1,7 @@
 package com.roofapp.ui.views.manufacture;
 
 import com.roofapp.backend.dao.roofdb.entity.OrderItem;
+import com.roofapp.backend.utils.Helper;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
@@ -22,10 +23,15 @@ public class ManufacturerGrid extends Grid<OrderItem> {
     public ManufacturerGrid() {
 
         setSizeFull();
+        addColumn(orderItems-> Helper.dateFormat(orderItems.getOrder().getCreated())).setHeader("Дата заказа")
+                .setFlexGrow(5).setSortable(true).setKey("created").setResizable(true);
 
-        addColumn(orderItems -> orderItems.getOrderId())
-                .setHeader("id заказа")
-                .setFlexGrow(3).setKey("orderId");
+
+        addColumn(item-> Helper.dateFormat(item.getOrder().getDone())).setHeader("Дата готовности")
+                .setFlexGrow(5).setSortable(true).setKey("modified").setResizable(true);
+
+        addColumn(item-> item.getOrder().getCustomer()).setHeader("Клиент")
+                .setFlexGrow(5).setSortable(true).setKey("castomer").setResizable(true);
 
         addColumn(orderItems -> orderItems.getId())
                 .setHeader("id ордера на производство")

@@ -26,7 +26,7 @@ public class CreateSubOrderTask {
 
 
     @ConditionalOnProperty(value = "scheduling.enabled")
-   // @Scheduled(fixedDelay = 6000)
+    @Scheduled(fixedDelay = 6000)
     public void craate() {
         orderService.findAll().forEach(orderService::createNewManufactureOrder);
     }

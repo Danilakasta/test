@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface Trimmingepository extends JpaRepository<Trimming, Long> {
+public interface TrimmingRepository extends JpaRepository<Trimming, Long> {
 
     List<Trimming> findAllByOrderById();
 

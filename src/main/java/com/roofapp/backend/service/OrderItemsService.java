@@ -10,11 +10,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 
 @Service
+@Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
 public class OrderItemsService implements FilterableCrudService<OrderItem>  {
 
 
@@ -95,7 +98,7 @@ public class OrderItemsService implements FilterableCrudService<OrderItem>  {
 
 	}
 
-
+	@Transactional
 	public List<OrderItem> findAllByPriority() {
 		return orderItemRepository.findByByPriority(OrderType.MANUFACTURED);
 	}

@@ -1,23 +1,24 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.roofapp.backend.dao.roofdb.Discount;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.OrderType;
-import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
+//https://ru.stackoverflow.com/questions/993198/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8-%D0%B0%D0%BD%D0%BD%D0%BE%D1%82%D0%B0%D1%86%D0%B8%D0%B9-onetomany-onetoone-manytomany-manytoone-hibernate
 
 @Entity(name = "order_info") // "Order" is a reserved word
 @NamedEntityGraphs({@NamedEntityGraph(name = Order.ENTITY_GRAPTH_BRIEF, attributeNodes = {
@@ -30,7 +31,7 @@ import java.util.List;
         @NamedAttributeNode("history")
 })})
 @Table(indexes = @Index(columnList = "due_date"))
-@EqualsAndHashCode
+//@EqualsAndHashCode
 public class Order extends AbstractEntity implements OrderSummary {
 
     @Column(name = "wp_order_id")
@@ -64,12 +65,16 @@ public class Order extends AbstractEntity implements OrderSummary {
     @OneToOne(cascade = CascadeType.MERGE,fetch= FetchType.EAGER)
     private Contractor customer;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  //  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
    // @OrderColumn
-    @JoinColumn(name="order_id")
+  //  @JoinColumn(name="order_id")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true,
+            targetEntity = OrderItem.class)
     @BatchSize(size = 1000)
     @NotEmpty
     @Valid
+    @JsonIgnoreProperties(value = "order", allowSetters = true)
     @JsonManagedReference
     private List<OrderItem> items;
 
@@ -91,6 +96,21 @@ public class Order extends AbstractEntity implements OrderSummary {
 
     @Column(name = "parent_id")
     private Long parentId;
+
+    @Column(name = "created")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
+    @Column(name = "modified")
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modified;
+
+    @Column(name = "done")
+    private Date done;
+
+
 
     public Order(User createdBy) {
         this.state = OrderState.NEW;
@@ -179,12 +199,6 @@ public class Order extends AbstractEntity implements OrderSummary {
     }
 
     @Override
-    public String toString() {
-        return "Order{" + "dueDate=" + dueDate + ", dueTime=" + dueTime + ", pickupLocation=" + pickupLocation
-                + ", customer=" + customer + ", items=" + items + ", state=" + state + '}';
-    }
-
-    @Override
     public Double getTotalPrice() {
         return items.stream().map(i -> i.getTotalPrice()).reduce(Double.valueOf(0), Double::sum);
     }
@@ -221,5 +235,74 @@ public class Order extends AbstractEntity implements OrderSummary {
     public void setDiscount(Discount discount) {
         this.discount = discount;
     }
+    public Date getCreated() {
+        return created;
+    }
 
+
+    public Date getModified() {
+        return modified;
+    }
+
+    public Date getDone() {
+        return done;
+    }
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
+    }
+
+    public void setDone(Date done) {
+        this.done = done;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Order order = (Order) o;
+        return Objects.equals(wpOrderId, order.wpOrderId) &&
+                Objects.equals(dueDate, order.dueDate) &&
+                Objects.equals(dueTime, order.dueTime) &&
+                Objects.equals(pickupLocation, order.pickupLocation) &&
+                Objects.equals(customer, order.customer) &&
+                Objects.equals(items, order.items) &&
+                state == order.state &&
+                discount == order.discount &&
+                Objects.equals(history, order.history) &&
+                orderType == order.orderType &&
+                Objects.equals(parentId, order.parentId) &&
+                Objects.equals(created, order.created) &&
+                Objects.equals(modified, order.modified) &&
+                Objects.equals(done, order.done);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), wpOrderId, dueDate, dueTime, pickupLocation, customer, items, state, discount, history, orderType, parentId, created, modified, done);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "wpOrderId=" + wpOrderId +
+                ", dueDate=" + dueDate +
+                ", dueTime=" + dueTime +
+                ", pickupLocation=" + pickupLocation +
+                ", customer=" + customer +
+                ", items=" + items +
+                ", state=" + state +
+                ", discount=" + discount +
+                ", history=" + history +
+                ", orderType=" + orderType +
+                ", parentId=" + parentId +
+                ", created=" + created +
+                ", modified=" + modified +
+                ", done=" + done +
+                '}';
+    }
 }

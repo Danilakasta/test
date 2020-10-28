@@ -238,8 +238,8 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
 
     private void setTotalPrice(Double totalPrice) {
-        getModel().setTotalPrice(new BigDecimal(totalPrice * discount.getValue().getDiscount() + totalPrice).setScale(2, RoundingMode.HALF_UP).toString());
-        //getModel().setTotalPrice(/*FormattingUtils.formatAsCurrency(*/totalPrice.toString()/*)*/);
+      //  getModel().setTotalPrice(new BigDecimal(totalPrice * discount.getValue().getDiscount() + totalPrice).setScale(2, RoundingMode.HALF_UP).toString());
+        getModel().setTotalPrice(/*FormattingUtils.formatAsCurrency(*/totalPrice.toString()/*)*/);
     }
 
     public void setCurrentUser(User currentUser) {

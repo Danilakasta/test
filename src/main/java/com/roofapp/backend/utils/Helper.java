@@ -23,7 +23,7 @@ public class Helper {
 
 
     public static String dateFormat(Date date) {
-        return df.format(date);
+        return date !=null ? df.format(date) : null;
     }
 
 }

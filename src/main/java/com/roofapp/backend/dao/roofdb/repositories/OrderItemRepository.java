@@ -25,11 +25,9 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
 
     @Query("select e from order_item e " +
-            "left join order_info oi on oi.id  = e.orderId  "+
-            " where e.orderType = :orderType and oi.state = 0 and oi.orderType = :orderType order by e.materialColor, e.height, e.materialClass, e.materialCover ")
-    List<OrderItem> findByByPriority(
-            @Param("orderType")
-                    OrderType orderType);
+            "left join order_info oi on oi.id  = e.order  "+
+            " where e.orderType = :orderType and oi.state = 3 and oi.orderType = :orderType order by e.materialColor, e.height, e.materialClass, e.materialCover ")
+    List<OrderItem> findByByPriority(@Param("orderType") OrderType orderType);
 
 
 

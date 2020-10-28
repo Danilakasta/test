@@ -2,7 +2,7 @@ package com.roofapp.backend.service.guides;
 
 import com.roofapp.backend.dao.roofdb.entity.User;
 import com.roofapp.backend.dao.roofdb.entity.guides.Trimming;
-import com.roofapp.backend.dao.roofdb.repositories.Trimmingepository;
+import com.roofapp.backend.dao.roofdb.repositories.TrimmingRepository;
 import com.roofapp.backend.service.FilterableCrudService;
 import com.roofapp.backend.service.UserFriendlyDataException;
 import lombok.extern.java.Log;
@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 @Log
 public class TrimmingGuideService implements FilterableCrudService<Trimming> {
 
-    private final Trimmingepository trimmingepository;
+    private final TrimmingRepository trimmingepository;
 
-    public TrimmingGuideService(Trimmingepository trimmingepository) {
+    public TrimmingGuideService(TrimmingRepository trimmingepository) {
         this.trimmingepository = trimmingepository;
     }
 
