@@ -107,7 +107,8 @@
       "awesome-typescript-loader": "5.2.1",
       "typescript": "3.8.3",
       "webpack-merge": "4.2.2",
-      "webpack-dev-server": "3.10.3"
+      "webpack-dev-server": "3.10.3",
+
     },
     "hash": "451cedc2df800b8659d07c5b7f231e28f6a73cd8de74ff9534a8ed5b1c96b87f"
   }
