@@ -412,9 +412,9 @@ $_documentContainer.innerHTML = `<dom-module id="bakery-app-layout-theme" theme-
       box-sizing: border-box !important;
     }
 
-    vaadin-app-layout vaadin-tabs {
+ /*   vaadin-app-layout vaadin-tabs {
       max-width: 65%;
-    }
+    }*/
 
     @media (min-width: 700px) {
       vaadin-app-layout vaadin-tab {

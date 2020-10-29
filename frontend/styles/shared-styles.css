@@ -33,14 +33,15 @@ body {
 }
 
 .menu-link {
-    /* display: block;
+/*    display: block;
     margin: 0 auto;*/
-    padding: 5px 15px;
-/*  transition: transform 300ms;
-  font-family: var(--lumo-font-family);
-  font-size: var(--lumo-font-size-m);
-  font-weight: 500;
-  color: var(--lumo-secondary-text-color);*/
+    padding: 10px 15px;
+ /*   transition: transform 300ms;
+
+    font-family: var(--lumo-font-family);
+    font-size: var(--lumo-font-size-m);
+    font-weight: 500;
+    color: var(--lumo-secondary-text-color);*/
 }
 
 .menu-link:hover {
