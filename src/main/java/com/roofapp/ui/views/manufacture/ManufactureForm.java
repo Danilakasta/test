@@ -1,7 +1,6 @@
 package com.roofapp.ui.views.manufacture;
 
 import com.roofapp.backend.dao.roofdb.OrderState;
-import com.roofapp.backend.dao.roofdb.OrderType;
 import com.roofapp.backend.dao.roofdb.WarehouseState;
 import com.roofapp.backend.dao.roofdb.entity.*;
 import com.roofapp.backend.service.*;
@@ -29,7 +28,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 import com.vaadin.flow.component.html.*;
-//import io.swagger.models.auth.In;
 
 /**
  * A form for editing a single product.
@@ -39,7 +37,7 @@ public class ManufactureForm extends Div {
 
     private final VerticalLayout content;
 
-    OrderItemsService itemService;
+    OrderItemsManufactureService itemService;
 
     /* private final ComboBox<Product> product;
      private final IntegerField quantity;
@@ -74,9 +72,9 @@ public class ManufactureForm extends Div {
         this.viewLogic = viewLogic;
     }
 
-    private final Binder<OrderItem> binder;
+    private final Binder<OrderItemManufacture> binder;
 
-    private OrderItem item;
+    private OrderItemManufacture item;
 
     private static class PriceConverter extends StringToBigDecimalConverter {
 
@@ -122,7 +120,7 @@ public class ManufactureForm extends Div {
 
     @Autowired
     public ManufactureForm(ManufactureViewLogic viewLogic,
-                           OrderItemsService itemService,
+                           OrderItemsManufactureService itemService,
                            MachineService machineService,
                            MaterialService materialService,
                            WarehouseItemService warehouseItemService,
@@ -172,7 +170,7 @@ public class ManufactureForm extends Div {
         content.add(horizontalLayout);
 */
         //   binder = new BeanValidationBinder<>(OrderItem.class);
-        binder = new Binder<>(OrderItem.class);
+        binder = new Binder<>(OrderItemManufacture.class);
 
 
         //binder.bindInstanceFields(this);
@@ -236,9 +234,9 @@ public class ManufactureForm extends Div {
     //    category.setItems(categories);
     //  }
 
-    public void edit(OrderItem editItem) {
+    public void edit(OrderItemManufacture editItem) {
         if (editItem == null) {
-            editItem = new OrderItem();
+            editItem = new OrderItemManufacture();
         }
         //    delete.setVisible(! editItem.isNew());
         item = editItem;
@@ -327,7 +325,7 @@ public class ManufactureForm extends Div {
         //   item.setOrderType(OrderType.MANUFACTURED);
     }
 
-    private void findMachine(OrderItem editItem) {
+    private void findMachine(OrderItemManufacture editItem) {
         machineSelect.clear();
         try {
             if (machineService != null && editItem != null) {

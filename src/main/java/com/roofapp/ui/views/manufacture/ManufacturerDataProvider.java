@@ -1,7 +1,7 @@
 package com.roofapp.ui.views.manufacture;
 
-import com.roofapp.backend.dao.roofdb.entity.OrderItem;
-import com.roofapp.backend.service.OrderItemsService;
+import com.roofapp.backend.dao.roofdb.entity.OrderItemManufacture;
+import com.roofapp.backend.service.OrderItemsManufactureService;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,11 +11,11 @@ import java.util.Objects;
 
 /**
  * Utility class that encapsulates filtering and CRUD operations for
- * {@link OrderItem} entities.
+ * {@link } entities.
  * <p>
 
  */
-public class ManufacturerDataProvider extends ListDataProvider<OrderItem> {
+public class ManufacturerDataProvider extends ListDataProvider<OrderItemManufacture> {
 
     /**
      * Text filter that can be changed separately.
@@ -24,10 +24,10 @@ public class ManufacturerDataProvider extends ListDataProvider<OrderItem> {
    // private List<OrderItem> manufacturerss;
 
 
-    private final OrderItemsService orderItemsService;
+    private final OrderItemsManufactureService orderItemsService;
 
     @Autowired
-    public ManufacturerDataProvider(Collection<OrderItem> items, OrderItemsService orderItemsService) {
+    public ManufacturerDataProvider(Collection<OrderItemManufacture> items, OrderItemsManufactureService orderItemsService) {
         super(items);
         this.orderItemsService = orderItemsService;
     }
@@ -38,7 +38,7 @@ public class ManufacturerDataProvider extends ListDataProvider<OrderItem> {
      *
      * @param item the updated or new Manufacturers
      */
-    public void save(OrderItem item) {
+    public void save(OrderItemManufacture item) {
         if (item.isNew()) {
             getItems().add(item);
             refreshAll();
@@ -54,7 +54,7 @@ public class ManufacturerDataProvider extends ListDataProvider<OrderItem> {
      *
      * @param item the Manufacturers to be deleted
      */
-    public void delete(OrderItem item) {
+    public void delete(OrderItemManufacture item) {
      //   DataService.get().deleteManufacturers(Manufacturers.getId());
         orderItemsService.delete(item);
         getItems().remove(item);

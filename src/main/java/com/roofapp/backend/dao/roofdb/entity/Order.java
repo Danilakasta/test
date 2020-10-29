@@ -6,14 +6,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.roofapp.backend.dao.roofdb.Discount;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.OrderType;
-import lombok.*;
-import org.hibernate.annotations.*;
+import lombok.ToString;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
@@ -34,9 +32,6 @@ import java.util.List;
 })})
 @Table(indexes = @Index(columnList = "due_date"))
 //@EqualsAndHashCode
-@AllArgsConstructor
-@Setter
-@Getter
 public class Order extends AbstractEntity implements OrderSummary {
 
     @Column(name = "wp_order_id")
@@ -63,27 +58,23 @@ public class Order extends AbstractEntity implements OrderSummary {
 
     //	@NotNull(message = "{bakery.pickup.location.required}")
     @ManyToOne
-    @JoinColumn(name = "pickup_location_id", referencedColumnName = "id")
+    @JoinColumn(name="pickup_location_id",referencedColumnName = "id")
     private PickupLocation pickupLocation;
 
     //@NotNull
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.MERGE,fetch= FetchType.EAGER)
     private Contractor customer;
 
-    //  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    // @OrderColumn
-    //  @JoinColumn(name="order_id")
-    //  @ToString.Exclude
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+  //  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+   // @OrderColumn
+    @JoinColumn(name="order_id")
+    @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 1000)
-  // @JoinColumn(name="order_id")
-    //  @NotEmpty
-    ///   @Valid
-    // @JsonIgnoreProperties(value = "order", allowSetters = true)
-   // @JsonManagedReference
-    @Fetch(value = FetchMode.SUBSELECT)
-
-    private List<OrderItem> items = new ArrayList<>();
+    @NotEmpty
+    @Valid
+  //  @JsonIgnoreProperties(value = "order", allowSetters = true)
+ //   @JsonManagedReference
+    private List<OrderItem> items;
 
     //@NotNull(message = "{bakery.status.required}")
     private OrderState state;
@@ -118,9 +109,10 @@ public class Order extends AbstractEntity implements OrderSummary {
     private Date done;
 
 
+
     public Order(User createdBy) {
         this.state = OrderState.NEW;
-        //  setCustomer(new Contractor());
+      //  setCustomer(new Contractor());
         addHistoryItem(createdBy, "Order placed");
         this.items = new ArrayList<>();
     }
@@ -241,7 +233,6 @@ public class Order extends AbstractEntity implements OrderSummary {
     public void setDiscount(Discount discount) {
         this.discount = discount;
     }
-
     public Date getCreated() {
         return created;
     }
@@ -254,7 +245,6 @@ public class Order extends AbstractEntity implements OrderSummary {
     public Date getDone() {
         return done;
     }
-
     public void setCreated(Date created) {
         this.created = created;
     }
@@ -273,8 +263,7 @@ public class Order extends AbstractEntity implements OrderSummary {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Order order = (Order) o;
-        return Objects.equals(super.getId(), order.getId()) &&
-                Objects.equals(wpOrderId, order.wpOrderId) &&
+        return Objects.equals(wpOrderId, order.wpOrderId) &&
                 Objects.equals(dueDate, order.dueDate) &&
                 Objects.equals(dueTime, order.dueTime) &&
                 Objects.equals(pickupLocation, order.pickupLocation) &&

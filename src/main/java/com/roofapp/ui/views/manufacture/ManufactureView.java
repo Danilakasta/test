@@ -1,13 +1,12 @@
 package com.roofapp.ui.views.manufacture;
 
-import com.roofapp.backend.dao.roofdb.entity.OrderItem;
+import com.roofapp.backend.dao.roofdb.entity.OrderItemManufacture;
 import com.roofapp.backend.service.*;
 import com.roofapp.ui.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -31,7 +30,7 @@ public class ManufactureView extends HorizontalLayout
     public static final String VIEW_NAME = "Производство";
 
 
-    private final OrderItemsService itemService;
+    private final OrderItemsManufactureService itemService;
 
     private final ManufacturerGrid grid;
     private final ManufactureForm form;
@@ -42,7 +41,7 @@ public class ManufactureView extends HorizontalLayout
 
     private ManufacturerDataProvider dataProvider;
 
-    public ManufactureView(OrderItemsService itemService,
+    public ManufactureView(OrderItemsManufactureService itemService,
                            MachineService machineService,
                            MaterialService materialService,
                            WarehouseItemService warehouseItemService, OrderService orderService) {
@@ -134,7 +133,7 @@ public class ManufactureView extends HorizontalLayout
      *
      * @param row
      */
-    public void selectRow(OrderItem row) {
+    public void selectRow(OrderItemManufacture row) {
         grid.getSelectionModel().select(row);
     }
 
@@ -143,7 +142,7 @@ public class ManufactureView extends HorizontalLayout
      *
      * @param  item
      */
-    public void update(OrderItem item) {
+    public void update(OrderItemManufacture item) {
         dataProvider.save(item);
     }
 
@@ -152,7 +151,7 @@ public class ManufactureView extends HorizontalLayout
      *
      * @param item
      */
-    public void remove(OrderItem item) {
+    public void remove(OrderItemManufacture item) {
         dataProvider.delete(item);
     }
 
@@ -161,7 +160,7 @@ public class ManufactureView extends HorizontalLayout
      *
      * @param item
      */
-    public void edit(OrderItem item) {
+    public void edit(OrderItemManufacture item) {
         showForm(item != null);
         form.edit(item);
     }

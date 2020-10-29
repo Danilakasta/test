@@ -1,6 +1,6 @@
 package com.roofapp.ui.views.manufacture;
 
-import com.roofapp.backend.dao.roofdb.entity.OrderItem;
+import com.roofapp.backend.dao.roofdb.entity.OrderItemManufacture;
 import com.vaadin.flow.component.UI;
 
 import java.io.Serializable;
@@ -28,11 +28,7 @@ public class ManufactureViewLogic implements Serializable {
      * buttons if the user doesn't have access.
      */
     public void init() {
-     //   if (!AccessControlFactory.getInstance().createAccessControl()
-        //       .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
             view.setNewItemEnabled(true);
-      //  }
-
 
     }
 
@@ -77,7 +73,7 @@ public class ManufactureViewLogic implements Serializable {
                 // login
                 try {
                     final int pid = Integer.parseInt(id);
-                    final OrderItem item = findItem(pid);
+                    final OrderItemManufacture item = findItem(pid);
                     view.selectRow(item);
                 } catch (final NumberFormatException e) {
                 }
@@ -87,11 +83,11 @@ public class ManufactureViewLogic implements Serializable {
         }
     }
 
-    private OrderItem findItem(int id) {
+    private OrderItemManufacture findItem(int id) {
         return null;// DataService.get().getProductById(productId);
     }
 
-    public void saveItem(OrderItem item) {
+    public void saveItem(OrderItemManufacture item) {
         final boolean newItem = item.isNew();
         view.clearSelection();
         view.update(item);
@@ -101,14 +97,14 @@ public class ManufactureViewLogic implements Serializable {
                 + (newItem ? " добавлено" : " сохранено"));*/
     }
 
-    public void delete(OrderItem item) {
+    public void delete(OrderItemManufacture item) {
         view.clearSelection();
         view.remove(item);
         setFragmentParameter("");
      //   view.showNotification(item.OrderItem getName() + " удалено");
     }
 
-    public void edit(OrderItem item) {
+    public void edit(OrderItemManufacture item) {
         if (item == null) {
             setFragmentParameter("");
         } else {
@@ -120,10 +116,10 @@ public class ManufactureViewLogic implements Serializable {
     public void newItem() {
         view.clearSelection();
         setFragmentParameter("new");
-        view.edit(new OrderItem());
+        view.edit(new OrderItemManufacture());
     }
 
-    public void rowSelected(OrderItem item) {
+    public void rowSelected(OrderItemManufacture item) {
        // if (AccessControlFactory.getInstance().createAccessControl()
         //        .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
             edit(item);

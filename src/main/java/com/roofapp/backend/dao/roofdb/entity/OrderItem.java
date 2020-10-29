@@ -1,8 +1,14 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.roofapp.backend.dao.roofdb.*;
 import com.roofapp.backend.dao.roofdb.entity.guides.Width;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -11,26 +17,24 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity(name = "order_item")
+//@Data
+//@EqualsAndHashCode
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class OrderItem extends AbstractEntity {
 
     @ManyToOne
     //@NotNull(message = "{bakery.pickup.product.required}")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)//(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+   /* @ManyToOne(fetch = FetchType.EAGER)//(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-
-	//@JsonIgnoreProperties(value = "items", allowSetters = true)
-    //@JsonBackReference
-	//@JsonIgnore
+	@JsonIgnoreProperties(value = "items", allowSetters = true)
+    @JsonBackReference
     private Order order;
-
-   // @Column(name = "order_id")
- //   private Long order;
+*/
+    @Column(name = "order_id")
+    private Long orderId;
 
 
     @Min(1)
@@ -90,7 +94,7 @@ public class OrderItem extends AbstractEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), product,/*, order, */quantity, comment, width, materialClass, materialCover, materialColor, height, size, price, orderType);
+		return Objects.hash(super.hashCode(), product,/* order,*/ quantity, comment, width, materialClass, materialCover, materialColor, height, size, price, orderType);
 	}
 
 	@Override
