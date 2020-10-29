@@ -26,7 +26,6 @@ import java.util.*;
 import java.util.function.BiConsumer;
 
 @Service
-@Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
 public class OrderService implements CrudService<Order> {
 
 	private final OrderRepository orderRepository;

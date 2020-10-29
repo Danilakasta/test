@@ -77,10 +77,10 @@ public class ManufacturerDataProvider extends ListDataProvider<OrderItemManufact
 
         setFilter(Manufacturers -> passesFilter(Manufacturers.getId(), this.filterText)
                 || passesFilter(Manufacturers.getProduct().getName(), this.filterText)
-            /*    || passesFilter(Manufacturers.getOrder().getCustomer(), this.filterText)
+               || passesFilter(Manufacturers.getOrder().getCustomer(), this.filterText)
                 || passesFilter(Manufacturers.getOrder().getCreated(), this.filterText)
                 || passesFilter(Manufacturers.getOrder().getDone(), this.filterText)
-                || passesFilter(Manufacturers.getOrder().getId(), this.filterText)*/
+                || passesFilter(Manufacturers.getOrder().getId(), this.filterText)
                 || passesFilter(Manufacturers.getHeight(), this.filterText)
                 || passesFilter(Manufacturers.getQuantity(), this.filterText)
                 || passesFilter(Manufacturers.getMaterialClass(), this.filterText)

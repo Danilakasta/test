@@ -20,20 +20,21 @@ public class ManufacturerGrid extends Grid<OrderItemManufacture> {
     public ManufacturerGrid() {
 
         setSizeFull();
-        addColumn(orderItems-> Helper.dateFormat(orderItems.getOrder().getCreated())).setHeader("Дата заказа")
-                .setFlexGrow(5).setSortable(true).setKey("created").setResizable(true);
-
-
-        addColumn(item-> item.getOrder().getCustomer()).setHeader("Клиент")
-                .setFlexGrow(5).setSortable(true).setKey("castomer").setResizable(true);
-
         addColumn(orderItems -> orderItems.getId())
                 .setHeader("id ордера на производство")
                 .setFlexGrow(3).setKey("id").setResizable(true);;
 
+        addColumn(orderItems-> Helper.dateFormat(orderItems.getOrder().getCreated())).setHeader("Дата заказа")
+                .setFlexGrow(8).setWidth("200px").setSortable(true).setKey("created").setResizable(true);
+
+
+        addColumn(item-> item.getOrder().getCustomer()).setHeader("Клиент")
+                .setFlexGrow(10).setWidth("250px").setSortable(true).setKey("castomer").setResizable(true);
+
+
         addColumn(orderItems -> orderItems.getProduct() )
                 .setHeader("Название продукта")
-                .setFlexGrow(3).setKey("name").setResizable(true);;
+                .setFlexGrow(10).setWidth("200px").setKey("name").setResizable(true);;
 
         addColumn(orderItems -> orderItems.getHeight() )
                 .setHeader("Длинна")
@@ -56,7 +57,7 @@ public class ManufacturerGrid extends Grid<OrderItemManufacture> {
                 .setFlexGrow(3).setKey("MaterialClass").setResizable(true);;
 
         addColumn(item-> Helper.dateFormat(item.getOrder().getDone())).setHeader("Дата готовности")
-                .setFlexGrow(5).setSortable(true).setKey("done").setResizable(true);
+                .setFlexGrow(5).setWidth("200px").setSortable(true).setKey("done").setResizable(true);
 
         UI.getCurrent().getPage().addBrowserWindowResizeListener(
                 e -> setColumnVisibility(e.getWidth()));
