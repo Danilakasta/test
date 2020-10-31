@@ -8,6 +8,7 @@ import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
+import com.roofapp.backend.service.guides.WidthGuideService;
 import com.roofapp.backend.utils.Helper;
 import com.roofapp.ui.views.order.events.*;
 import com.vaadin.flow.component.*;
@@ -34,9 +35,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -103,7 +102,10 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
     private BeanValidationBinder<OrderItem> binder = new BeanValidationBinder<>(OrderItem.class);
 
-    public OrderItemEditor(/*DataProvider<Product, String> productDataProvider*/ProductService productService, ProductAmountService productAmountService, MaterialService materialService) {
+    public OrderItemEditor(/*DataProvider<Product, String> productDataProvider*/ProductService productService,
+                                                                                ProductAmountService productAmountService,
+                                                                                MaterialService materialService,
+                                                                                WidthGuideService widthGuideService) {
         this.productAmountService = productAmountService;
         this.fieldSupport = new AbstractFieldSupport<>(this, null,
                 Objects::equals, c -> {
@@ -148,13 +150,19 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
         List<Material> materials = materialService.findAllByRemains();
 
-        width.setItems(materials.stream().map(i -> i.getWidth()).collect(Collectors.toList()));
+        Set<Width> allWidth = new HashSet<>();
+        allWidth.addAll(materials.stream().collect(Collectors.groupingBy(Material::getWidth)).keySet());
+        allWidth.add(widthGuideService.getDefaultWidth());
+
+        width.setItems(allWidth);
         width.setLabel("Толшина");
+        width.setItems(widthGuideService.getDefaultWidth());
+
         width.addValueChangeListener(e -> {
             setPrice();
             materialCover.setItems(materials.stream()
                     .filter(i -> i.getWidth().equals(e.getValue()))
-                    .collect(Collectors.groupingBy(i->i.getCover())).keySet());
+                    .collect(Collectors.groupingBy(i -> i.getCover())).keySet());
             materialClass.setItems(new ArrayList<>());
             materialColor.setItems(new ArrayList<>());
         });
@@ -168,10 +176,12 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             materialClass.setItems(materials.stream()
                     .filter(i -> i.getWidth().equals(width.getValue()))
                     .filter(i -> i.getCover().equals(e.getValue()))
-                    .collect(Collectors.groupingBy(i->i.getMaterialClass())).keySet());
+                    .collect(Collectors.groupingBy(i -> i.getMaterialClass())).keySet());
             materialColor.setItems(new ArrayList<>());
 
         });
+        materialColor.setItems(MaterialColor.NO_ENTER);
+        materialColor.setValue(MaterialColor.NO_ENTER);
         //У цинка не блокируем выбор цвета
         materialCover.addValueChangeListener(e -> {
             if (e.getValue() != null) {
@@ -184,18 +194,25 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         });
 
         materialCover.setRequired(true);
+        materialCover.setItems(MaterialCover.NO_ENTER);
+        materialCover.setValue(MaterialCover.NO_ENTER);
         binder.forField(materialCover).bind("materialCover");
 
 
         //  materialClass.setItems(MaterialClass.values());
         materialClass.setLabel("Класс");
+        materialClass.setItems(MaterialClass.NO_ENTER);
+        materialClass.setValue(MaterialClass.NO_ENTER);
         materialClass.addValueChangeListener(e -> {
             setPrice();
-            materialColor.setItems(materials.stream()
-                    .filter(i -> i.getWidth().equals(width.getValue()))
-                    .filter(i -> i.getCover().equals(materialCover.getValue()))
-                    .filter(i -> i.getMaterialClass().equals(e.getValue()))
-                    .collect(Collectors.groupingBy(i->i.getMaterialColor())).keySet());
+            try {
+                materialColor.setItems(materials.stream()
+                        .filter(i -> i.getWidth().equals(width.getValue()))
+                        .filter(i -> i.getCover().equals(materialCover.getValue()))
+                        .filter(i -> i.getMaterialClass().equals(e.getValue()))
+                        .collect(Collectors.groupingBy(i -> i.getMaterialColor())).keySet());
+            } catch (Exception e1) {
+            }
         });
         materialClass.setRequired(true);
         binder.forField(materialClass).bind("materialClass");
@@ -231,7 +248,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         //   products.setRequired(true);
 
 
-      //  price.setEnabled(false);
+        //  price.setEnabled(false);
         price.setReadOnly(true);
         price.setLabel("Цена");
         binder.forField(price).bind("price");
@@ -264,12 +281,12 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
     private void setMaterialSquaring() {
         Product product = products.getValue();
         Double heightVal = height.getValue();
-        if (product != null && heightVal != null && amount != null){
+        if (product != null && heightVal != null && amount != null) {
             if (product.getSquareMeters() != null)
                 materialSquaring.setText(String.format("%.2f", product.getSquareMeters() * heightVal * amount.getValue()) + " кв.м.");
 
             if (product.getType().equals(ProductType.ADDITIONAL_ELEMENTS))
-                materialSquaring.setText(String.format("%.2f", calculateAdditionalWidth()/1000 * heightVal * amount.getValue()) + " кв.м.");
+                materialSquaring.setText(String.format("%.2f", calculateAdditionalWidth() / 1000 * heightVal * amount.getValue()) + " кв.м.");
         }
     }
 
@@ -284,7 +301,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             try {
                 return Double.valueOf(engine.eval(size.getValue()).toString());
             } catch (Exception e) {
-                log.warning("Calculator mScriptEngine error: " + e.getMessage());
+                //  log.warning("Calculator mScriptEngine error: " + e.getMessage());
             }
         }
         return 0D;

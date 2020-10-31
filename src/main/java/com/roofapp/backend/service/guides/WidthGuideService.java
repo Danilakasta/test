@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,15 +29,23 @@ public class WidthGuideService implements FilterableCrudService<Width> {
         this.widthRepository = widthRepository;
     }
 
+    private Width defaultWidth;
 
+    public Width getDefaultWidth() {
+        return defaultWidth;
+    }
 
+    @PostConstruct
+    void init() {
+        defaultWidth = widthRepository.findById(0L).get();
+    }
 
 
     @Override
     public Page<Width> findAnyMatching(Optional<String> filter, Pageable pageable) {
         if (filter.isPresent()) {
-           // String repositoryFilter = "%" + filter.get() + "%";
-            return  null; //widthRepository.findByValueLikeIgnoreCase(Double.valueOf(filter.get()), pageable);
+            // String repositoryFilter = "%" + filter.get() + "%";
+            return null; //widthRepository.findByValueLikeIgnoreCase(Double.valueOf(filter.get()), pageable);
         } else {
             return find(pageable);
         }
@@ -45,8 +54,8 @@ public class WidthGuideService implements FilterableCrudService<Width> {
     @Override
     public long countAnyMatching(Optional<String> filter) {
         if (filter.isPresent()) {
-           // String repositoryFilter = "%" + filter.get() + "%";
-            return  0;//widthRepository.countByValueLikeIgnoreCase(Double.valueOf(filter.get()));
+            // String repositoryFilter = "%" + filter.get() + "%";
+            return 0;//widthRepository.countByValueLikeIgnoreCase(Double.valueOf(filter.get()));
         } else {
             return count();
         }
@@ -54,7 +63,7 @@ public class WidthGuideService implements FilterableCrudService<Width> {
 
 
     public Page<Width> find(Pageable pageable) {
-        return  widthRepository.findByOrderById(pageable);
+        return widthRepository.findByOrderById(pageable);
     }
 
 
@@ -84,7 +93,9 @@ public class WidthGuideService implements FilterableCrudService<Width> {
         return widthRepository.findAllByOrderByValue();
     }
 
-    public Set<Width> getAllWidth(){
+    public Set<Width> getAllWidth() {
         return widthRepository.findAllByOrderByValue().stream().collect(Collectors.toSet());
     }
+
+
 }

@@ -1,17 +1,10 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.roofapp.backend.dao.roofdb.*;
 import com.roofapp.backend.dao.roofdb.entity.guides.Width;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -21,10 +14,11 @@ import java.util.Objects;
 //@EqualsAndHashCode
 @Getter
 @Setter
+@ToString
 public class OrderItem extends AbstractEntity {
 
     @ManyToOne
-    //@NotNull(message = "{bakery.pickup.product.required}")
+    @NotNull(message = "Продукт не выбран")
     private Product product;
 
    /* @ManyToOne(fetch = FetchType.EAGER)//(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -37,31 +31,35 @@ public class OrderItem extends AbstractEntity {
     private Long orderId;
 
 
-    @Min(1)
+   // @Min(1)
     //@NotNull
+    @NotNull(message = "Кол-во не выбрано")
     private Double quantity = 1d;
 
     @Size(max = 255)
     private String comment;
 
     public Double getTotalPrice() {
-        return quantity == null || product == null ? Double.valueOf(0) : quantity * product.getPrice();
+        return quantity == null || product == null ? Double.valueOf(0) : quantity * price;
     }
-
+    @NotNull(message = "Толщина не выбрана")
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    private Width width;
+    private Width width ;
 
+    @NotNull(message = "Класс не выбран")
     @Column(name = "material_class")
-    private MaterialClass materialClass;
+    private MaterialClass materialClass = MaterialClass.NO_ENTER;
 
+    @NotNull(message = "Покрытие не выбрано")
     @Column(name = "material_cover")
-    private MaterialCover materialCover;
+    private MaterialCover materialCover = MaterialCover.NO_ENTER;
 
+    @NotNull(message = "Цвет не выбран")
     @Column(name = "material_color")
-    private MaterialColor materialColor;
+    private MaterialColor materialColor = MaterialColor.NO_ENTER;
 
-    private Double height;
-
+    @NotNull(message = "Длинна не выбрана")
+    private Double height = 0D;
 
     private String size;
 
@@ -79,7 +77,7 @@ public class OrderItem extends AbstractEntity {
 		if (!super.equals(o)) return false;
 		OrderItem orderItem = (OrderItem) o;
 		return Objects.equals(product, orderItem.product) &&
-			//	Objects.equals(order, orderItem.order) &&
+				Objects.equals(orderId, orderItem.orderId) &&
 				Objects.equals(quantity, orderItem.quantity) &&
 				Objects.equals(comment, orderItem.comment) &&
 				Objects.equals(width, orderItem.width) &&
@@ -94,24 +92,7 @@ public class OrderItem extends AbstractEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), product,/* order,*/ quantity, comment, width, materialClass, materialCover, materialColor, height, size, price, orderType);
+		return Objects.hash(super.hashCode(), product, orderId, quantity, comment, width, materialClass, materialCover, materialColor, height, size, price, orderType);
 	}
 
-	@Override
-	public String toString() {
-		return "OrderItem{" +
-				"product=" + product +
-			//	", order=" + order +
-				", quantity=" + quantity +
-				", comment='" + comment + '\'' +
-				", width=" + width +
-				", materialClass=" + materialClass +
-				", materialCover=" + materialCover +
-				", materialColor=" + materialColor +
-				", height=" + height +
-				", size='" + size + '\'' +
-				", price=" + price +
-				", orderType=" + orderType +
-				'}';
-	}
 }

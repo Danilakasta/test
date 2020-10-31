@@ -14,6 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -48,21 +49,24 @@ public class Order extends AbstractEntity implements OrderSummary {
     public static final String ENTITY_GRAPTH_BRIEF = "Order.brief";
     public static final String ENTITY_GRAPTH_FULL = "Order.full";
 
-    //@NotNull(message = "{bakery.due.date.required}")
+    @NotNull(message = "Дата не выбрана")
     @Column(name = "due_date")
     private LocalDate dueDate;
 
     //	@NotNull(message = "{bakery.due.time.required}")
+    @NotNull(message = "Время не выбрано")
     @Column(name = "due_time")
     private LocalTime dueTime;
 
     //	@NotNull(message = "{bakery.pickup.location.required}")
     @ManyToOne
     @JoinColumn(name="pickup_location_id",referencedColumnName = "id")
+    @NotNull(message = "Доставка не выбрана")
     private PickupLocation pickupLocation;
 
     //@NotNull
     @OneToOne(cascade = CascadeType.MERGE,fetch= FetchType.EAGER)
+    @NotNull(message = "Клиент не выбран")
     private Contractor customer;
 
   //  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

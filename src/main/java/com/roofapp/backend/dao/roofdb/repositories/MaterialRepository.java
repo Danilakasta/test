@@ -15,6 +15,6 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
 
     List<Material> findAllByCreatedAfter(Date date);
 
-    List<Material> findAllByRemainsGreaterThan(Double aDouble);
+    List<Material> findAllByRemainsGreaterThanOrderByWidth(Double aDouble);
 
 }

@@ -1,6 +1,7 @@
 package com.roofapp.backend.dao.roofdb;
 
 public enum MaterialColor {
+    NO_ENTER("Не выбрано"),
     RAL9016("RAL9016"), //#F7FBF5
     RAL5015("RAL5015"), //#2874B2
     RAL6010("RAL6010"), //#3E753B

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.roofapp.backend.dao.roofdb.entity.AbstractEntity;
 import com.roofapp.backend.dao.roofdb.entity.Machine;
 import com.roofapp.backend.dao.roofdb.entity.User;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;

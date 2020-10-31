@@ -45,7 +45,7 @@ class OrderItemEditor extends PolymerElement {
       <vaadin-form-layout id="form2" colspan="16" class="product" style="flex: auto;">
         <vaadin-combo-box id="products" colspan="8" index="[[index]]"></vaadin-combo-box>
         <vaadin-number-field id="amount" colspan="4" index="[[index]]" class="self-start"
-          min="1" max="15" has-controls prevent-invalid-input></vaadin-number-field>
+          min="1"  has-controls prevent-invalid-input></vaadin-number-field>
       
         <vaadin-number-field  id="price" colspan="2" class="money">[[price]]</vaadin-number-field>
         <div id="materialSquaring" colspan="2" >[[materialSquaring]]</div>

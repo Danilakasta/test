@@ -5,6 +5,8 @@ import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.ProductAmountService;
 import com.roofapp.backend.service.ProductService;
+import com.roofapp.backend.service.guides.WidthGuideService;
+import com.roofapp.backend.utils.Helper;
 import com.roofapp.ui.views.order.events.TotalPriceChangeEvent;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -35,14 +37,17 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 
 	private final ProductAmountService productAmountService;
 	private final MaterialService materialService;
+	private final WidthGuideService widthGuideService;
 	
 	public OrderItemsEditor(/*DataProvider<Product, String> productDataProvider,*/ ProductService productService,
 																				   ProductAmountService productAmountService,
-																				   MaterialService materialService) {
+																				   MaterialService materialService,
+																				   WidthGuideService widthGuideService) {
 	//	this.productDataProvider = productDataProvider;
 		this.productService = productService;
 		this.productAmountService = productAmountService;
 		this.materialService = materialService;
+		this.widthGuideService = widthGuideService;
 		this.fieldSupport = new AbstractFieldSupport<>(this, Collections.emptyList(),
 				Objects::equals, c ->  {}); 
 	}
@@ -62,7 +67,7 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 	}
 
 	private OrderItemEditor createEditor(OrderItem value) {
-		OrderItemEditor editor = new OrderItemEditor(/*productDataProvider,*/productService, productAmountService,materialService);
+		OrderItemEditor editor = new OrderItemEditor(/*productDataProvider,*/productService, productAmountService,materialService,widthGuideService);
 		getElement().appendChild(editor.getElement());
 		editor.addPriceChangeListener(e -> updateTotalPriceOnItemPriceChange(e.getOldValue(), e.getNewValue()));
 		editor.addProductChangeListener(e -> productChanged(e.getSource(), e.getProduct()));
@@ -121,6 +126,7 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 	private void updateTotalPriceOnItemPriceChange(Double oldItemPrice, Double newItemPrice) {
 		final Double delta = newItemPrice - oldItemPrice;
 		totalPrice += delta;
+		totalPrice = Helper.aroundDouble(totalPrice);
 		setHasChanges(true);
 		fireEvent(new TotalPriceChangeEvent(this, totalPrice));
 	}

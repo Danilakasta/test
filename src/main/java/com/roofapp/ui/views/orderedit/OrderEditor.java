@@ -4,6 +4,7 @@ import com.roofapp.backend.dao.roofdb.Discount;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.entity.*;
 import com.roofapp.backend.service.*;
+import com.roofapp.backend.service.guides.WidthGuideService;
 import com.roofapp.ui.crud.CrudEntityDataProvider;
 import com.roofapp.ui.dataproviders.DataProviderUtil;
 import com.roofapp.ui.events.CancelEvent;
@@ -115,14 +116,22 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
     private final MaterialService materialService;
 
+    private final WidthGuideService widthGuideService;
+
     @Autowired
-    public OrderEditor(PickupLocationService locationService, ProductService productService, ProductAmountService productAmountService, ContractorService contractorService, MaterialService materialService) {
+    public OrderEditor(PickupLocationService locationService,
+                       ProductService productService,
+                       ProductAmountService productAmountService,
+                       ContractorService contractorService,
+                       MaterialService materialService,
+                       WidthGuideService widthGuideService) {
         this.productAmountService = productAmountService;
         this.contractorService = contractorService;
         this.materialService = materialService;
+        this.widthGuideService = widthGuideService;
         DataProvider<PickupLocation, String> locationDataProvider = new CrudEntityDataProvider<>(locationService);
         DataProvider<Product, String> productDataProvider = new CrudEntityDataProvider<>(productService);
-        itemsEditor = new OrderItemsEditor(productService, this.productAmountService, this.materialService);
+        itemsEditor = new OrderItemsEditor(productService, this.productAmountService, this.materialService, this.widthGuideService);
 
 
         customerName.setItems(contractorService.findAllOrderName());
@@ -168,10 +177,10 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
         discount.setDataProvider(DataProvider.ofItems(Discount.values()));
         discount.setItemLabelGenerator(createItemLabelGenerator(Discount::getDisplayName));
 
-      //  discount.addValueChangeListener(e-> setTotalPrice());
+        //  discount.addValueChangeListener(e-> setTotalPrice());
         binder.bind(discount, "discount");
 
-        //	customerNumber.setRequired(true);
+        customerNumber.setReadOnly(true);
         //	binder.bind(customerNumber, "customer.phone");
 
         //binder.bind(customerDetails, "customer.details");
@@ -238,7 +247,7 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
 
     private void setTotalPrice(Double totalPrice) {
-      //  getModel().setTotalPrice(new BigDecimal(totalPrice * discount.getValue().getDiscount() + totalPrice).setScale(2, RoundingMode.HALF_UP).toString());
+        //  getModel().setTotalPrice(new BigDecimal(totalPrice * discount.getValue().getDiscount() + totalPrice).setScale(2, RoundingMode.HALF_UP).toString());
         getModel().setTotalPrice(/*FormattingUtils.formatAsCurrency(*/totalPrice.toString()/*)*/);
     }
 
