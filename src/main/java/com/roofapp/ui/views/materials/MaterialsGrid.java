@@ -34,7 +34,7 @@ public class MaterialsGrid extends Grid<Material> {
         final String materialColorTemplate = "<iron-icon icon=\"vaadin:circle\" class-name=\"[[item.materialColor]]\"></iron-icon> [[item.materialColor]]";
         addColumn(TemplateRenderer.<Material>of(materialColorTemplate)
                 .withProperty("materialColor",
-                        Material -> Material.getMaterialColor().toString()))
+                        Material -> Material.getMaterialColor() != null ? Material.getMaterialColor().toString(): null))
                 .setHeader("Цвет материала")
                 .setComparator(Comparator
                         .comparing(Material::getMaterialColor))

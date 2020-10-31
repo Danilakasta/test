@@ -2,7 +2,7 @@ package com.roofapp.backend.dao.roofdb;
 
 //Клас покрытия
 public enum MaterialClass {
-    PREMIUM("Перемиум"),
+    PREMIUM("Премиум"),
     STANDART("Стандарт");
 
 

@@ -323,7 +323,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
             }
         }
-
+        totalPrice = Helper.aroundDouble(totalPrice);
         price.setValue(/*FormattingUtils.formatAsCurrency(*/totalPrice/*)*/);
 
 

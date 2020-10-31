@@ -32,7 +32,7 @@ public class Material extends AbstractEntity {
     //цвет
     @NotNull
     @Column(name = "material_color")
-    private MaterialColor materialColor = MaterialColor.RAL9016;
+    private MaterialColor materialColor;
     //Покрытие
     @NotNull
     private MaterialCover cover ;
@@ -103,7 +103,7 @@ public class Material extends AbstractEntity {
 
     @Override
     public String toString(){
-        return   serialNumber +" " + manufacturer+" "+width +" "+materialColor  +" "+ cover;
+        return   serialNumber +" " + manufacturer+" "+width +" "+materialColor  +" "+ cover+" "+materialClass +" Остаток-"+ remains;
     }
 
 }

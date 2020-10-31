@@ -1,5 +1,6 @@
 package com.roofapp.ui.views.manufacture;
 
+import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.WarehouseState;
 import com.roofapp.backend.dao.roofdb.entity.*;
@@ -23,9 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 import com.vaadin.flow.component.html.*;
 
@@ -148,7 +147,7 @@ public class ManufactureForm extends Div {
 
         machineSelect = new ComboBox<Machine>();
         machineSelect.setLabel("Выберите станок");
-        machineSelect.setItems(machineService.findAll());
+        //   machineSelect.setItems(machineService.findAll());
         machineSelect.setWidth("100%");
         machineSelect.setReadOnly(true);
         content.add(machineSelect);
@@ -156,8 +155,9 @@ public class ManufactureForm extends Div {
 
         materialSelect = new ComboBox<Material>();
         materialSelect.setLabel("Выберите сырье");
-        materialSelect.setItems(materialService.findAll());
+        //  materialSelect.setItems(materialService.findAll());
         materialSelect.setWidth("100%");
+        // materialSelect.setReadOnly(true);
         content.add(materialSelect);
 
         machineSelect.addValueChangeListener(e -> save.setEnabled(!materialSelect.isEmpty() && !machineSelect.isEmpty()));
@@ -243,7 +243,7 @@ public class ManufactureForm extends Div {
         binder.readBean(editItem);
 
         try {
-         //   orderInfo.setText("Заказ №" + editItem.getOrder().getId().toString());
+            //   orderInfo.setText("Заказ №" + editItem.getOrder().getId().toString());
             subOrderInfo.setText("Наряд на производство №" + editItem.getId().toString());
             productInfo.setText(editItem.getProduct().getName() + " Ширина заданная - " + editItem.getProduct().getWidth());
             sizeInfo.setText("Длинна - " + editItem.getHeight() + " Кол-во - " + editItem.getQuantity());
@@ -254,6 +254,7 @@ public class ManufactureForm extends Div {
         }
 
         findMachine(editItem);
+        findMaterial(editItem);
     }
 
     public void emulateManufactureWork() {
@@ -335,6 +336,34 @@ public class ManufactureForm extends Div {
                         machineSelect.setValue(item);
                 });
             }
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
+    }
+
+    private void findMaterial(OrderItemManufacture editItem) {
+        materialSelect.clear();
+        try {
+            if (machineService != null && editItem != null) {
+
+                List<Material> materials = materialService.findAll();
+                List<Material> allMaterials = new ArrayList<>();
+                materials.forEach(item -> {
+                    if (item.getWidth().equals(editItem.getWidth())
+                            && item.getCover().equals(editItem.getMaterialCover())
+                            && item.getMaterialClass().equals(editItem.getMaterialClass())
+                            && item.getRemains() > editItem.getHeight()
+                            //если  <= 10 метров то на гладкий лист пускаем
+                            && item.getRemains() >= 10)
+                        if ((!item.getCover().equals(MaterialCover.ZINK) && item.getMaterialColor().equals(editItem.getMaterialColor())))
+                            allMaterials.add(item);
+                        else if (item.getCover().equals(MaterialCover.ZINK))
+                            allMaterials.add(item);
+                });
+                //Производим из меньшей по остатку сырья
+                materialSelect.setValue(allMaterials.stream().min(Comparator.comparing(Material::getRemains)).get());
+            }
+        } catch (Exception e) {
+
+        }
     }
 }
