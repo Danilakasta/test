@@ -5,7 +5,6 @@ import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.WarehouseState;
 import com.roofapp.backend.dao.roofdb.entity.*;
 import com.roofapp.backend.service.*;
-import com.roofapp.ui.views.warehouse.WarehouseViewLogic;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -26,6 +25,7 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.vaadin.flow.component.html.*;
 
@@ -322,8 +322,8 @@ public class ManufactureForm extends Div {
 
 
     private void changeOrderState() {
-        List<OrderItem> orderItems = orderItemsService.findAllByOrderId( item.getOrder().getId());
-        for (OrderItem orderItem :  orderItems ) {
+        List<OrderItem> orderItems = orderItemsService.findAllByOrderId(item.getOrder().getId());
+        for (OrderItem orderItem : orderItems) {
             if (orderItem.getDone() == null)
                 return;
         }
@@ -332,7 +332,7 @@ public class ManufactureForm extends Div {
         order.setState(OrderState.READY);
         orderService.saveOrder(order);
 
-        Optional<Order> parentOrder =  orderService.findById(item.getOrder().getParentId());
+        Optional<Order> parentOrder = orderService.findById(item.getOrder().getParentId());
         parentOrder.get().setState(OrderState.STORAGE);
         orderService.saveOrder(parentOrder.get());
 
@@ -361,6 +361,7 @@ public class ManufactureForm extends Div {
 
     private void findMaterial(OrderItemManufacture editItem) {
         materialSelect.clear();
+        Double orderMetalLength = editItem.getHeight() * editItem.getQuantity();
         try {
             if (machineService != null && editItem != null) {
 
@@ -370,7 +371,7 @@ public class ManufactureForm extends Div {
                     if (item.getWidth().equals(editItem.getWidth())
                             && item.getCover().equals(editItem.getMaterialCover())
                             && item.getMaterialClass().equals(editItem.getMaterialClass())
-                            && item.getRemains() > editItem.getHeight()
+                            //  && item.getRemains() > editItem.getHeight()
                             //если  <= 10 метров то на гладкий лист пускаем
                             && item.getRemains() >= 10)
                         if ((!item.getCover().equals(MaterialCover.ZINK) && item.getMaterialColor().equals(editItem.getMaterialColor())))
@@ -378,8 +379,45 @@ public class ManufactureForm extends Div {
                         else if (item.getCover().equals(MaterialCover.ZINK))
                             allMaterials.add(item);
                 });
-                //Производим из меньшей по остатку сырья
-                materialSelect.setValue(allMaterials.stream().min(Comparator.comparing(Material::getRemains)).get());
+
+                /*    Material minMaterial = allMaterials.stream().min(Comparator.comparing(Material::getRemains)).get();
+                if (minMaterial.getRemains() >= orderMetalLength) {
+                    materialSelect.setValue(minMaterial);
+                    return;
+                }*/
+
+
+                allMaterials.stream().sorted(Comparator.comparing(Material::getRemains));
+                Double remainsToProduce = 0D;
+                List<Material> allProdMaterials = new ArrayList<>();
+                for (Material material : allMaterials) {
+                    //Производим из меньшей по остатку сырья сли хватает остатка
+                    if (material.getRemains() >= editItem.getHeight() * editItem.getQuantity()) {
+                        materialSelect.setValue(material);
+                        return;
+                    }
+                    if (orderMetalLength >= 0D) {
+                        //Пpозводство из 2 и более бухт
+                        Double maxProduction = new Double(material.getRemains() - machineSelect.getValue().getLength());
+                        if (orderMetalLength > maxProduction) {
+                            Double production = maxProduction;
+                            orderMetalLength = orderMetalLength - production;
+                            material.setRemainInProduction(production);
+                            allProdMaterials.add(material);
+                        } else {
+                            Double production = orderMetalLength;
+                            orderMetalLength = orderMetalLength - production;
+                            material.setRemainInProduction(production);
+                            allProdMaterials.add(material);
+                        }
+                    }
+
+                }
+                if (orderMetalLength > 0) {
+                    Notification.show("На складе на хватает сырья для производства");
+                } else {
+                    materialSelect.setItems(allProdMaterials);
+                }
             }
         } catch (Exception e) {
 

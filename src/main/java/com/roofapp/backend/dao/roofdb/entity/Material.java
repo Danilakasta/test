@@ -9,8 +9,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity(name = "Materials")
 @Data
@@ -101,9 +99,14 @@ public class Material extends AbstractEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modified;
 
+
+    @Transient
+    private Double remainInProduction;
+
     @Override
     public String toString(){
-        return   serialNumber +" " + manufacturer+" "+width +" "+materialColor  +" "+ cover+" "+materialClass +" Остаток-"+ remains;
+        return   serialNumber +" " + manufacturer+" "+width +" "+materialColor  +" "+ cover+" "+materialClass +" Остаток-"+ remains+
+              " Произвести - "+remainInProduction;
     }
 
 }
