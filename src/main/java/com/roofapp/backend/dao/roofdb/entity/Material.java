@@ -103,10 +103,15 @@ public class Material extends AbstractEntity {
     @Transient
     private Double remainInProduction;
 
+
+    @Transient
+    private Integer countInProduction;
+
+
     @Override
     public String toString(){
         return   serialNumber +" " + manufacturer+" "+width +" "+materialColor  +" "+ cover+" "+materialClass +" Остаток-"+ remains+
-              " Произвести - "+remainInProduction;
+              " Производимая длина- "+remainInProduction +  " Колличество- "+countInProduction;
     }
 
 }

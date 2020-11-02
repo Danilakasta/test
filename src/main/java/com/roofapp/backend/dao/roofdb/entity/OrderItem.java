@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,7 +23,7 @@ import java.util.Objects;
 public class OrderItem extends AbstractEntity {
 
     @ManyToOne
-   // @NotNull(message = "Продукт не выбран")
+    // @NotNull(message = "Продукт не выбран")
     private Product product;
 
     @Column(name = "order_id")
@@ -39,16 +40,18 @@ public class OrderItem extends AbstractEntity {
     private Width width;
 
     @Column(name = "material_class")
-    private MaterialClass materialClass ;
+    private MaterialClass materialClass;
 
     @Column(name = "material_cover")
-    private MaterialCover materialCover ;
+    private MaterialCover materialCover;
 
     @Column(name = "material_color")
-    private MaterialColor materialColor ;
+    private MaterialColor materialColor;
 
-  //  @Min(1)
-    private Double height;
+
+    //  @Min(1)
+    @Max(12)
+    private Double height = 0D;
 
     private String size;
 

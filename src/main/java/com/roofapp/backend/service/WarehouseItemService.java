@@ -1,5 +1,6 @@
 package com.roofapp.backend.service;
 
+import com.roofapp.backend.dao.roofdb.entity.OrderItem;
 import com.roofapp.backend.dao.roofdb.entity.User;
 import com.roofapp.backend.dao.roofdb.entity.WarehouseItem;
 import com.roofapp.backend.dao.roofdb.repositories.WarehouseItemsRepository;
@@ -95,6 +96,10 @@ public class WarehouseItemService implements FilterableCrudService<WarehouseItem
 
     }
 
+
+    public WarehouseItem findByOrderItem(OrderItem orderItem){
+        return warehouseItemsRepository.findByOrderItem(orderItem);
+    }
 
 
 }

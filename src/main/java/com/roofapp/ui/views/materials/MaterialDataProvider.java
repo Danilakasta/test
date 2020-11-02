@@ -83,7 +83,16 @@ public class MaterialDataProvider extends ListDataProvider<Material> {
         this.filterText = filterText.trim().toLowerCase(Locale.ENGLISH);
 
         setFilter(Material -> passesFilter(Material.getSerialNumber(), this.filterText)
-                        || passesFilter(Material.getSerialNumber(), this.filterText)
+                        || passesFilter(Material.getCover(), this.filterText)
+                        || passesFilter(Material.getWidth(), this.filterText)
+                        || passesFilter(Material.getMaterialClass(), this.filterText)
+                        || passesFilter(Material.getMaterialColor(), this.filterText)
+                        || passesFilter(Material.getRemains(), this.filterText)
+                        || passesFilter(Material.getLength(), this.filterText)
+                        || passesFilter(Material.getPriceOneMetre(), this.filterText)
+                        || passesFilter(Material.getPrice(), this.filterText)
+                        || passesFilter(Material.getManufacturer(), this.filterText)
+                        || passesFilter(Material.getWidthFact(), this.filterText)
                 //    || passesFilter(Material.getCategory(), this.filterText)
         );
     }

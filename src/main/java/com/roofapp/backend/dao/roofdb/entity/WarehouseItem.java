@@ -37,4 +37,5 @@ public class WarehouseItem extends AbstractEntity {
 
 	@Min(1)
 	private Integer quantity ;
+
 }

@@ -242,7 +242,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         });
 
         binder.forField(height)
-                .withValidator(item ->  manufacturedProductValidator() && item ==null || item!= null , "Высота не введена")
+                .withValidator(item ->  manufacturedProductValidator() && item ==null || item!= null , "Высота введена не корректно")
                 .bind("height");
 
         //	binder.forField(comment).bind("comment");

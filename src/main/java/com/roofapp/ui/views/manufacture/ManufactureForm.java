@@ -5,6 +5,7 @@ import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.WarehouseState;
 import com.roofapp.backend.dao.roofdb.entity.*;
 import com.roofapp.backend.service.*;
+import com.roofapp.backend.utils.Helper;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -65,7 +66,6 @@ public class ManufactureForm extends Div {
     private Button ok;
     // private Button discard;
     private Button cancel;
-    /*  private final Button delete;*/
 
     private final ManufactureViewLogic viewLogic;
 
@@ -74,45 +74,6 @@ public class ManufactureForm extends Div {
 
     private OrderItemManufacture item;
 
-    private static class PriceConverter extends StringToBigDecimalConverter {
-
-        public PriceConverter() {
-            super(BigDecimal.ZERO, "Cannot convert value to a number.");
-        }
-
-        @Override
-        protected NumberFormat getFormat(Locale locale) {
-            // Always display currency with two decimals
-            final NumberFormat format = super.getFormat(locale);
-            if (format instanceof DecimalFormat) {
-                format.setMaximumFractionDigits(2);
-                format.setMinimumFractionDigits(2);
-            }
-            return format;
-        }
-    }
-
-    private static class StockCountConverter extends StringToIntegerConverter {
-
-        public StockCountConverter() {
-            super(0, "Could not convert value to " + Integer.class.getName()
-                    + ".");
-        }
-
-        @Override
-        protected NumberFormat getFormat(Locale locale) {
-            // Do not use a thousands separator, as HTML5 input type
-            // number expects a fixed wire/DOM number format regardless
-            // of how the browser presents it to the user (which could
-            // depend on the browser locale).
-            final DecimalFormat format = new DecimalFormat();
-            format.setMaximumFractionDigits(0);
-            format.setDecimalSeparatorAlwaysShown(false);
-            format.setParseIntegerOnly(true);
-            format.setGroupingUsed(false);
-            return format;
-        }
-    }
 
     private final MachineService machineService;
 
@@ -130,6 +91,7 @@ public class ManufactureForm extends Div {
         this.machineService = machineService;
         this.orderItemsService = orderItemsService;
         this.viewLogic = viewLogic;
+
         setClassName("manufacture-form");
 
         content = new VerticalLayout();
@@ -302,40 +264,62 @@ public class ManufactureForm extends Div {
 
     }
 
+    private WarehouseItem getWhereHouseItems() {
+        OrderItem orderItem = orderItemsService.findById(item.getId());
+        return warehouseItemService.findByOrderItem(orderItem);
+    }
+
+  /*  private Double getCalcWhereHouseItems() {
+        return warehouseItems.stream().mapToDouble(item -> item.getQuantity()).sum();
+    }*/
+
     private void addToWarehouse() {
-        WarehouseItem warehouseItem = warehouseItemService.createNew(null);
-        warehouseItem.setProduct(item.getProduct());
-        warehouseItem.setQuantity(item.getQuantity().intValue());
-        warehouseItem.setState(WarehouseState.STORAGE);
-        warehouseItem.setMachine(machineSelect.getValue());
-        warehouseItem.setMaterial(materialSelect.getValue());
-        warehouseItemService.save(warehouseItem);
-        Notification.show("Передано на склад");
+        WarehouseItem warehouseItems =getWhereHouseItems();
+        OrderItem orderItem = orderItemsService.findById(item.getId()); //TODO оптимизировать
+
+        if (warehouseItems == null) {
+            WarehouseItem warehouseItem = warehouseItemService.createNew(null);
+            warehouseItem.setProduct(item.getProduct());
+            warehouseItem.setQuantity( materialSelect.getValue().getCountInProduction());
+            warehouseItem.setState(WarehouseState.STORAGE);
+            warehouseItem.setMachine(machineSelect.getValue());
+            warehouseItem.setMaterial(materialSelect.getValue());
+            warehouseItem.setOrderItem( orderItem );
+            warehouseItemService.save(warehouseItem);
+            Notification.show("Передано на склад");
+       }else{
+            warehouseItems.setQuantity(  warehouseItems.getQuantity()+materialSelect.getValue().getCountInProduction());
+            warehouseItemService.save(warehouseItems);
+        }
+
     }
 
     private void useMaterial() {
         Material material = materialSelect.getValue();
-        material.setUsed(material.getUsed() + item.getHeight() * item.getQuantity());
-        material.setRemains(material.getRemains() - (item.getHeight() * item.getQuantity()));
+        material.setUsed(material.getUsed() +  material.getRemainInProduction());
+        material.setRemains(material.getRemains() - (material.getRemainInProduction()));
         materialService.save(material);
     }
 
 
     private void changeOrderState() {
-        List<OrderItem> orderItems = orderItemsService.findAllByOrderId(item.getOrder().getId());
-        for (OrderItem orderItem : orderItems) {
-            if (orderItem.getDone() == null)
-                return;
+        WarehouseItem warehouseItems =getWhereHouseItems();
+
+        if (warehouseItems.getQuantity().intValue() == item.getQuantity()) {
+            List<OrderItem> orderItems = orderItemsService.findAllByOrderId(item.getOrder().getId());
+            for (OrderItem orderItem : orderItems) {
+                if (orderItem.getDone() == null)
+                    return;
+            }
+            Order order = item.getOrder();
+            order.setDone(new Timestamp(System.currentTimeMillis()));
+            order.setState(OrderState.READY);
+            orderService.saveOrder(order);
+
+            Optional<Order> parentOrder = orderService.findById(item.getOrder().getParentId());
+            parentOrder.get().setState(OrderState.STORAGE);
+            orderService.saveOrder(parentOrder.get());
         }
-        Order order = item.getOrder();
-        order.setDone(new Timestamp(System.currentTimeMillis()));
-        order.setState(OrderState.READY);
-        orderService.saveOrder(order);
-
-        Optional<Order> parentOrder = orderService.findById(item.getOrder().getParentId());
-        parentOrder.get().setState(OrderState.STORAGE);
-        orderService.saveOrder(parentOrder.get());
-
     }
 
     private void changeItemState() {
@@ -361,7 +345,12 @@ public class ManufactureForm extends Div {
 
     private void findMaterial(OrderItemManufacture editItem) {
         materialSelect.clear();
-        Double orderMetalLength = editItem.getHeight() * editItem.getQuantity();
+        WarehouseItem warehouseItems =getWhereHouseItems();
+
+        Double orderMetalLength = (editItem.getHeight() * editItem.getQuantity()) ;
+        if(warehouseItems != null){
+            orderMetalLength =   orderMetalLength - editItem.getHeight()*warehouseItems.getQuantity();
+        }
         try {
             if (machineService != null && editItem != null) {
 
@@ -393,21 +382,29 @@ public class ManufactureForm extends Div {
                 for (Material material : allMaterials) {
                     //Производим из меньшей по остатку сырья сли хватает остатка
                     if (material.getRemains() >= editItem.getHeight() * editItem.getQuantity()) {
+                        material.setRemainInProduction(editItem.getHeight() * editItem.getQuantity());
+                        material.setCountInProduction(editItem.getQuantity().intValue());
                         materialSelect.setValue(material);
                         return;
                     }
                     if (orderMetalLength >= 0D) {
-                        //Пpозводство из 2 и более бухт
-                        Double maxProduction = new Double(material.getRemains() - machineSelect.getValue().getLength());
-                        if (orderMetalLength > maxProduction) {
-                            Double production = maxProduction;
+                        //Пpозводство из 2 и более бухт;
+                        Double maxLenght =   material.getRemains() - machineSelect.getValue().getLength();
+                        Integer maxCount = Helper.aroundToTheWhole( maxLenght /item.getHeight());
+                        Double maxProductionLength = maxCount *item.getHeight();
+
+
+                        if (orderMetalLength >maxProductionLength ) {
+                            Double production = maxProductionLength ;
                             orderMetalLength = orderMetalLength - production;
                             material.setRemainInProduction(production);
+                            material.setCountInProduction(maxCount);
                             allProdMaterials.add(material);
                         } else {
                             Double production = orderMetalLength;
                             orderMetalLength = orderMetalLength - production;
                             material.setRemainInProduction(production);
+                            material.setCountInProduction(production.intValue()/item.getHeight().intValue());
                             allProdMaterials.add(material);
                         }
                     }
