@@ -2,7 +2,6 @@ package com.roofapp.backend.dao.roofdb;
 
 //Покрытие
 public enum MaterialCover {
-    NO_ENTER("Не выбрано"),
     ZINK("Цинк"),
     POLIESTER("Полиэстер"),
     PRINTEK("Принтек"),

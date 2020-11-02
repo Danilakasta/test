@@ -131,7 +131,7 @@ class OrderDetails extends window.ScrollShadowMixin(PolymerElement) {
 
       <vaadin-form-layout id="form1">
         <vaadin-form-item>
-          <label slot="label">Датаe</label>
+          <label slot="label">Дата доставки</label>
           <vaadin-form-layout id="form2">
             <div class="date">
               <h3>[[item.dueDate.day]]</h3>

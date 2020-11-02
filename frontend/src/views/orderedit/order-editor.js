@@ -52,14 +52,16 @@ class OrderEditor extends window.ScrollShadowMixin(PolymerElement) {
       <vaadin-form-layout id="form1">
 
         <vaadin-form-layout id="form2">
-          <vaadin-date-picker label="Дата" id="dueDate">
+          <vaadin-date-picker label="Дата доставки" id="dueDate">
           </vaadin-date-picker>
           <vaadin-combo-box id="dueTime">
             <iron-icon slot="prefix" icon="vaadin:clock"></iron-icon>
           </vaadin-combo-box>
-          <vaadin-combo-box id="pickupLocation" colspan="2">
+          <vaadin-combo-box label="Место приема заказа" id="pickupLocation" colspan="2">
             <iron-icon slot="prefix" icon="vaadin:at"></iron-icon>
-          </vaadin-combo-box>
+          </vaadin-combo-box>  
+          <vaadin-text-field id="customerDetails" label="Коментарий" colspan="2"></vaadin-text-field>
+          <vaadin-combo-box id="discount" label="Скидка"></vaadin-combo-box>    
         </vaadin-form-layout>
 
         <vaadin-form-layout id="form3" colspan="3">
@@ -70,8 +72,7 @@ class OrderEditor extends window.ScrollShadowMixin(PolymerElement) {
           <vaadin-text-field id="customerNumber" label="Номер телефона">
             <iron-icon slot="prefix" icon="vaadin:phone"></iron-icon>
           </vaadin-text-field>
-          <vaadin-text-field id="customerDetails" label="Коментарий" colspan="2"></vaadin-text-field>
-          <vaadin-combo-box id="discount" label="Скидка"></vaadin-combo-box>
+
           <div id="itemsContainer" colspan="3"></div>
         </vaadin-form-layout>
 

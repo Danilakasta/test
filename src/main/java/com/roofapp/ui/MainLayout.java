@@ -1,10 +1,8 @@
 package com.roofapp.ui;
 
-//import com.roofapp.authentication.AccessControl;
-//import com.roofapp.authentication.AccessControlFactory;
 
-//import com.roofapp.ui.views.deliveries.DeliveriesView;
 
+//https://github.com/vaadin/flow/issues/6897
 import com.roofapp.app.security.CurrentUser;
 import com.roofapp.backend.dao.roofdb.Role;
 import com.roofapp.ui.views.ProductAmount.ProductAmountView;
@@ -48,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Theme(value = Lumo.class)
 @PWA(name = "Roof Factory", shortName = "roofApp",
         startPath = "login",
+       //   startPath = "orders",
         backgroundColor = "#227aef", themeColor = "#227aef",
         offlinePath = "offline-page.html",
         offlineResources = {"images/offline-login-banner.jpg"})

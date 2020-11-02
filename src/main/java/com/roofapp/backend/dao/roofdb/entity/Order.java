@@ -61,7 +61,7 @@ public class Order extends AbstractEntity implements OrderSummary {
     //	@NotNull(message = "{bakery.pickup.location.required}")
     @ManyToOne
     @JoinColumn(name="pickup_location_id",referencedColumnName = "id")
-    @NotNull(message = "Доставка не выбрана")
+    @NotNull(message = "Не выбрано")
     private PickupLocation pickupLocation;
 
     //@NotNull

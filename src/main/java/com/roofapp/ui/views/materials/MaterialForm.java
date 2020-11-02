@@ -7,6 +7,7 @@ import com.roofapp.backend.dao.roofdb.entity.Material;
 import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.guides.WidthGuideService;
+import com.roofapp.backend.utils.Helper;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -169,7 +170,7 @@ public class MaterialForm extends Div {
 
         cover.addValueChangeListener(e -> {
             if(e.getValue() !=null) {
-                if (e.getValue().ordinal() == 0) {
+                if (e.getValue().equals(MaterialCover.ZINK)) {
                     materialColor.setEnabled(false);
                 } else {
                     materialColor.setEnabled(true);
@@ -227,7 +228,7 @@ public class MaterialForm extends Div {
         priceOneTone.setSuffixComponent(new Span("р"));
         priceOneTone.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         priceOneTone.setValueChangeMode(ValueChangeMode.EAGER);
-        priceOneTone.setEnabled(false);
+        priceOneTone.setReadOnly(true);
 
         weightOfBay = new NumberField("Вес бухты");
         weightOfBay.setSuffixComponent(new Span("т"));
@@ -254,7 +255,7 @@ public class MaterialForm extends Div {
         priceOneMetre.setSuffixComponent(new Span("р пог.м."));
         priceOneMetre.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         priceOneMetre.setValueChangeMode(ValueChangeMode.EAGER);
-        priceOneMetre.setEnabled(false);
+        priceOneMetre.setReadOnly(true);
 
         final HorizontalLayout horizontalLayout4 = new HorizontalLayout(length, priceOneMetre);
         horizontalLayout4.setWidth("100%");
@@ -266,30 +267,34 @@ public class MaterialForm extends Div {
         teorCoefficient.setSuffixComponent(new Span("пог.м.т."));
         teorCoefficient.setWidth("100%");
         teorCoefficient.setValueChangeMode(ValueChangeMode.EAGER);
-      //  teorCoefficient.setEnabled(false);
+        teorCoefficient.setReadOnly(true);
         content.add(teorCoefficient);
 
         factCoefficient = new NumberField("Факт. длинна");
         factCoefficient.setSuffixComponent(new Span("пог.м."));
         factCoefficient.setWidth("100%");
         factCoefficient.setValueChangeMode(ValueChangeMode.EAGER);
-        factCoefficient.setEnabled(false);
+        factCoefficient.setReadOnly(true);
         content.add(factCoefficient);
         used = new NumberField("Израсходовано");
         used.setSuffixComponent(new Span("м"));
      //   used.setEnabled(false);
         used.setWidth("100%");
         used.setValueChangeMode(ValueChangeMode.EAGER);
+        used.setReadOnly(true);
         content.add(used);
 
         remains = new NumberField("Остаток");
         remains.setSuffixComponent(new Span("м"));
       //  remains.setEnabled(false);
         remains.setWidth("100%");
-        remains.setValueChangeMode(ValueChangeMode.EAGER);
+        remains.setReadOnly(true);
+     //   remains.setValueChangeMode(ValueChangeMode.EAGER);
         length.addValueChangeListener(e -> {
             setPriceOneMetre();
-            remains.setValue(Double.valueOf(e.getValue()));
+            if(remains != null && e.getValue()!= null) {
+                remains.setValue(Double.valueOf(e.getValue()));
+            }
         });
 
 
@@ -369,7 +374,7 @@ public class MaterialForm extends Div {
         Double priceDouble = 0D;
         if (!price.isEmpty() && !weightOfBay.isEmpty()) {
             priceDouble = (price.getValue() / weightOfBay.getValue()) + priceDelivery.getValue();
-            priceOneTone.setValue(aroundDouble(priceDouble));
+            priceOneTone.setValue(Helper.aroundDouble(priceDouble));
         } else
             priceOneTone.setValue(0D);
 
@@ -379,7 +384,7 @@ public class MaterialForm extends Div {
         Double priceDouble = 0D;
         if (!price.isEmpty() && !length.isEmpty()) {
             priceDouble = price.getValue() / length.getValue();
-            priceOneMetre.setValue(aroundDouble(priceDouble));
+            priceOneMetre.setValue(Helper.aroundDouble(priceDouble));
         } else
             priceOneMetre.setValue(0D);
     }
@@ -391,13 +396,11 @@ public class MaterialForm extends Div {
 
         if (!weightOfBay.isEmpty() && !width.isEmpty()) {
             teofCofDouble = (weightOfBay.getValue() / width.getValue().getValue() / weightOfMetalConst / specificWeightConst) * 1000;
-            teorCoefficient.setValue(aroundDouble(teofCofDouble));
+            teorCoefficient.setValue(Helper.aroundDouble(teofCofDouble));
         } else
             teorCoefficient.setValue(teofCofDouble);
     }
 
-    private Double aroundDouble(Double val) {
-        return new BigDecimal(val.toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
-    }
+
 
 }

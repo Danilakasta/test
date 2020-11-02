@@ -29,17 +29,6 @@ public class WidthGuideService implements FilterableCrudService<Width> {
         this.widthRepository = widthRepository;
     }
 
-    private Width defaultWidth;
-
-    public Width getDefaultWidth() {
-        return defaultWidth;
-    }
-
-    @PostConstruct
-    void init() {
-        defaultWidth = widthRepository.findById(0L).get();
-    }
-
 
     @Override
     public Page<Width> findAnyMatching(Optional<String> filter, Pageable pageable) {

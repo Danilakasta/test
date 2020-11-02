@@ -7,6 +7,7 @@ import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.dao.roofdb.repositories.MaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,6 +70,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Material> findAllByRemains() {
         try {
             return materialRepository.findAllByRemainsGreaterThanOrderByWidth(0D);

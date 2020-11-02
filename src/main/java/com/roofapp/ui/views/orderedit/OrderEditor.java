@@ -5,9 +5,11 @@ import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.entity.*;
 import com.roofapp.backend.service.*;
 import com.roofapp.backend.service.guides.WidthGuideService;
+import com.roofapp.backend.utils.Helper;
 import com.roofapp.ui.crud.CrudEntityDataProvider;
 import com.roofapp.ui.dataproviders.DataProviderUtil;
 import com.roofapp.ui.events.CancelEvent;
+import com.roofapp.ui.utils.FormattingUtils;
 import com.roofapp.ui.utils.converters.LocalTimeConverter;
 import com.roofapp.ui.views.order.events.ReviewEvent;
 import com.roofapp.ui.views.order.events.ValueChangeEvent;
@@ -248,7 +250,7 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
     private void setTotalPrice(Double totalPrice) {
         //  getModel().setTotalPrice(new BigDecimal(totalPrice * discount.getValue().getDiscount() + totalPrice).setScale(2, RoundingMode.HALF_UP).toString());
-        getModel().setTotalPrice(/*FormattingUtils.formatAsCurrency(*/totalPrice.toString()/*)*/);
+        getModel().setTotalPrice(/*FormattingUtils.formatAsCurrency(*/ Helper.aroundDouble(totalPrice).toString());
     }
 
     public void setCurrentUser(User currentUser) {

@@ -39,11 +39,13 @@ public class LoginView extends LoginOverlay
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        if (SecurityUtils.isUserLoggedIn()) {
+       // event.forwardTo(MainLayout.class);
+      if (SecurityUtils.isUserLoggedIn()) {
             event.forwardTo(MainLayout.class);
         } else {
-            setOpened(true);
-        }
+          setOpened(true);
+      }
+
     }
 
     @Override
