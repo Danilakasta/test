@@ -19,7 +19,6 @@ import java.util.Objects;
 //@EqualsAndHashCode
 @Getter
 @Setter
-@ToString
 public class OrderItem extends AbstractEntity {
 
     @ManyToOne
@@ -109,4 +108,16 @@ public class OrderItem extends AbstractEntity {
         return Objects.hash(super.hashCode(), product, orderId, quantity, comment, width, materialClass, materialCover, materialColor, height, size, price, orderType);
     }
 
+    @Override
+    public String toString() {
+        return " Продукт- " + product +
+                " Кол-во- " + quantity +
+                " Толшина- " + width +
+                " Класс- " + materialClass +
+                " Покрытие- " + materialCover +
+                " Цвет- " + materialColor +
+                " Длинна- " + height +
+                " Размер- " + size +
+                " Цена- " + price;
+    }
 }

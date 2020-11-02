@@ -289,21 +289,10 @@ public class Order extends AbstractEntity implements OrderSummary {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "wpOrderId=" + wpOrderId +
-                ", dueDate=" + dueDate +
-                ", dueTime=" + dueTime +
-                ", pickupLocation=" + pickupLocation +
-                ", customer=" + customer +
-                ", items=" + items +
-                ", state=" + state +
-                ", discount=" + discount +
-                ", history=" + history +
-                ", orderType=" + orderType +
-                ", parentId=" + parentId +
-                ", created=" + created +
-                ", modified=" + modified +
-                ", done=" + done +
-                '}';
+        return  " Дата- " + dueDate +
+                " Время- " + dueTime +
+                " Место- " + pickupLocation +
+                " Покупвтель- " + customer +
+                " Статус- " + state;
     }
 }

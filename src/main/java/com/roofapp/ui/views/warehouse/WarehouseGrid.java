@@ -25,26 +25,25 @@ public class WarehouseGrid extends Grid<WarehouseItem> {
         setSizeFull();
 
         addColumn(WarehouseItem::getProduct).setHeader("Название номенклатуры")
-                .setFlexGrow(100).setSortable(true).setKey("product");
+                .setFlexGrow(20).setSortable(true).setKey("product").setResizable(true);
 
-        addColumn(WarehouseItem::getQuantity).setHeader("кол-во")
-                .setFlexGrow(20).setSortable(true).setKey("quantity");
+        addColumn(WarehouseItem::getQuantity).setHeader("Кол-во")
+                .setFlexGrow(20).setSortable(true).setKey("quantity").setResizable(true);
 
         addColumn(WarehouseItem::getState).setHeader("статус")
-                .setFlexGrow(20).setSortable(true).setKey("state");
+                .setFlexGrow(20).setSortable(true).setKey("state").setResizable(true);
 
-        addColumn(WarehouseItem::getComment).setHeader("коментарий")
-                .setFlexGrow(20).setSortable(true).setKey("comment");
+        addColumn(WarehouseItem::getComment).setHeader("Коментарий")
+                .setFlexGrow(20).setSortable(true).setKey("comment").setResizable(true);
 
-        addColumn(WarehouseItem::getOrderItem).setHeader("заказ")
-                .setFlexGrow(20).setSortable(true).setKey("orderItem");
+        addColumn(WarehouseItem::getOrderItem).setHeader("Заказ")
+                .setFlexGrow(20).setSortable(true).setKey("orderItem").setResizable(true);
 
-        addColumn(WarehouseItem::getMachine).setHeader("станок")
-                .setFlexGrow(20).setSortable(true).setKey("machine");
+        addColumn(WarehouseItem::getMachine).setHeader("Станок")
+                .setFlexGrow(20).setSortable(true).setKey("machine").setResizable(true);
 
-        addColumn(WarehouseItem::getMaterial).setHeader("материал")
-                .setFlexGrow(20).setSortable(true).setKey("material");
-
+        addColumn(WarehouseItem::getMaterial).setHeader("Материал")
+                .setFlexGrow(20).setSortable(true).setKey("material").setResizable(true);
 
 
         UI.getCurrent().getPage().addBrowserWindowResizeListener(
