@@ -96,8 +96,6 @@ public class Order extends AbstractEntity implements OrderSummary {
     private OrderType orderType = OrderType.CONTRACTOR_ORDER;
 
 
-    @Column(name = "parent_id")
-    private Long parentId;
 
     @Column(name = "created")
     @CreationTimestamp
@@ -112,7 +110,8 @@ public class Order extends AbstractEntity implements OrderSummary {
     @Column(name = "done")
     private Date done;
 
-
+    @Column(name = "parent_id")
+    private Long parentId;
 
     public Order(User createdBy) {
         this.state = OrderState.NEW;

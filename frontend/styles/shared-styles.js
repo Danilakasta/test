@@ -158,9 +158,16 @@ $_documentContainer.innerHTML = `<dom-module id="bakery-app-layout-theme" theme-
       }
 
       :host([status="ready"]) [part~="input-field"],
+      :host([status="storage"]) [part~="input-field"],
       :host([status="delivered"]) [part~="input-field"] {
         color: var(--lumo-success-color);
         background: var(--lumo-success-color-10pct);
+      }
+      
+
+       :host([status="manufacture"]) [part~="input-field"] {
+        color: var(--lumo-primary-color);
+        background: #1676f3;
       }
 
       :host([status="problem"]) [part~="input-field"],

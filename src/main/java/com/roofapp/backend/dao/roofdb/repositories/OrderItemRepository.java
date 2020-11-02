@@ -24,9 +24,12 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     Page<OrderItem> findBy(Pageable page);
 
 
+    List<OrderItem> findAllByOrderId(Long id);
+
     @Query("select e from order_item e " +
             "left join order_info oi on oi.id  = e.orderId  "+
-            " where e.orderType = :orderType and oi.state = 3 and oi.orderType = :orderType order by e.materialColor, e.height, e.materialClass, e.materialCover ")
+            " where e.orderType = :orderType and oi.state = 3 and " +
+            "oi.orderType = :orderType order by e.materialColor, e.height, e.materialClass, e.materialCover ")
     List<OrderItem> findByByPriority(@Param("orderType") OrderType orderType);
 
 

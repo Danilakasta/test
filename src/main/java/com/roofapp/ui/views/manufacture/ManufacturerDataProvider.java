@@ -1,5 +1,6 @@
 package com.roofapp.ui.views.manufacture;
 
+import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.entity.OrderItemManufacture;
 import com.roofapp.backend.service.OrderItemsManufactureService;
 import com.vaadin.flow.data.provider.ListDataProvider;
@@ -13,7 +14,6 @@ import java.util.Objects;
  * Utility class that encapsulates filtering and CRUD operations for
  * {@link } entities.
  * <p>
-
  */
 public class ManufacturerDataProvider extends ListDataProvider<OrderItemManufacture> {
 
@@ -21,7 +21,7 @@ public class ManufacturerDataProvider extends ListDataProvider<OrderItemManufact
      * Text filter that can be changed separately.
      */
     private String filterText = "";
-   // private List<OrderItem> manufacturerss;
+    // private List<OrderItem> manufacturerss;
 
 
     private final OrderItemsManufactureService orderItemsService;
@@ -43,10 +43,12 @@ public class ManufacturerDataProvider extends ListDataProvider<OrderItemManufact
             getItems().add(item);
             refreshAll();
         } else {
-          // refreshItem(Manufacturers);
-            refreshAll();
+            // refreshItem(Manufacturers);
         }
-        orderItemsService.save(item);
+        if (item.getOrder().getState().equals(OrderState.READY))
+            getItems().remove(item);
+        refreshAll();
+//        orderItemsService.save(item);
     }
 
     /**
@@ -55,7 +57,7 @@ public class ManufacturerDataProvider extends ListDataProvider<OrderItemManufact
      * @param item the Manufacturers to be deleted
      */
     public void delete(OrderItemManufacture item) {
-     //   DataService.get().deleteManufacturers(Manufacturers.getId());
+        //   DataService.get().deleteManufacturers(Manufacturers.getId());
         orderItemsService.delete(item);
         getItems().remove(item);
         refreshAll();
@@ -86,7 +88,6 @@ public class ManufacturerDataProvider extends ListDataProvider<OrderItemManufact
                 || passesFilter(Manufacturers.getMaterialClass(), this.filterText)
                 || passesFilter(Manufacturers.getMaterialColor(), this.filterText)
                 || passesFilter(Manufacturers.getMaterialCover(), this.filterText)
-
 
 
         );

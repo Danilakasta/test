@@ -17,7 +17,7 @@ import java.util.*;
 
 
 @Service
-@Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+//@Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
 public class OrderItemsService implements FilterableCrudService<OrderItem>  {
 
 
@@ -85,6 +85,11 @@ public class OrderItemsService implements FilterableCrudService<OrderItem>  {
 	@Override
 	public List<OrderItem> findAll() {
 		return orderItemRepository.findAll();
+	}
+
+
+	public List<OrderItem> findAllByOrderId(Long id) {
+		return orderItemRepository.findAllByOrderId(id);
 	}
 
 	@Override

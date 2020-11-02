@@ -7,11 +7,14 @@ import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.OrderType;
 import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -66,6 +69,20 @@ public class OrderItemManufacture extends AbstractEntity{
 
     @Column(name = "order_type")
     private OrderType orderType = OrderType.CONTRACTOR_ORDER;
+
+    @Column(name = "created")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
+    @Column(name = "modified")
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modified;
+
+    @Column(name = "done")
+    private Date done;
+
 
     @Override
     public boolean equals(Object o) {

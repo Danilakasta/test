@@ -22,6 +22,7 @@ import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
@@ -59,17 +60,15 @@ public class ManufactureForm extends Div {
     private final WarehouseItemService warehouseItemService;
     private final MaterialService materialService;
     private final OrderService orderService;
+    private final OrderItemsService orderItemsService;
     private Button save;
     private Button ok;
     // private Button discard;
     private Button cancel;
     /*  private final Button delete;*/
 
-    private WarehouseViewLogic viewLogic;
+    private final ManufactureViewLogic viewLogic;
 
-    public void setViewLogic(WarehouseViewLogic viewLogic) {
-        this.viewLogic = viewLogic;
-    }
 
     private final Binder<OrderItemManufacture> binder;
 
@@ -123,12 +122,14 @@ public class ManufactureForm extends Div {
                            MachineService machineService,
                            MaterialService materialService,
                            WarehouseItemService warehouseItemService,
-                           OrderService orderService) {
+                           OrderService orderService, OrderItemsService orderItemsService) {
         this.itemService = itemService;
         this.warehouseItemService = warehouseItemService;
         this.materialService = materialService;
         this.orderService = orderService;
         this.machineService = machineService;
+        this.orderItemsService = orderItemsService;
+        this.viewLogic = viewLogic;
         setClassName("manufacture-form");
 
         content = new VerticalLayout();
@@ -282,7 +283,9 @@ public class ManufactureForm extends Div {
                     dialog3.close();
                     addToWarehouse();
                     useMaterial();
+                    changeItemState();
                     changeOrderState();
+                    viewLogic.saveItem(item);
                 });
                 dialog3.add(confirmButton3);
                 dialog3.open();
@@ -313,18 +316,34 @@ public class ManufactureForm extends Div {
     private void useMaterial() {
         Material material = materialSelect.getValue();
         material.setUsed(material.getUsed() + item.getHeight() * item.getQuantity());
-        material.setRemains(material.getLength() - (item.getHeight() * item.getQuantity()));
+        material.setRemains(material.getRemains() - (item.getHeight() * item.getQuantity()));
         materialService.save(material);
     }
 
 
     private void changeOrderState() {
-        Optional<Order> order = orderService.findById(item.getId());
-        order.get().setState(OrderState.READY);
-        orderService.saveOrder(order.get());
+        List<OrderItem> orderItems = orderItemsService.findAllByOrderId( item.getOrder().getId());
+        for (OrderItem orderItem :  orderItems ) {
+            if (orderItem.getDone() == null)
+                return;
+        }
+        Order order = item.getOrder();
+        order.setDone(new Timestamp(System.currentTimeMillis()));
+        order.setState(OrderState.READY);
+        orderService.saveOrder(order);
 
-        //   item.setOrderType(OrderType.MANUFACTURED);
+        Optional<Order> parentOrder =  orderService.findById(item.getOrder().getParentId());
+        parentOrder.get().setState(OrderState.STORAGE);
+        orderService.saveOrder(parentOrder.get());
+
     }
+
+    private void changeItemState() {
+        OrderItem orderItem = orderItemsService.findById(item.getId());
+        orderItem.setDone(new Timestamp(System.currentTimeMillis()));
+        orderItemsService.save(null, orderItem);
+    }
+
 
     private void findMachine(OrderItemManufacture editItem) {
         machineSelect.clear();

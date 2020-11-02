@@ -3,11 +3,14 @@ package com.roofapp.backend.dao.roofdb.entity;
 import com.roofapp.backend.dao.roofdb.*;
 import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity(name = "order_item")
@@ -32,13 +35,6 @@ public class OrderItem extends AbstractEntity {
     @Size(max = 255)
     private String comment;
 
-    public Double getTotalPrice() {
-        if (product.getPrice() != null && product.getPrice() != 0) {
-            return quantity == null || product == null ? Double.valueOf(0) : quantity * product.getPrice();
-        }
-        return quantity == null || product == null ? Double.valueOf(0) : quantity * price;
-    }
-
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private Width width;
 
@@ -62,6 +58,28 @@ public class OrderItem extends AbstractEntity {
 
     @Column(name = "order_type")
     private OrderType orderType = OrderType.CONTRACTOR_ORDER;
+
+    @Column(name = "created")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
+    @Column(name = "modified")
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modified;
+
+    @Column(name = "done")
+    private Date done;
+
+
+    public Double getTotalPrice() {
+        if (product.getPrice() != null && product.getPrice() != 0) {
+            return quantity == null || product == null ? Double.valueOf(0) : quantity * product.getPrice();
+        }
+        return quantity == null || product == null ? Double.valueOf(0) : quantity * price;
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -24,7 +24,7 @@ public interface OrderItemManufactureRepository extends JpaRepository<OrderItemM
 
     @Query(value = "select e.* from order_item e " +
             "left join order_info oi on oi.id  = e.order_Id  "+
-            " where e.order_Type = :orderType and oi.state = 3 and oi.order_Type = :orderType order by e.material_Color, e.height, e.material_Class, e.material_Cover ",nativeQuery = true
+            " where e.order_Type = :orderType and oi.state = 3  order by e.material_Color, e.height, e.material_Class, e.material_Cover ",nativeQuery = true
     )
     List<OrderItemManufacture> findByByPriority(@Param("orderType") Integer orderType);
 

@@ -86,7 +86,7 @@ public class Material extends AbstractEntity {
     private Double factCoefficient;
 
     //расход
-    private Double used;
+    private Double used = 0D;
     //остаток
     private Double remains;
 

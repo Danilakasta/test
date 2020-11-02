@@ -20,13 +20,16 @@ public class ManufacturerGrid extends Grid<OrderItemManufacture> {
     public ManufacturerGrid() {
 
         setSizeFull();
-        addColumn(orderItems -> orderItems.getId())
+
+        addColumn(item-> item.getOrder().getState().getDisplayName()).setHeader("Статус")
+                .setFlexGrow(5).setWidth("150px").setSortable(true).setKey("state").setResizable(true);
+
+        addColumn(orderItems -> orderItems.getOrder().getId())
                 .setHeader("id ордера на производство")
                 .setFlexGrow(3).setKey("id").setResizable(true);;
 
         addColumn(orderItems-> Helper.dateFormat(orderItems.getOrder().getCreated())).setHeader("Дата заказа")
                 .setFlexGrow(8).setWidth("200px").setSortable(true).setKey("created").setResizable(true);
-
 
         addColumn(item-> item.getOrder().getCustomer()).setHeader("Клиент")
                 .setFlexGrow(10).setWidth("250px").setSortable(true).setKey("castomer").setResizable(true);
@@ -56,8 +59,13 @@ public class ManufacturerGrid extends Grid<OrderItemManufacture> {
                 .setHeader("Класс")
                 .setFlexGrow(3).setKey("MaterialClass").setResizable(true);;
 
-        addColumn(item-> Helper.dateFormat(item.getOrder().getDone())).setHeader("Дата готовности")
-                .setFlexGrow(5).setWidth("200px").setSortable(true).setKey("done").setResizable(true);
+
+        addColumn(item-> Helper.dateFormat(item.getDone())).setHeader("Дата готовности позиции")
+                .setFlexGrow(5).setWidth("200px").setSortable(true).setKey("orderItemDone").setResizable(true);
+
+        addColumn(item-> Helper.dateFormat(item.getOrder().getDone())).setHeader("Дата готовности заказа")
+                .setFlexGrow(5).setWidth("200px").setSortable(true).setKey("orderDone").setResizable(true);
+
 
         UI.getCurrent().getPage().addBrowserWindowResizeListener(
                 e -> setColumnVisibility(e.getWidth()));

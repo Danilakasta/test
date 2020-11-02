@@ -1,5 +1,6 @@
 package com.roofapp.ui.views.manufacture;
 
+import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.entity.OrderItemManufacture;
 import com.roofapp.backend.service.*;
 import com.roofapp.ui.MainLayout;
@@ -19,7 +20,7 @@ import com.vaadin.flow.router.Route;
 
 /**
  * A view for performing create-read-update-delete operations on Manufacturerss.
- *
+ * <p>
  * See also {@link } for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
@@ -44,18 +45,18 @@ public class ManufactureView extends HorizontalLayout
     public ManufactureView(OrderItemsManufactureService itemService,
                            MachineService machineService,
                            MaterialService materialService,
-                           WarehouseItemService warehouseItemService, OrderService orderService) {
+                           WarehouseItemService warehouseItemService, OrderService orderService, OrderItemsService orderItemsService) {
         this.itemService = itemService;
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();
         final HorizontalLayout topLayout = createTopBar();
         grid = new ManufacturerGrid();
-        dataProvider = new ManufacturerDataProvider( itemService.findAllByPriority() ,  itemService);
+        dataProvider = new ManufacturerDataProvider(itemService.findAllByPriority(), itemService);
         grid.setDataProvider(this.dataProvider);
         // Allows user to select a single row in the grid.
         grid.asSingleSelect().addValueChangeListener(
                 event -> viewLogic.rowSelected(event.getValue()));
-        form = new ManufactureForm(viewLogic,  itemService,machineService,materialService,warehouseItemService,orderService);
+        form = new ManufactureForm(viewLogic, itemService, machineService, materialService, warehouseItemService, orderService, orderItemsService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);
@@ -140,7 +141,7 @@ public class ManufactureView extends HorizontalLayout
     /**
      * Updates a product in the list of products.
      *
-     * @param  item
+     * @param item
      */
     public void update(OrderItemManufacture item) {
         dataProvider.save(item);
@@ -161,8 +162,12 @@ public class ManufactureView extends HorizontalLayout
      * @param item
      */
     public void edit(OrderItemManufacture item) {
-        showForm(item != null);
-        form.edit(item);
+        if (item != null) {
+            if (item.getOrder().getState().equals(OrderState.MANUFACTURE)) {
+                showForm(item != null);
+                form.edit(item);
+            }
+        }
     }
 
     /**
