@@ -110,7 +110,7 @@ public class OrderItem extends AbstractEntity {
 
     @Override
     public String toString() {
-        return " Продукт- " + product +
+        return  product +
                 " Кол-во- " + quantity +
                 " Толшина- " + width +
                 " Класс- " + materialClass +
