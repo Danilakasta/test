@@ -25,25 +25,25 @@ public class WarehouseGrid extends Grid<WarehouseItem> {
         setSizeFull();
 
         addColumn(WarehouseItem::getProduct).setHeader("Название номенклатуры")
-                .setFlexGrow(20).setSortable(true).setKey("product").setResizable(true);
+                .setFlexGrow(20).setSortable(true).setKey("Название номенклатуры").setResizable(true);
 
         addColumn(WarehouseItem::getQuantity).setHeader("Кол-во")
-                .setFlexGrow(20).setSortable(true).setKey("quantity").setResizable(true);
+                .setFlexGrow(20).setSortable(true).setKey("Кол-во").setResizable(true);
 
         addColumn(WarehouseItem::getState).setHeader("статус")
-                .setFlexGrow(20).setSortable(true).setKey("state").setResizable(true);
+                .setFlexGrow(20).setSortable(true).setKey("статус").setResizable(true);
 
         addColumn(WarehouseItem::getComment).setHeader("Коментарий")
-                .setFlexGrow(20).setSortable(true).setKey("comment").setResizable(true);
+                .setFlexGrow(20).setSortable(true).setKey("Коментарий").setResizable(true);
 
         addColumn(WarehouseItem::getOrderItem).setHeader("Заказ")
-                .setFlexGrow(20).setSortable(true).setKey("orderItem").setResizable(true);
+                .setFlexGrow(20).setSortable(true).setKey("Заказ").setResizable(true);
 
         addColumn(WarehouseItem::getMachine).setHeader("Станок")
-                .setFlexGrow(20).setSortable(true).setKey("machine").setResizable(true);
+                .setFlexGrow(20).setSortable(true).setKey("Станок").setResizable(true);
 
         addColumn(WarehouseItem::getMaterial).setHeader("Материал")
-                .setFlexGrow(20).setSortable(true).setKey("material").setResizable(true);
+                .setFlexGrow(20).setSortable(true).setKey("Материал").setResizable(true);
 
 
         UI.getCurrent().getPage().addBrowserWindowResizeListener(

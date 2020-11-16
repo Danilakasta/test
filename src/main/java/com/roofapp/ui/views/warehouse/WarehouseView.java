@@ -7,9 +7,19 @@ import com.roofapp.ui.MainLayout;
 import com.roofapp.ui.views.products.ProductViewLogic;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
+import com.vaadin.flow.component.grid.contextmenu.GridMenuItem;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Pre;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -19,6 +29,9 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
+import org.springframework.security.core.parameters.P;
+
+import java.util.stream.Collectors;
 
 /**
  * A view for performing create-read-update-delete operations on products.
@@ -41,21 +54,27 @@ public class WarehouseView extends HorizontalLayout
 
     private final WarehouseViewLogic viewLogic = new WarehouseViewLogic(this);
     private Button newItem;
+    private Button filterColumn;
+    private Dialog dialog;
 
     private WarehouseDataProvider dataProvider;
 
-    public WarehouseView(WarehouseItemService itemService, ProductService productService ) {
+    public WarehouseView(WarehouseItemService itemService, ProductService productService) {
         this.itemService = itemService;
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();
         final HorizontalLayout topLayout = createTopBar();
         grid = new WarehouseGrid();
-        dataProvider = new WarehouseDataProvider( itemService.findAll(),  itemService);
+        dataProvider = new WarehouseDataProvider(itemService.findAll(), itemService);
         grid.setDataProvider(this.dataProvider);
         // Allows user to select a single row in the grid.
-        grid.asSingleSelect().addValueChangeListener(
-                event -> viewLogic.rowSelected(event.getValue()));
-        form = new WarehouseForm(viewLogic,  itemService,productService);
+     //   grid.asSingleSelect().addValueChangeListener()
+      //          event -> viewLogic.rowSelected(event.getValue()));
+        grid.setColumnReorderingAllowed(true);
+
+
+        addGridFilterItem();
+        form = new WarehouseForm(viewLogic, itemService, productService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);
@@ -70,6 +89,28 @@ public class WarehouseView extends HorizontalLayout
 
         viewLogic.init();
     }
+
+    public void addGridFilterItem() {
+        GridContextMenu<WarehouseItem> contextMenu = new GridContextMenu<>(grid);
+        GridMenuItem<WarehouseItem> insert = contextMenu.addItem(new Span(VaadinIcon.PLUS.create(),new Text(" "), new Span("Добавить")));
+        insert.addMenuItemClickListener(event -> viewLogic.newItem());
+
+        GridMenuItem<WarehouseItem> edit = contextMenu.addItem(new Span(VaadinIcon.EDIT.create(), new Text(" "),new Span("Редакторовать")));
+        edit.addMenuItemClickListener(event ->  viewLogic.rowSelected(event.getItem().get()));
+
+        GridMenuItem<WarehouseItem> filterColumn = contextMenu.addItem(new Span(VaadinIcon.TABLE.create(), new Text(" "),new Span("Скрыть колонки")));
+
+        grid.getColumns().forEach(column -> {
+            Checkbox idColumnVisibility = new Checkbox(column.getKey());
+            idColumnVisibility.addValueChangeListener(
+                    event -> column.setVisible(!column.isVisible()));
+            filterColumn.getSubMenu().addItem(idColumnVisibility);
+        });
+
+
+        add(contextMenu);
+    }
+
 
     public HorizontalLayout createTopBar() {
         filter = new TextField();
@@ -88,9 +129,17 @@ public class WarehouseView extends HorizontalLayout
         newItem.addClickListener(click -> viewLogic.newItem());
         // A shortcut to click the new product button by pressing ALT + N
         newItem.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
+
+        //Фильтр по колонкам
+        //  filterColumn = new Button(new Icon(VaadinIcon.TABLE));
+        //  filterColumn.addClickListener(buttonClickEvent -> {
+        //     dialog.open();
+        //  });
+
         final HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidth("100%");
         topLayout.add(filter);
+        // topLayout.add(filterColumn);
         topLayout.add(newItem);
         topLayout.setVerticalComponentAlignment(Alignment.START, filter);
         topLayout.expand(filter);
@@ -140,7 +189,7 @@ public class WarehouseView extends HorizontalLayout
     /**
      * Updates a product in the list of products.
      *
-     * @param  item
+     * @param item
      */
     public void updateItem(WarehouseItem item) {
         dataProvider.save(item);
