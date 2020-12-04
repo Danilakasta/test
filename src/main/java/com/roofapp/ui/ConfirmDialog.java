@@ -7,6 +7,7 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.shared.Registration;
 
 public class ConfirmDialog extends Dialog {
 
@@ -14,7 +15,7 @@ public class ConfirmDialog extends Dialog {
 
     private  String text;
 
-    private String confirmButtonText;
+    private String confirmButtonText = "ок";
 
     private  Runnable confirmListener;
 
@@ -55,7 +56,10 @@ public class ConfirmDialog extends Dialog {
         this.confirmButtonText = confirmButtonText;
     }
 
-    public void setConfirmListener(Runnable confirmListener) {
+    public void addConfirmListener(Runnable confirmListener) {
         this.confirmListener = confirmListener;
     }
+
+   /* public Registration addCancelListener(Object o) {
+    }*/
 }

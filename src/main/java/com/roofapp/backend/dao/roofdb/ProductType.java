@@ -6,7 +6,8 @@ public enum ProductType {
     ADDITIONAL_ELEMENTS("Доборные элементы"),
     DRAINAGE_SYSTEM("Водосточные системы"),
     PRODUCTS_STOCK("Продукция на складе"),
-    PRODUCTS_SERVICES("Услуги");
+    PRODUCTS_SERVICES("Услуги"),
+    ADDITIONAL_COMPONENT("Кровельные комплектующие");
 
     private final String name;
 

@@ -21,6 +21,7 @@ import com.vaadin.flow.component.internal.AbstractFieldSupport;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -79,7 +80,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
     private Button delete;
 
     @Id("amount")
-    private NumberField amount;
+    private IntegerField amount;
 
     @Id("price")
     private NumberField price;
@@ -112,13 +113,14 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         products.setItems(productService.findAllOrderTypeAndName());
 
         products.addValueChangeListener(e -> {
+            materialSquaring.setText("");
             setPrice();
             fireEvent(new ProductChangeEvent(this, e.getValue()));
 
             if (e.getValue().getType() != null) {
                 if (e.getValue().getType().equals(ProductType.PROFILED) || e.getValue().getType().equals(ProductType.METAL_TILE)) {
                     layProfileParams.setVisible(true);
-                }else if (e.getValue().getType().equals(ProductType.ADDITIONAL_ELEMENTS)) {
+                }else if (e.getValue().getType().equals(ProductType.ADDITIONAL_ELEMENTS) || e.getValue().getType().equals(ProductType.ADDITIONAL_COMPONENT)) {
                     layAdditionalParams.setVisible(true);
                     layProfileParams.setVisible(true);
                     height.setValue(2d);
@@ -126,10 +128,31 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
                     layProfileParams.setVisible(false);
                     layAdditionalParams.setVisible(false);
                 }
+                if(e.getValue().getType().equals(ProductType.PRODUCTS_SERVICES) )
+                    price.setReadOnly(false);
+                else
+                    price.setReadOnly(true);
+
+
+                //Для саморезов цвет
+                if(e.getValue().getType().equals(ProductType.ADDITIONAL_COMPONENT)){
+                    layAdditionalParams.setVisible(false);
+                    width.setVisible(false);
+                    materialClass.setVisible(false);
+                    materialCover.setVisible(false);
+                    materialColor.setItems(MaterialColor.values());
+                    height.setVisible(false);
+                }else{
+                    width.setVisible(true);
+                    materialClass.setVisible(true);
+                    materialCover.setVisible(true);
+                    height.setVisible(true);
+                }
             } else {
                 layProfileParams.setVisible(false);
                 layAdditionalParams.setVisible(false);
             }
+
 
         });
         products.setLabel("Продукт");
@@ -138,8 +161,11 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             setPrice();
             setMaterialSquaring();
         });
-        amount.setPattern("#0.00");
+      //  amount.setPattern("#0");
         amount.setLabel("кол-во");
+      //  amount.setStep(1d);
+        amount.setMin(0);
+        amount.setMax(100000);
         //	comment.addValueChangeListener(e -> fireEvent(new CommentChangeEvent(this, e.getValue())));
 
         binder.forField(amount).bind("quantity");
@@ -354,10 +380,11 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
     private void setPrice() {
         setMaterialSquaring();
         Double oldValue = totalPrice;
-        Double selectedAmount = amount.getValue();
+        Integer selectedAmount = amount.getValue();
         Product product = products.getValue();
         totalPrice = Double.valueOf(0);
         if (selectedAmount != null && product != null) {
+            totalPrice = new BigDecimal(selectedAmount * product.getPrice()).setScale(2, RoundingMode.HALF_UP).doubleValue();
             if (product.getType() != null) {
                 if (product.getType().equals(ProductType.PROFILED) || product.getType().equals(ProductType.METAL_TILE)) {
                     if (!ObjectUtils.isEmpty(height.getValue()) && !ObjectUtils.isEmpty(product.getSquareMeters())) {
@@ -369,8 +396,6 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
                     }
                 }
-            } else {
-                totalPrice = new BigDecimal(selectedAmount * product.getPrice()).setScale(2, RoundingMode.HALF_UP).doubleValue();
             }
 
         }

@@ -49,7 +49,7 @@ public class OrderView extends PolymerTemplate<TemplateModel>
 	@Id("dialog")
 	private Dialog dialog;
 
-	private ConfirmDialog confirmation;
+	private ConfirmDialog  confirmation = new ConfirmDialog();
 
 	private final OrderEditor orderEditor;
 

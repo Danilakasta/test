@@ -125,7 +125,7 @@ public class WpLoadTask {
                     Optional<Product> product = productRepository.findById(wpOrderItem.getProductId());
                     OrderItem orderItem = new OrderItem();
                     orderItem.setProduct(product.isPresent() ? product.get() : null);
-                    orderItem.setQuantity(wpOrderItem.getQuantity());
+                    orderItem.setQuantity(wpOrderItem.getQuantity().intValue());
                     orderItem.setPrice(wpOrderItem.getPrice());
                     orderItems.add(orderItem);
                 });

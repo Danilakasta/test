@@ -143,26 +143,27 @@ public class EntityPresenter<T extends AbstractEntity, V extends EntityView<T>>
 	private void confirmIfNecessaryAndExecute(
 		boolean needsConfirmation, Message message, Runnable onConfirmed,
 		Runnable onCancelled) {
-		if (needsConfirmation) {
+		/*if (needsConfirmation) {
 			showConfirmationRequest(message, onConfirmed, onCancelled);
 		}
-		else {
+		else {*/
 			onConfirmed.run();
-		}
+	///	}
 	}
 
-	private void showConfirmationRequest(
-		Message message, Runnable onOk, Runnable onCancel) {
-		/*view.getConfirmDialog().setText(message.getMessage());
+	private void showConfirmationRequest(Message message, Runnable onOk, Runnable onCancel) {
+		view.getConfirmDialog().setText(message.getMessage());
 		view.getConfirmDialog().setCaption(message.getCaption());
-		//view.getConfirmDialog().set(message.getCancelText());
+		view.getConfirmDialog().setText(message.getCancelText());
 		view.getConfirmDialog().setConfirmButtonText(message.getOkText());
 		view.getConfirmDialog().setOpened(true);
-*/
-		//final Registration okRegistration =
-		//	view.getConfirmDialog().addConfirmListener(e -> onOk.run());
-		////final Registration cancelRegistration =
-		//	view.getConfirmDialog().addCancelListener(e -> onCancel.run());
+
+	//	ConfirmDialog confirmDialog = new ConfirmDialog();
+
+
+	/*	final Registration okRegistration =
+			view.getConfirmDialog().addConfirmListener(e -> onOk.run());
+		final Registration cancelRegistration =view.getConfirmDialog().addCancelListener(e -> onCancel.run());*/
 	//	state.updateRegistration(okRegistration, cancelRegistration);
 	}
 
@@ -211,19 +212,19 @@ class EntityPresenterState<T extends AbstractEntity> {
 		this.isNew = isNew;
 	}
 
-	void updateRegistration(
+	/*void updateRegistration(
             Registration okRegistration, Registration cancelRegistration) {
 		clearRegistration(this.okRegistration);
 		clearRegistration(this.cancelRegistration);
 		this.okRegistration = okRegistration;
 		this.cancelRegistration = cancelRegistration;
-	}
+	}*/
 
 	void clear() {
 		this.entity = null;
 		this.entityName = null;
 		this.isNew = false;
-		updateRegistration(null, null);
+		//updateRegistration(null, null);
 	}
 
 	private void clearRegistration(Registration registration) {

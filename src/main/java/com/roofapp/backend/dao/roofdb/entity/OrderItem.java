@@ -30,7 +30,7 @@ public class OrderItem extends AbstractEntity {
 
 
     @Min(1)
-    private Double quantity = 1d;
+    private Integer quantity = 1;
 
     @Size(max = 255)
     private String comment;
@@ -74,14 +74,16 @@ public class OrderItem extends AbstractEntity {
     @Column(name = "done")
     private Date done;
 
-
     public Double getTotalPrice() {
+        return price;
+    }
+   /* public Double getTotalPrice() {
         if (product.getPrice() != null && product.getPrice() != 0) {
             return quantity == null || product == null ? Double.valueOf(0) : quantity * product.getPrice();
         }
         return quantity == null || product == null ? Double.valueOf(0) : quantity * price;
     }
-
+*/
 
     @Override
     public boolean equals(Object o) {

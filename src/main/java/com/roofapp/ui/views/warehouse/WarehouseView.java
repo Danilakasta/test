@@ -68,8 +68,8 @@ public class WarehouseView extends HorizontalLayout
         dataProvider = new WarehouseDataProvider(itemService.findAll(), itemService);
         grid.setDataProvider(this.dataProvider);
         // Allows user to select a single row in the grid.
-     //   grid.asSingleSelect().addValueChangeListener()
-      //          event -> viewLogic.rowSelected(event.getValue()));
+        //   grid.asSingleSelect().addValueChangeListener()
+        //          event -> viewLogic.rowSelected(event.getValue()));
         grid.setColumnReorderingAllowed(true);
 
 
@@ -92,14 +92,15 @@ public class WarehouseView extends HorizontalLayout
 
     public void addGridFilterItem() {
         GridContextMenu<WarehouseItem> contextMenu = new GridContextMenu<>(grid);
-        GridMenuItem<WarehouseItem> insert = contextMenu.addItem(new Span(VaadinIcon.PLUS.create(),new Text(" "), new Span("Добавить")));
+        GridMenuItem<WarehouseItem> insert = contextMenu.addItem(new Span(VaadinIcon.PLUS.create(), new Text(" "), new Span("Добавить")));
         insert.addMenuItemClickListener(event -> viewLogic.newItem());
 
-        GridMenuItem<WarehouseItem> edit = contextMenu.addItem(new Span(VaadinIcon.EDIT.create(), new Text(" "),new Span("Редакторовать")));
-        edit.addMenuItemClickListener(event ->  viewLogic.rowSelected(event.getItem().get()));
+        GridMenuItem<WarehouseItem> edit = contextMenu.addItem(new Span(VaadinIcon.EDIT.create(), new Text(" "), new Span("Редакторовать")));
+        edit.addMenuItemClickListener(event -> viewLogic.rowSelected(event.getItem().get()));
 
-        GridMenuItem<WarehouseItem> filterColumn = contextMenu.addItem(new Span(VaadinIcon.TABLE.create(), new Text(" "),new Span("Скрыть колонки")));
+        GridMenuItem<WarehouseItem> filterColumn = contextMenu.addItem(new Span(VaadinIcon.TABLE.create(), new Text(" "), new Span("Скрыть колонки")));
 
+        //Динамически подкидываем колонки
         grid.getColumns().forEach(column -> {
             Checkbox idColumnVisibility = new Checkbox(column.getKey());
             idColumnVisibility.addValueChangeListener(

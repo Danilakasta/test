@@ -154,7 +154,8 @@ class OrderDetails extends window.ScrollShadowMixin(PolymerElement) {
           <h3>[[item.customer.phone]]</h3>
         </vaadin-form-item>
       </vaadin-form-layout>
-
+     
+      
       <vaadin-form-layout id="form3">
         <div></div>
 
@@ -221,7 +222,7 @@ class OrderDetails extends window.ScrollShadowMixin(PolymerElement) {
     <buttons-bar id="footer" no-scroll\$="[[noScroll]]">
       <vaadin-button slot="left" id="back" hidden="[[!review]]">Вернуться</vaadin-button>
       <vaadin-button slot="left" id="cancel" hidden="[[review]]">Отмена</vaadin-button>
-
+      <div slot="info" class="total">Скидка [[item.discount]]</div>
       <div slot="info" class="total">Всего [[item.totalPrice]]</div>
 
       <vaadin-button slot="right" id="save" theme="primary success" hidden="[[!review]]">
