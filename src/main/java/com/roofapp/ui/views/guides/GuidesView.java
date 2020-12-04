@@ -2,6 +2,7 @@ package com.roofapp.ui.views.guides;
 
 import com.roofapp.ui.MainLayout;
 import com.roofapp.ui.views.guides.grids.ForbiddenSizeGrid;
+import com.roofapp.ui.views.guides.grids.MaterialColorGrid;
 import com.roofapp.ui.views.guides.grids.TrimmingGrid;
 import com.roofapp.ui.views.guides.grids.WidthGrid;
 import com.roofapp.ui.views.products.ProductViewLogic;
@@ -39,13 +40,15 @@ public class GuidesView extends HorizontalLayout implements HasUrlParameter<Stri
     private final WidthGrid widthGrid;
     private final TrimmingGrid trimmingGrid;
     private final ForbiddenSizeGrid forbiddenSizeGrid;
+    private final MaterialColorGrid ralsGrid;
 
 
     @Autowired
-    public GuidesView(WidthGrid widthGrid, TrimmingGrid trimmingGrid, ForbiddenSizeGrid forbiddenSizeGrid) {
+    public GuidesView(WidthGrid widthGrid, TrimmingGrid trimmingGrid, ForbiddenSizeGrid forbiddenSizeGrid, MaterialColorGrid ralsGrid) {
         this.widthGrid = widthGrid;
         this.trimmingGrid = trimmingGrid;
         this.forbiddenSizeGrid = forbiddenSizeGrid;
+        this.ralsGrid = ralsGrid;
         final HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidth("100%");
 
@@ -67,15 +70,22 @@ public class GuidesView extends HorizontalLayout implements HasUrlParameter<Stri
         page3.setVisible(false);
         page3.setWidth("100%");
 
+        Tab tab4 = new Tab("Цвета RAL");
+        Div page4 = new Div();
+        page4.add(ralsGrid);
+        page4.setVisible(false);
+        page4.setWidth("100%");
+
         Map<Tab, Component> tabsToPages = new HashMap<>();
         tabsToPages.put(tab1, page1);
         tabsToPages.put(tab2, page2);
         tabsToPages.put(tab3, page3);
-        Tabs tabs = new Tabs(tab1, tab2, tab3);
+        tabsToPages.put(tab4, page4);
+        Tabs tabs = new Tabs(tab1, tab2, tab3,tab4);
 
         tabs.setWidthFull();
         tabs.setWidth("100%");
-        Div pages = new Div(page1, page2, page3);
+        Div pages = new Div(page1, page2, page3,page4);
         pages.setWidthFull();
         pages.setWidth("100%");
         pages.setHeight("100%");
