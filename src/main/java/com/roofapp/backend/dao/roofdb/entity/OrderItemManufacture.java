@@ -1,10 +1,7 @@
 package com.roofapp.backend.dao.roofdb.entity;
 
 
-import com.roofapp.backend.dao.roofdb.MaterialClass;
-import com.roofapp.backend.dao.roofdb.MaterialColor;
-import com.roofapp.backend.dao.roofdb.MaterialCover;
-import com.roofapp.backend.dao.roofdb.OrderType;
+import com.roofapp.backend.dao.roofdb.*;
 import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -62,6 +59,8 @@ public class OrderItemManufacture extends AbstractEntity{
 
 
     private String size;
+
+    private ItemState state;
 
     @NotNull
     @Column(name = "total_price")

@@ -3,6 +3,7 @@ package com.roofapp.backend.service;
 //import com.roofapp.backend.data.DashboardData;
 //import com.roofapp.backend.data.DeliveryStats;
 import com.roofapp.backend.dao.roofdb.CargoType;
+import com.roofapp.backend.dao.roofdb.ItemState;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.OrderType;
 import com.roofapp.backend.dao.roofdb.entity.Order;
@@ -214,6 +215,7 @@ public class OrderService implements CrudService<Order> {
 					orderItem.setMaterialColor(item.getMaterialColor());
 					orderItem.setMaterialCover(item.getMaterialCover());
 					orderItem.setOrderType(OrderType.MANUFACTURED);
+					orderItem.setState(ItemState.MANUFACTURE);
 					orderItems.add(orderItem);
 				}
 			});

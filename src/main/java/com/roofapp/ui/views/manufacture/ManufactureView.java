@@ -145,6 +145,7 @@ public class ManufactureView extends HorizontalLayout
      */
     public void update(OrderItemManufacture item) {
         dataProvider.save(item);
+        grid.getDataProvider().refreshAll();
     }
 
     /**

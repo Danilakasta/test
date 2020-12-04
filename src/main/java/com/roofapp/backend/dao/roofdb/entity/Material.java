@@ -28,7 +28,7 @@ public class Material extends AbstractEntity {
     private String party;
 
     //цвет
-    @NotNull
+  //  @NotNull
     @Column(name = "material_color")
     private MaterialColor materialColor;
     //Покрытие

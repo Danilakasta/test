@@ -21,7 +21,7 @@ public class ManufacturerGrid extends Grid<OrderItemManufacture> {
 
         setSizeFull();
 
-        addColumn(item-> item.getOrder().getState().getDisplayName()).setHeader("Статус")
+        addColumn(item-> item.getState().getDisplayName()).setHeader("Статус")
                 .setFlexGrow(5).setWidth("150px").setSortable(true).setKey("state").setResizable(true);
 
         addColumn(orderItems -> orderItems.getOrder().getId())

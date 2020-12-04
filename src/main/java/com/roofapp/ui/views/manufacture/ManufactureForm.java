@@ -1,5 +1,6 @@
 package com.roofapp.ui.views.manufacture;
 
+import com.roofapp.backend.dao.roofdb.ItemState;
 import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.WarehouseState;
@@ -274,36 +275,40 @@ public class ManufactureForm extends Div {
     }*/
 
     private void addToWarehouse() {
-        WarehouseItem warehouseItems =getWhereHouseItems();
+        WarehouseItem warehouseItems = getWhereHouseItems();
         OrderItem orderItem = orderItemsService.findById(item.getId()); //TODO оптимизировать
 
         if (warehouseItems == null) {
             WarehouseItem warehouseItem = warehouseItemService.createNew(null);
             warehouseItem.setProduct(item.getProduct());
-            warehouseItem.setQuantity( materialSelect.getValue().getCountInProduction());
+            warehouseItem.setQuantity(materialSelect.getValue().getCountInProduction());
             warehouseItem.setState(WarehouseState.STORAGE);
             warehouseItem.setMachine(machineSelect.getValue());
             warehouseItem.setMaterial(materialSelect.getValue());
-            warehouseItem.setOrderItem( orderItem );
+            warehouseItem.setOrderItem(orderItem);
             warehouseItemService.save(warehouseItem);
             Notification.show("Передано на склад");
-       }else{
-            warehouseItems.setQuantity(  warehouseItems.getQuantity()+materialSelect.getValue().getCountInProduction());
+
+
+        } else {
+            warehouseItems.setQuantity(warehouseItems.getQuantity() + materialSelect.getValue().getCountInProduction());
             warehouseItemService.save(warehouseItems);
         }
+        orderItem.setState(ItemState.READY);
+        orderItemsService.save(null,orderItem);
 
     }
 
     private void useMaterial() {
         Material material = materialSelect.getValue();
-        material.setUsed(material.getUsed() +  material.getRemainInProduction());
+        material.setUsed(material.getUsed() + material.getRemainInProduction());
         material.setRemains(material.getRemains() - (material.getRemainInProduction()));
         materialService.save(material);
     }
 
 
     private void changeOrderState() {
-        WarehouseItem warehouseItems =getWhereHouseItems();
+        WarehouseItem warehouseItems = getWhereHouseItems();
 
         if (warehouseItems.getQuantity().intValue() == item.getQuantity()) {
             List<OrderItem> orderItems = orderItemsService.findAllByOrderId(item.getOrder().getId());
@@ -345,11 +350,11 @@ public class ManufactureForm extends Div {
 
     private void findMaterial(OrderItemManufacture editItem) {
         materialSelect.clear();
-        WarehouseItem warehouseItems =getWhereHouseItems();
+        WarehouseItem warehouseItems = getWhereHouseItems();
 
-        Double orderMetalLength = (editItem.getHeight() * editItem.getQuantity()) ;
-        if(warehouseItems != null){
-            orderMetalLength =   orderMetalLength - editItem.getHeight()*warehouseItems.getQuantity();
+        Double orderMetalLength = (editItem.getHeight() * editItem.getQuantity());
+        if (warehouseItems != null) {
+            orderMetalLength = orderMetalLength - editItem.getHeight() * warehouseItems.getQuantity();
         }
         try {
             if (machineService != null && editItem != null) {
@@ -389,13 +394,13 @@ public class ManufactureForm extends Div {
                     }
                     if (orderMetalLength >= 0D) {
                         //Пpозводство из 2 и более бухт;
-                        Double maxLenght =   material.getRemains() - machineSelect.getValue().getLength();
-                        Integer maxCount = Helper.aroundToTheWhole( maxLenght /item.getHeight());
-                        Double maxProductionLength = maxCount *item.getHeight();
+                        Double maxLenght = material.getRemains() - machineSelect.getValue().getLength();
+                        Integer maxCount = Helper.aroundToTheWhole(maxLenght / item.getHeight());
+                        Double maxProductionLength = maxCount * item.getHeight();
 
 
-                        if (orderMetalLength >maxProductionLength ) {
-                            Double production = maxProductionLength ;
+                        if (orderMetalLength > maxProductionLength) {
+                            Double production = maxProductionLength;
                             orderMetalLength = orderMetalLength - production;
                             material.setRemainInProduction(production);
                             material.setCountInProduction(maxCount);
@@ -404,7 +409,7 @@ public class ManufactureForm extends Div {
                             Double production = orderMetalLength;
                             orderMetalLength = orderMetalLength - production;
                             material.setRemainInProduction(production);
-                            material.setCountInProduction(production.intValue()/item.getHeight().intValue());
+                            material.setCountInProduction(production.intValue() / item.getHeight().intValue());
                             allProdMaterials.add(material);
                         }
                     }
