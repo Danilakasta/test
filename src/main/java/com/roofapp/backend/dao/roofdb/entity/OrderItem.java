@@ -74,6 +74,8 @@ public class OrderItem extends AbstractEntity {
     @Column(name = "done")
     private Date done;
 
+  //  private OrderState state;
+
     public Double getTotalPrice() {
         return price;
     }
