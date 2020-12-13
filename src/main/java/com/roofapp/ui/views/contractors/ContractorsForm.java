@@ -8,6 +8,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -23,6 +24,7 @@ import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -32,7 +34,7 @@ import java.util.Locale;
  * A form for editing a single Contractor.
  */
 
-public class ContractorsForm extends Div {
+public class ContractorsForm extends Dialog {
 
     private final VerticalLayout content;
 
@@ -65,12 +67,17 @@ public class ContractorsForm extends Div {
     private Button cancel;
     private final Button delete;
 
-    private ContractorsViewLogic viewLogic;
+   // private ContractorsViewLogic viewLogic;
 
-    public void setViewLogic(ContractorsViewLogic viewLogic) {
-        this.viewLogic = viewLogic;
+ //   public void setViewLogic(ContractorsViewLogic viewLogic) {
+    //    this.viewLogic = viewLogic;
+   // }
+
+    ContractorDataProvider  dataProvider ;
+
+    public void setDataProvider(ContractorDataProvider contractorDataProvider){
+        dataProvider = contractorDataProvider;
     }
-
     private final Binder<Contractor> binder;
     private Contractor currentContractor;
 
@@ -115,13 +122,13 @@ public class ContractorsForm extends Div {
     }
 
     @Autowired
-    public ContractorsForm(ContractorsViewLogic viewLogic, ContractorService contractorService) {
+    public ContractorsForm( ContractorService contractorService) {
         this.contractorService = contractorService;
-        setClassName("product-form ");
+      //  setClassName("product-form ");
 
         content = new VerticalLayout();
-        content.setSizeUndefined();
-        content.addClassName("product-form-content");
+       // content.setSizeUndefined();
+       // content.addClassName("product-form-content");
         add(content);
 
         //   viewLogic = sampleCrudLogic;
@@ -234,23 +241,26 @@ public class ContractorsForm extends Div {
         save.addClickListener(event -> {
             if (currentContractor != null
                     && binder.writeBeanIfValid(currentContractor)) {
-                viewLogic.saveContractor(currentContractor);
+                dataProvider.save(currentContractor);
+                dataProvider.refreshAll();
+                close();
+             //   saveContractor(currentContractor);
             }
         });
         save.addClickShortcut(Key.KEY_S, KeyModifier.CONTROL);
 
         discard = new Button("Сбросить");
         discard.setWidth("100%");
-        discard.addClickListener(
-                event -> viewLogic.editContractor(currentContractor));
+      //  discard.addClickListener(
+            //    event -> viewLogic.editContractor(currentContractor));
 
         cancel = new Button("Отменить");
         cancel.setWidth("100%");
-        cancel.addClickListener(event -> viewLogic.cancelContractor());
+        cancel.addClickListener(event -> close()/*viewLogic.cancelContractor()*/);
         cancel.addClickShortcut(Key.ESCAPE);
-        getElement()
+       /* getElement()
                 .addEventListener("keydown", event -> viewLogic.cancelContractor())
-                .setFilter("event.key == 'Escape'");
+                .setFilter("event.key == 'Escape'");*/
 
         delete = new Button("Удалить");
         delete.setWidth("100%");
@@ -258,7 +268,7 @@ public class ContractorsForm extends Div {
                 ButtonVariant.LUMO_PRIMARY);
         delete.addClickListener(event -> {
             if (currentContractor != null) {
-                viewLogic.deleteContractor(currentContractor);
+              //  viewLogic.deleteContractor(currentContractor);
             }
         });
 

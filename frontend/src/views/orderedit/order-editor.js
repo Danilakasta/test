@@ -39,6 +39,17 @@ class OrderEditor extends window.ScrollShadowMixin(PolymerElement) {
       .status {
         width: 10em;
       }
+      
+      .user-card {
+        min-width: 2em;
+        padding: 0;
+        max-width: 2em;
+      }   
+       .phone {
+        padding-left: 10px;
+        min-width: 2em;
+        max-width: 13em;
+      }
     </style>
 
     <div class="scrollable flex1" id="main">
@@ -65,20 +76,20 @@ class OrderEditor extends window.ScrollShadowMixin(PolymerElement) {
         </vaadin-form-layout>
 
         <vaadin-form-layout id="form3" colspan="3">
-          <vaadin-combo-box id="customerName" label="Покупатель" colspan="2">
+          <vaadin-combo-box id="customerName" label="Покупатель" colspan="2" >
             <iron-icon slot="prefix" icon="vaadin:user"></iron-icon>
           </vaadin-combo-box>
-
-          <vaadin-text-field id="customerNumber" label="Номер телефона">
+          <vaadin-button class="user-card" id="addCustomer" index="[[index]]"colspan="1" >
+            <iron-icon icon="vaadin:user-card"></iron-icon>
+          </vaadin-button>
+          <vaadin-text-field class="phone" id="customerNumber" label="Номер телефона" >
             <iron-icon slot="prefix" icon="vaadin:phone"></iron-icon>
           </vaadin-text-field>
-
           <div id="itemsContainer" colspan="3"></div>
         </vaadin-form-layout>
-
       </vaadin-form-layout>
     </div>
-
+    
     <buttons-bar id="footer" no-scroll\="[[noScroll]]">
       <vaadin-button slot="left" id="cancel">Отмена</vaadin-button>
       <div slot="info" class="total">Всего на [[totalPrice]]</div>

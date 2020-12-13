@@ -8,6 +8,7 @@ import com.roofapp.backend.service.ContractorService;
 import com.roofapp.ui.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H2;
@@ -27,7 +28,6 @@ import java.io.InputStreamReader;
 /**
  * A view for performing create-read-update-delete operations on Contractors.
  * <p>
- * See also {@link ContractorsViewLogic} for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
 //@Route(value = "Contractors", layout = MainLayout.class)
@@ -47,7 +47,7 @@ public class ContractorsView extends HorizontalLayout
     private final ContractorsForm form;
     private TextField filter;
 
-    private final ContractorsViewLogic viewLogic = new ContractorsViewLogic(this);
+  //  private final ContractorsViewLogic viewLogic = new ContractorsViewLogic(this);
     private Button newContractor;
 
     private ContractorDataProvider dataProvider;
@@ -59,12 +59,14 @@ public class ContractorsView extends HorizontalLayout
         setSizeFull();
         final HorizontalLayout topLayout = createTopBar();
         grid = new ContractorGrid(accountService);
-        dataProvider = new ContractorDataProvider(contractorService.findAll(), contractorService);
+        dataProvider = new ContractorDataProvider(contractorService);
         grid.setDataProvider(this.dataProvider);
         // Allows user to select a single row in the grid.
         grid.asSingleSelect().addValueChangeListener(
-                event -> viewLogic.rowSelected(event.getValue()));
-        form = new ContractorsForm(viewLogic, contractorService);
+                event -> rowSelected(event.getValue()));
+        form = new ContractorsForm(/*viewLogic,*/ contractorService);
+        form.setDataProvider(dataProvider);
+     //   form.setViewLogic(viewLogic);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);
@@ -77,7 +79,7 @@ public class ContractorsView extends HorizontalLayout
         add(barAndGridLayout);
         add(form);
 
-        viewLogic.init();
+      //  viewLogic.init();
     }
 
     public HorizontalLayout createTopBar() {
@@ -94,7 +96,7 @@ public class ContractorsView extends HorizontalLayout
         // changes its background color to blue and its text color to white
         newContractor.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newContractor.setIcon(VaadinIcon.PLUS_CIRCLE.create());
-        newContractor.addClickListener(click -> viewLogic.newContractor());
+        newContractor.addClickListener(click -> newContractor());
         // A shortcut to click the new Contractor button by pressing ALT + N
         newContractor.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
 
@@ -231,10 +233,10 @@ public class ContractorsView extends HorizontalLayout
      *
      * @param Contractor
      */
-    public void editContractor(Contractor Contractor) {
+   /* public void editContractor(Contractor Contractor) {
         showForm(Contractor != null);
         form.editContractor(Contractor);
-    }
+    }*/
 
     /**
      * Shows and hides the new Contractor form
@@ -244,11 +246,107 @@ public class ContractorsView extends HorizontalLayout
     public void showForm(boolean show) {
         form.setVisible(show);
         form.setEnabled(show);
+        form.open();
     }
 
     @Override
     public void setParameter(BeforeEvent event,
                              @OptionalParameter String parameter) {
-        viewLogic.enter(parameter);
+        enter(parameter);
+    }
+
+
+    public void cancelContractor() {
+        setFragmentParameter("");
+        clearSelection();
+    }
+
+    /**
+     * Updates the fragment without causing InventoryViewLogic navigator to
+     * change  It actually appends the ContractorId as a parameter to the URL.
+     * The parameter is set to keep the view state the same during e.g. a
+     * refresh and to enable bookmarking of individual Contractor selections.
+     *
+     */
+    private void setFragmentParameter(String ContractorId) {
+        String fragmentParameter;
+        if (ContractorId == null || ContractorId.isEmpty()) {
+            fragmentParameter = "";
+        } else {
+            fragmentParameter = ContractorId;
+        }
+
+        UI.getCurrent().navigate(ContractorsView.class, fragmentParameter);
+    }
+
+    /**
+     * Opens the Contractor form and clears its fields to make it ready for
+     * entering a new Contractor if ContractorId is null, otherwise loads the Contractor
+     * with the given ContractorId and shows its data in the form fields so the
+     * user can edit them.
+     *
+     *
+     * @param ContractorId
+     */
+    public void enter(String ContractorId) {
+        if (ContractorId != null && !ContractorId.isEmpty()) {
+            if (ContractorId.equals("new")) {
+                newContractor();
+            } else {
+                // Ensure this is selected even if coming directly here from
+                // login
+                try {
+                    final int pid = Integer.parseInt(ContractorId);
+                    final Contractor contractor = findContractor(pid);
+                    selectRow(contractor);
+                } catch (final NumberFormatException e) {
+                }
+            }
+        } else {
+            showForm(false);
+        }
+    }
+
+    private Contractor findContractor(int ContractorId) {
+        return null;// DataService.get().getContractorById(ContractorId);
+    }
+
+    public void saveContractor(Contractor item) {
+        final boolean newContractor = item.isNew();
+        clearSelection();
+        updateContractor(item);
+        setFragmentParameter("");
+        showNotification(item.getName()
+                + (newContractor ? " добавлено" : " сохранено"));
+    }
+
+    public void deleteContractor(Contractor item) {
+        clearSelection();
+        removeContractor(item);
+        setFragmentParameter("");
+        showNotification(item.getName() + " удалено");
+    }
+
+    public void editContractor(Contractor Contractor) {
+        if (Contractor == null) {
+            setFragmentParameter("");
+        } else {
+            setFragmentParameter(Contractor.getId() + "");
+        }
+        showForm(Contractor != null);
+        form.editContractor(Contractor);
+    }
+
+    public void newContractor() {
+        clearSelection();
+        setFragmentParameter("new");
+        editContractor(new Contractor());
+    }
+
+    public void rowSelected(Contractor item) {
+        //  if (AccessControlFactory.getInstance().createAccessControl()
+        //         .isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+        editContractor(item);
+        //7  }
     }
 }

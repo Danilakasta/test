@@ -15,6 +15,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //https://vaadin.com/directory#addon/canvas:vaadin
+
+//vm options -Dvaadin.productionMode
 /**
  * The entry point of the Spring Boot application.
  */

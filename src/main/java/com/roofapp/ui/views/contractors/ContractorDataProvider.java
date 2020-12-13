@@ -29,17 +29,10 @@ public class ContractorDataProvider extends ListDataProvider<Contractor> {
     private final ContractorService contractorService;
 
     @Autowired
-    public ContractorDataProvider(Collection<Contractor> items, ContractorService contractorService) {
-        super(items);
+    public ContractorDataProvider(ContractorService contractorService) {
+        super(contractorService.findAll());
         this.contractorService = contractorService;
     }
-
-
-   /* public ProductDataProvider() {
-
-        super(DataService.getAllProducts());
-    }
-*/
 
     /**
      * Store given product to the backing data service.

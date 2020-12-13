@@ -61,7 +61,9 @@ class OrderItemEditor extends PolymerElement {
             <vaadin-text-field  id="comment" colspan="8" index="[[index]]" ></vaadin-text-field>  
         </vaadin-horizontal-layout>
       </vaadin-form-layout>
-
+      <vaadin-button class="delete self-start" id="copy" colspan="2" index="[[index]]">
+        <iron-icon icon="vaadin:copy"></iron-icon>
+      </vaadin-button>
       <vaadin-button class="delete self-start" id="delete" colspan="2" index="[[index]]">
         <iron-icon icon="vaadin:close-small"></iron-icon>
       </vaadin-button>
