@@ -116,54 +116,55 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             materialSquaring.setText("");
             setPrice();
             fireEvent(new ProductChangeEvent(this, e.getValue()));
+            if (e.getValue() != null) {
+                if (e.getValue().getType() != null) {
+                    if (e.getValue().getType().equals(ProductType.PROFILED) || e.getValue().getType().equals(ProductType.METAL_TILE)) {
+                        layProfileParams.setVisible(true);
+                    } else if (e.getValue().getType().equals(ProductType.ADDITIONAL_ELEMENTS) || e.getValue().getType().equals(ProductType.ADDITIONAL_COMPONENT)) {
+                        layAdditionalParams.setVisible(true);
+                        layProfileParams.setVisible(true);
+                        height.setValue(2d);
+                    } else {
+                        layProfileParams.setVisible(false);
+                        layAdditionalParams.setVisible(false);
+                    }
+                    if (e.getValue().getType().equals(ProductType.PRODUCTS_SERVICES))
+                        price.setReadOnly(false);
+                    else
+                        price.setReadOnly(true);
 
-            if (e.getValue().getType() != null) {
-                if (e.getValue().getType().equals(ProductType.PROFILED) || e.getValue().getType().equals(ProductType.METAL_TILE)) {
-                    layProfileParams.setVisible(true);
-                }else if (e.getValue().getType().equals(ProductType.ADDITIONAL_ELEMENTS) || e.getValue().getType().equals(ProductType.ADDITIONAL_COMPONENT)) {
-                    layAdditionalParams.setVisible(true);
-                    layProfileParams.setVisible(true);
-                    height.setValue(2d);
+
+                    //Для саморезов цвет
+                    if (e.getValue().getType().equals(ProductType.ADDITIONAL_COMPONENT)) {
+                        layAdditionalParams.setVisible(false);
+                        width.setVisible(false);
+                        materialClass.setVisible(false);
+                        materialCover.setVisible(false);
+                        materialColor.setItems(MaterialColor.values());
+                        height.setVisible(false);
+                    } else {
+                        width.setVisible(true);
+                        materialClass.setVisible(true);
+                        materialCover.setVisible(true);
+                        height.setVisible(true);
+                    }
                 } else {
                     layProfileParams.setVisible(false);
                     layAdditionalParams.setVisible(false);
                 }
-                if(e.getValue().getType().equals(ProductType.PRODUCTS_SERVICES) )
-                    price.setReadOnly(false);
-                else
-                    price.setReadOnly(true);
-
-
-                //Для саморезов цвет
-                if(e.getValue().getType().equals(ProductType.ADDITIONAL_COMPONENT)){
-                    layAdditionalParams.setVisible(false);
-                    width.setVisible(false);
-                    materialClass.setVisible(false);
-                    materialCover.setVisible(false);
-                    materialColor.setItems(MaterialColor.values());
-                    height.setVisible(false);
-                }else{
-                    width.setVisible(true);
-                    materialClass.setVisible(true);
-                    materialCover.setVisible(true);
-                    height.setVisible(true);
-                }
-            } else {
-                layProfileParams.setVisible(false);
-                layAdditionalParams.setVisible(false);
             }
 
-
         });
+
         products.setLabel("Продукт");
 
         amount.addValueChangeListener(e -> {
             setPrice();
             setMaterialSquaring();
         });
-      //  amount.setPattern("#0");
+        //  amount.setPattern("#0");
         amount.setLabel("кол-во");
-      //  amount.setStep(1d);
+        //  amount.setStep(1d);
         amount.setMin(0);
         amount.setMax(100000);
         //	comment.addValueChangeListener(e -> fireEvent(new CommentChangeEvent(this, e.getValue())));
@@ -237,7 +238,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         });
         materialClass.setRequired(true);
         binder.forField(materialClass)
-                .withValidator(item -> manufacturedProductValidator() && item == null || item != null , "Класс не выбран")
+                .withValidator(item -> manufacturedProductValidator() && item == null || item != null, "Класс не выбран")
                 .bind("materialClass");
 
 
@@ -249,7 +250,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
         materialColor.setRequired(true);
         binder.forField(materialColor)
-           //     .withValidator(item -> (manufacturedProductValidator() && zinkCoverValidator() && item == null) || item != null, "Цвет не выбран")
+                //     .withValidator(item -> (manufacturedProductValidator() && zinkCoverValidator() && item == null) || item != null, "Цвет не выбран")
                 .bind("materialColor");
 
 
@@ -268,7 +269,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         });
 
         binder.forField(height)
-                .withValidator(item ->  manufacturedProductValidator() && item ==null || item!= null , "Высота введена не корректно")
+                .withValidator(item -> manufacturedProductValidator() && item == null || item != null, "Высота введена не корректно")
                 .bind("height");
 
         //	binder.forField(comment).bind("comment");
@@ -295,7 +296,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             setPrice();
         });
         binder.forField(size)
-                .withValidator(item ->  additionalElementsValidator( )&&  item.isEmpty() || !item.isEmpty(), "Размеры не введены")
+                .withValidator(item -> additionalElementsValidator() && item.isEmpty() || !item.isEmpty(), "Размеры не введены")
                 .bind("size");
 
 
@@ -319,13 +320,13 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         try {
             return products.getValue() != null ? !(products.getValue().getType().equals(ProductType.ADDITIONAL_ELEMENTS)) : true;
         } catch (Exception e) {
-            return  true;
+            return true;
         }
     }
 
     private boolean manufacturedProductValidator() {
         try {
-            boolean ищщд =!(products.getValue().getType().equals(ProductType.PROFILED)
+            boolean ok = !(products.getValue().getType().equals(ProductType.PROFILED)
                     || products.getValue().getType().equals(ProductType.METAL_TILE)
                     || products.getValue().getType().equals(ProductType.ADDITIONAL_ELEMENTS));
             return products.getValue() != null ? !(products.getValue().getType().equals(ProductType.PROFILED)
@@ -417,6 +418,10 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         boolean noProductSelected = value == null || value.getProduct() == null;
         amount.setEnabled(!noProductSelected);
         delete.setEnabled(!noProductSelected);
+       // if (!ObjectUtils.isEmpty(value)) {
+       //     products.setItems(value.getProduct());
+       //     amount.setValue(value.getQuantity());
+      //  }
         //comment.setEnabled(!noProductSelected);
         setPrice();
     }

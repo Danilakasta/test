@@ -13,6 +13,7 @@ import com.roofapp.ui.utils.FormattingUtils;
 import com.roofapp.ui.utils.converters.LocalTimeConverter;
 import com.roofapp.ui.views.contractors.ContractorDataProvider;
 import com.roofapp.ui.views.contractors.ContractorsForm;
+import com.roofapp.ui.views.order.events.ContractorChangeEvent;
 import com.roofapp.ui.views.order.events.ReviewEvent;
 import com.roofapp.ui.views.order.events.ValueChangeEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -191,13 +192,23 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
         form = new ContractorsForm(contractorService);
         form.setDataProvider(dataProvider);
-
         getElement().appendChild(form.getElement());
 
         addCustomer.addClickListener(click -> {
+            if (this.customerName != null) {
+                form.editContractor(customerName.getValue());
+            } else {
+                form.editContractor(null);
+            }
             form.open();
-            form.editContractor(null);
         });
+
+        form.addEditContractorListener(contractorChangeEvent -> {
+            this.customerName.setValue(contractorChangeEvent.getContractor());
+            if (contractorChangeEvent.getContractor() != null)
+                this.customerNumber.setValue(contractorChangeEvent.getContractor().getPhone());
+        });
+
 
         discount.setDataProvider(DataProvider.ofItems(Discount.values()));
         discount.setItemLabelGenerator(createItemLabelGenerator(Discount::getDisplayName));

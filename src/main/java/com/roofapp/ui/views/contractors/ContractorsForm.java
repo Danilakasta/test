@@ -4,12 +4,13 @@ import com.roofapp.backend.dao.roofdb.ContractorSubType;
 import com.roofapp.backend.dao.roofdb.ContractorType;
 import com.roofapp.backend.dao.roofdb.entity.Contractor;
 import com.roofapp.backend.service.ContractorService;
+import com.roofapp.ui.views.order.events.ContractorChangeEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -22,9 +23,9 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.shared.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -48,7 +49,7 @@ public class ContractorsForm extends Dialog {
 
 
     //  private final PhoneNumberField phohe;
-    private final TextField phohe;
+    private final TextField phone;
     private final EmailField email;
 
     private final TextField urAddress;
@@ -63,7 +64,7 @@ public class ContractorsForm extends Dialog {
 
 
     private Button save;
-    private Button discard;
+  //  private Button discard;
     private Button cancel;
     private final Button delete;
 
@@ -150,9 +151,10 @@ public class ContractorsForm extends Dialog {
         horizontalLayout.setFlexGrow(1, name, type);
         content.add(horizontalLayout);
 
-        phohe = new TextField("Номер телефона");
-        phohe.setWidth("40%");
-        content.add(phohe);
+        phone = new TextField("Номер телефона");
+        phone.setWidth("40%");
+        phone.setValueChangeMode(ValueChangeMode.EAGER);
+        content.add(phone);
 
         email = new EmailField("Почта");
         email.setSuffixComponent(new Span("@"));
@@ -162,9 +164,9 @@ public class ContractorsForm extends Dialog {
         content.add(email);
 
 
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(phohe, email);
+        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(phone, email);
         horizontalLayout2.setWidth("100%");
-        horizontalLayout2.setFlexGrow(1, phohe, email);
+        horizontalLayout2.setFlexGrow(1, phone, email);
         content.add(horizontalLayout2);
 
         urAddress = new TextField("Юр. адрес");
@@ -232,7 +234,7 @@ public class ContractorsForm extends Dialog {
             final boolean isValid = !event.hasValidationErrors();
             final boolean hasChanges = binder.hasChanges();
             save.setEnabled(hasChanges && isValid);
-            discard.setEnabled(hasChanges);
+       //     discard.setEnabled(hasChanges);
         });
 
         save = new Button("Сохранить");
@@ -242,15 +244,17 @@ public class ContractorsForm extends Dialog {
             if (currentContractor != null
                     && binder.writeBeanIfValid(currentContractor)) {
                 dataProvider.save(currentContractor);
-                dataProvider.refreshAll();
+              //  dataProvider.refreshAll();
                 close();
+                fireEvent(new ContractorChangeEvent(this, currentContractor));
              //   saveContractor(currentContractor);
+
             }
         });
         save.addClickShortcut(Key.KEY_S, KeyModifier.CONTROL);
 
-        discard = new Button("Сбросить");
-        discard.setWidth("100%");
+     /*   discard = new Button("Сбросить");
+        discard.setWidth("100%");*/
       //  discard.addClickListener(
             //    event -> viewLogic.editContractor(currentContractor));
 
@@ -268,11 +272,15 @@ public class ContractorsForm extends Dialog {
                 ButtonVariant.LUMO_PRIMARY);
         delete.addClickListener(event -> {
             if (currentContractor != null) {
+                dataProvider.delete(currentContractor);
+                dataProvider.refreshAll();
+                close();
               //  viewLogic.deleteContractor(currentContractor);
+                fireEvent(new ContractorChangeEvent(this, null));
             }
         });
 
-        content.add(save, discard, delete, cancel);
+        content.add(save,/* discard,*/ delete, cancel);
     }
 
     //  public void setCategories(Collection<Category> categories) {
@@ -286,5 +294,9 @@ public class ContractorsForm extends Dialog {
         delete.setVisible(!Contractor.isNew());
         currentContractor = Contractor;
         binder.readBean(Contractor);
+    }
+
+    public Registration addEditContractorListener(ComponentEventListener<ContractorChangeEvent> listener) {
+        return addListener(ContractorChangeEvent.class, listener);
     }
 }

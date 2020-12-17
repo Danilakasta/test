@@ -1,6 +1,7 @@
 package com.roofapp.ui.views.order;
 
 //import com.roofapp.app.security.CurrentUser;
+import com.roofapp.backend.dao.roofdb.entity.Contractor;
 import com.roofapp.backend.dao.roofdb.entity.Order;
 import com.roofapp.backend.service.OrderService;
 import com.roofapp.ui.crud.EntityPresenter;
@@ -79,6 +80,7 @@ public class OrderPresenter {
 	void cancel() {
 		entityPresenter.cancel(() -> close(), () -> view.setOpened(true));
 	}
+
 
 	void closeSilently() {
 		entityPresenter.close();
