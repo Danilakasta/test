@@ -88,6 +88,11 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
     @Id("materialSquaring")
     private Div materialSquaring;
 
+    @Id("copyItem")
+    private Button copyItemButton;
+
+
+
 
     //@Id("comment")
 //	private TextField comment;
@@ -133,7 +138,6 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
                     else
                         price.setReadOnly(true);
 
-
                     //Для саморезов цвет
                     if (e.getValue().getType().equals(ProductType.ADDITIONAL_COMPONENT)) {
                         layAdditionalParams.setVisible(false);
@@ -171,7 +175,6 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
         binder.forField(amount).bind("quantity");
         amount.setRequiredIndicatorVisible(true);
-
 
         List<Material> materials = materialService.findAllByRemains();
 
@@ -304,6 +307,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
         //  materialSquaring.setEnabled(false);
 
 
+        copyItemButton.addClickListener(e->fireEvent(new CopyItemEvent(this,null)));
         delete.addClickListener(e -> fireEvent(new DeleteEvent(this)));
         setPrice();
     }
@@ -400,11 +404,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
             }
 
         }
-
-        totalPrice = Helper.aroundDouble(totalPrice);
         price.setValue(/*FormattingUtils.formatAsCurrency(*/totalPrice/*)*/);
-
-
         if (oldValue != totalPrice) {
             fireEvent(new PriceChangeEvent(this, oldValue, totalPrice));
         }
@@ -459,6 +459,10 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
     public Registration addValueChangeListener(
             ValueChangeListener<? super ComponentValueChangeEvent<OrderItemEditor, OrderItem>> listener) {
         return fieldSupport.addValueChangeListener(listener);
+    }
+
+    public Registration addCopyItemListener(ComponentEventListener<CopyItemEvent> listener) {
+        return addListener(CopyItemEvent.class, listener);
     }
 
 }

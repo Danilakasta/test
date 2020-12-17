@@ -15,6 +15,7 @@ import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.internal.AbstractFieldSupport;
 import com.vaadin.flow.shared.Registration;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -71,7 +72,9 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 		getElement().appendChild(editor.getElement());
 		editor.addPriceChangeListener(e -> updateTotalPriceOnItemPriceChange(e.getOldValue(), e.getNewValue()));
 		editor.addProductChangeListener(e -> productChanged(e.getSource(), e.getProduct()));
-	//	editor.addWidthChangeListener(e-> widthChanged(e.getSource(), e.getWidth()));
+
+		editor.addCopyItemListener(copyItemEvent -> copyItem(copyItemEvent.getSource()));
+
 		editor.addCommentChangeListener(e -> setHasChanges(true));
 		editor.addDeleteListener(e -> {
 			OrderItemEditor orderItemEditor = e.getSource();
@@ -109,19 +112,12 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 			setValue(Stream.concat(getValue().stream(),Stream.of(orderItem)).collect(Collectors.toList()));
 		}
 	}
-
-	/*private void widthChanged(OrderItemEditor item, Width width) {
-		setHasChanges(true);
-		if (empty == item) {
-			createEmptyElement();
-			OrderItem orderItem = new OrderItem();
-			orderItem.setWidth(width);
-			item.setValue(orderItem);
-			setValue(Stream.concat(getValue().stream(),Stream.of(orderItem)).collect(Collectors.toList()));
-		}
+	private void copyItem(OrderItemEditor item) {
+		createEmptyElement();
+		OrderItem orderItem = SerializationUtils.clone(item.getValue());
+		item.setValue(orderItem);
+		setValue(Stream.concat(getValue().stream(),Stream.of(orderItem)).collect(Collectors.toList()));
 	}
-	*/
-
 
 	private void updateTotalPriceOnItemPriceChange(Double oldItemPrice, Double newItemPrice) {
 		final Double delta = newItemPrice - oldItemPrice;
@@ -161,4 +157,5 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 			ValueChangeListener<? super ComponentValueChangeEvent<OrderItemsEditor, List<OrderItem>>> listener) {
 		return fieldSupport.addValueChangeListener(listener);
 	}
+
 }

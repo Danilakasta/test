@@ -2,6 +2,7 @@ package com.roofapp.backend.dao.roofdb.entity;
 
 import com.roofapp.backend.dao.roofdb.*;
 import com.roofapp.backend.dao.roofdb.entity.guides.Width;
+import com.roofapp.backend.utils.Helper;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

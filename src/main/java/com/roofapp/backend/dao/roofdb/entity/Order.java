@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.roofapp.backend.dao.roofdb.Discount;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.OrderType;
+import com.roofapp.backend.utils.Helper;
+import com.vaadin.flow.component.login.LoginI18n;
 import lombok.ToString;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
@@ -202,7 +204,7 @@ public class Order extends AbstractEntity implements OrderSummary {
     @Override
     public Double getTotalPrice() {
         Double totalPrice = items.stream().map(i -> i.getTotalPrice()).reduce(Double.valueOf(0), Double::sum);
-        return totalPrice - totalPrice * discount.getDiscount();
+        return Helper.aroundDouble(totalPrice - totalPrice * discount.getDiscount());
     }
 
     @Override

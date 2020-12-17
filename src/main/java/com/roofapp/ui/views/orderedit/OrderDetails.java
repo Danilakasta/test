@@ -117,7 +117,6 @@ public class OrderDetails extends PolymerTemplate<OrderDetails.Model> {
 
 		@Encode(value = DiscountToStringConverter.class, path = "discount")
 
-			//	@Encode(value = CurrencyFormatter.class, path = "totalPrice")
 		void setItem(Order order);
 
 		void setReview(boolean review);

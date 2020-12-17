@@ -221,10 +221,12 @@ public class OrderService implements CrudService<Order> {
 			});
 			manufactureOrder.setItems(orderItems);
 
-			order.setParentId(order.getId());
-			order.setState(OrderState.TRANSFERED);
-			orderRepository.save(order);
-			orderRepository.save(manufactureOrder);
+			if(manufactureOrder.getItems().size() >0 ) {
+				order.setParentId(order.getId());
+				order.setState(OrderState.TRANSFERED);
+				orderRepository.save(order);
+				orderRepository.save(manufactureOrder);
+			}
 		}
 
 	}

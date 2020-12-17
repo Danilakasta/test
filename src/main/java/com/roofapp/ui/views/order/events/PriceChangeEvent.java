@@ -1,5 +1,6 @@
 package com.roofapp.ui.views.order.events;
 
+import com.roofapp.backend.utils.Helper;
 import com.roofapp.ui.views.orderedit.OrderItemEditor;
 import com.vaadin.flow.component.ComponentEvent;
 
@@ -16,11 +17,11 @@ public class PriceChangeEvent extends ComponentEvent<OrderItemEditor> {
 	}
 
 	public Double getOldValue() {
-		return oldValue;
+		return Helper.aroundDouble(oldValue);
 	}
 
 	public Double getNewValue() {
-		return newValue;
+		return Helper.aroundDouble(newValue);
 	}
 
 }
