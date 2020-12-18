@@ -5,6 +5,7 @@ import com.roofapp.backend.dao.roofdb.MaterialCover;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.WarehouseState;
 import com.roofapp.backend.dao.roofdb.entity.*;
+import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.service.*;
 import com.roofapp.backend.utils.Helper;
 import com.vaadin.flow.component.Key;
@@ -18,16 +19,10 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
-import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 import com.vaadin.flow.component.html.*;
 
@@ -35,48 +30,41 @@ import com.vaadin.flow.component.html.*;
  * A form for editing a single product.
  */
 
-public class ManufactureForm extends Div {
+public class ManufactureForm extends Dialog {
+    OrderItemsManufactureService itemService;
 
     private final VerticalLayout content;
 
-    OrderItemsManufactureService itemService;
+    private final HorizontalLayout horizontalLayout;
+    private final HorizontalLayout horizontalLayout2;
+    private final HorizontalLayout horizontalLayoutInfo;
+    private final VerticalLayout verticalLayoutLeft;
+    private final VerticalLayout verticalLayoutRight;
 
-    /* private final ComboBox<Product> product;
-     private final IntegerField quantity;
+    private final VerticalLayout machineInfo;
+    private final VerticalLayout materialInfo;
 
-     private final Select<WarehouseState>  state;
- */
-    private final H3 orderInfo = new H3();
-    private final H3 subOrderInfo = new H3();
 
-    private final Div productInfo = new Div();
-    private final Div sizeInfo = new Div();
-    private final Div coverInfo = new Div();
-    private final Div comment = new Div();
-
-    private final ComboBox<Machine> machineSelect;
     private final ComboBox<Material> materialSelect;
-    private Dialog dialog;
-    //    private final NumberField height;
-    //  private final TextField product;
+
     private final WarehouseItemService warehouseItemService;
     private final MaterialService materialService;
     private final OrderService orderService;
     private final OrderItemsService orderItemsService;
     private Button save;
-    private Button ok;
-    // private Button discard;
     private Button cancel;
 
-    private final ManufactureViewLogic viewLogic;
+    private ManufactureViewLogic viewLogic;
 
 
-    private final Binder<OrderItemManufacture> binder;
+    private Binder<OrderItemManufacture> binder;
 
     private OrderItemManufacture item;
 
 
-    private final MachineService machineService;
+    private MachineService machineService;
+
+    Machine currentMachine;
 
     @Autowired
     public ManufactureForm(ManufactureViewLogic viewLogic,
@@ -93,55 +81,48 @@ public class ManufactureForm extends Div {
         this.orderItemsService = orderItemsService;
         this.viewLogic = viewLogic;
 
-        setClassName("manufacture-form");
+        setWidth("1200px");
+        setHeight("600px");
 
         content = new VerticalLayout();
         content.setSizeUndefined();
         content.setSizeFull();
-        //  content.addClassName("product-form-content");
         add(content);
 
-        content.add(orderInfo);
-        content.add(subOrderInfo);
-        content.add(productInfo);
-        content.add(sizeInfo);
-        content.add(coverInfo);
-        content.add(comment);
-
-
-        machineSelect = new ComboBox<Machine>();
-        machineSelect.setLabel("Выберите станок");
-        //   machineSelect.setItems(machineService.findAll());
-        machineSelect.setWidth("100%");
-        machineSelect.setReadOnly(true);
-        content.add(machineSelect);
-
+        verticalLayoutLeft = new VerticalLayout();
+        verticalLayoutRight = new VerticalLayout();
 
         materialSelect = new ComboBox<Material>();
-        materialSelect.setLabel("Выберите сырье");
-        //  materialSelect.setItems(materialService.findAll());
+        //   materialSelect.setLabel("Cырье");
         materialSelect.setWidth("100%");
-        // materialSelect.setReadOnly(true);
-        content.add(materialSelect);
+        // content.add(materialSelect);
 
-        machineSelect.addValueChangeListener(e -> save.setEnabled(!materialSelect.isEmpty() && !machineSelect.isEmpty()));
-        materialSelect.addValueChangeListener(e -> save.setEnabled(!materialSelect.isEmpty() && !machineSelect.isEmpty()));
-
-
-        /*final HorizontalLayout horizontalLayout = new HorizontalLayout(machineSelect, materialSelect);
+        horizontalLayout = new HorizontalLayout(verticalLayoutLeft, verticalLayoutRight);
         horizontalLayout.setWidth("100%");
-        horizontalLayout.setFlexGrow(1, machineSelect, materialSelect);
+        horizontalLayout.setFlexGrow(1, verticalLayoutLeft, verticalLayoutRight);
         content.add(horizontalLayout);
-*/
-        //   binder = new BeanValidationBinder<>(OrderItem.class);
+
+
+        machineInfo = new VerticalLayout();
+        machineInfo.setWidth("30%");
+
+        materialInfo = new VerticalLayout();
+        machineInfo.removeAll();
+        materialInfo.setWidth("70%");
+        materialInfo.add(new H3("Cырье"));
+        materialInfo.add(materialSelect);
+
+        horizontalLayoutInfo = new HorizontalLayout(machineInfo, materialInfo);
+        horizontalLayoutInfo.setWidth("100%");
+        horizontalLayoutInfo.setFlexGrow(1, machineInfo, materialInfo);
+        content.add(horizontalLayoutInfo);
+
+
+//        machineSelect.addValueChangeListener(e -> save.setEnabled(!materialSelect.isEmpty() && !machineSelect.isEmpty()));
+        materialSelect.addValueChangeListener(e -> save.setEnabled(!materialSelect.isEmpty()));
+
         binder = new Binder<>(OrderItemManufacture.class);
-
-
-        //binder.bindInstanceFields(this);
         binder.addStatusChangeListener(event -> {
-            //  final boolean isValid = !event.hasValidationErrors();
-            //   final boolean hasChanges = binder.hasChanges();
-            //   discard.setEnabled(hasChanges);
         });
 
         save = new Button("Запустить цикл производства");
@@ -150,24 +131,17 @@ public class ManufactureForm extends Div {
         save.addClickListener(event -> {
             if (item != null
                 /*  && binder.writeBeanIfValid(item)*/) {
+                close();
                 emulateManufactureWork();
-                viewLogic.saveItem(item);
             }
         });
         save.setEnabled(false);
         save.addClickShortcut(Key.KEY_S, KeyModifier.CONTROL);
-        //  content.add(save);
 
 
-/*
-      discard = new Button("Сбросить");
-        discard.setWidth("100%");
-        discard.addClickListener(
-                event -> viewLogic.edit(item));
-*/
         cancel = new Button("Отмена");
         cancel.setWidth("100%");
-        cancel.addClickListener(event -> viewLogic.cancel());
+        cancel.addClickListener(event -> close());
         cancel.addClickShortcut(Key.ESCAPE);
         getElement()
                 .addEventListener("keydown", event -> viewLogic.cancel())
@@ -175,51 +149,130 @@ public class ManufactureForm extends Div {
         //  content.add(cancel);
 
 
-        final HorizontalLayout horizontalLayout = new HorizontalLayout(cancel, save);
-        horizontalLayout.setWidth("100%");
-        horizontalLayout.setFlexGrow(1, cancel, save);
-        content.add(horizontalLayout);
+        horizontalLayout2 = new HorizontalLayout(cancel, save);
+        horizontalLayout2.setWidth("100%");
+        horizontalLayout2.setFlexGrow(1, cancel, save);
+        content.add(horizontalLayout2);
 
 
-      /*    delete = new Button("Удалить");
-        delete.setWidth("100%");
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR,
-                ButtonVariant.LUMO_PRIMARY);
-        delete.addClickListener(event -> {
-            if (item != null) {
-                viewLogic.delete(item);
-            }
-        });*/
-
-        //  content.add(save/*, discard, delete, cancel*/);
     }
 
-    //  public void setCategories(Collection<Category> categories) {
-    //    category.setItems(categories);
-    //  }
 
     public void edit(OrderItemManufacture editItem) {
+        addInfo(editItem);
         if (editItem == null) {
             editItem = new OrderItemManufacture();
         }
-        //    delete.setVisible(! editItem.isNew());
         item = editItem;
         binder.readBean(editItem);
-
-        try {
-            //   orderInfo.setText("Заказ №" + editItem.getOrder().getId().toString());
-            subOrderInfo.setText("Наряд на производство №" + editItem.getId().toString());
-            productInfo.setText(editItem.getProduct().getName() + " Ширина заданная - " + editItem.getProduct().getWidth());
-            sizeInfo.setText("Длинна - " + editItem.getHeight() + " Кол-во - " + editItem.getQuantity());
-            coverInfo.setText("Цвет - " + editItem.getMaterialColor().toString() + " Покрытие - " + editItem.getMaterialCover() + " Класс - " + editItem.getMaterialClass());
-            comment.setText("Комментарий - " + editItem.getComment());
-        } catch (Exception e) {
-
-        }
-
         findMachine(editItem);
         findMaterial(editItem);
     }
+
+    public void addInfo(OrderItemManufacture editItem) {
+        verticalLayoutLeft.removeAll();
+        verticalLayoutRight.removeAll();
+        H3 h3 = new H3();
+        try {
+            h3.setText("Наряд на производство №" + editItem.getId().toString());
+        } catch (Exception e) {
+        }
+        Div div2 = new Div();
+        try {
+
+            div2.setText(editItem.getProduct().getName() + " Ширина - " + editItem.getProduct().getWidth());
+        } catch (Exception e) {
+        }
+        Div div3 = new Div();
+        try {
+            div3.setText("Длинна - " + editItem.getHeight() + " Кол-во - " + editItem.getQuantity());
+        } catch (Exception e) {
+        }
+        Div div4 = new Div();
+        try {
+
+            div4.setText("Цвет - " + editItem.getMaterialColor() != null ? editItem.getMaterialColor().toString() : "");
+        } catch (Exception e) {
+        }
+        Div div5 = new Div();
+        try {
+
+            div5.setText(" Покрытие - " + editItem.getMaterialCover().toString());
+        } catch (Exception e) {
+        }
+        Div div6 = new Div();
+        try {
+
+            div6.setText(" Класс - " + editItem.getMaterialClass().toString());
+        } catch (Exception e) {
+        }
+        Div div7 = new Div();
+        try {
+
+            div7.setText(" Покрытие - " + editItem.getMaterialCover().toString());
+        } catch (Exception e) {
+        }
+
+        verticalLayoutLeft.add(h3, div2, div2, div3, div4, div5, div6, div7);
+
+
+        H3 h3_ = new H3();
+        try {
+
+            h3_.setText("Заказ №" + editItem.getOrder().getId());
+        } catch (Exception e) {
+        }
+        Div div9 = new Div();
+        try {
+
+            div9.setText(editItem.getOrder().getCustomer().getName());
+        } catch (Exception e) {
+        }
+        Div div10 = new Div();
+        try {
+
+            div10.setText("Телефон - " + editItem.getOrder().getCustomer().getName());
+        } catch (Exception e) {
+        }
+        Div div11 = new Div();
+        try {
+
+            div11.setText("Адрес -" + editItem.getOrder().getCustomer().getFizAddress() != null ? editItem.getOrder().getCustomer().getFizAddress() : "");
+        } catch (Exception e) {
+        }
+        verticalLayoutRight.add(h3_, div9, div10, div11);
+    }
+
+
+    public void addMachineInfo() {
+        machineInfo.removeAll();
+        H3 h3 = new H3();
+        machineInfo.add(h3);
+
+        if (currentMachine == null) {
+            h3.setText("СТАНОК НЕ НАЙДЕН!");
+            return;
+        }
+        try {
+            h3.setText("Станок  " + currentMachine.getName());
+        } catch (Exception e) {
+        }
+        Div div2 = new Div();
+        try {
+
+            div2.setText("Длинна станка - " + currentMachine.getLength());
+        } catch (Exception e) {
+        }
+        Div div3 = new Div();
+        try {
+            div3.setText("Допустимые толщины - " + currentMachine.getAllowableSize().stream().min(Comparator.comparing(Width::getValue)).get() + "-" +
+                    currentMachine.getAllowableSize().stream().max(Comparator.comparing(Width::getValue)).get());
+        } catch (Exception e) {
+        }
+        machineInfo.add(div2, div3);
+
+    }
+
 
     public void emulateManufactureWork() {
 
@@ -270,9 +323,6 @@ public class ManufactureForm extends Div {
         return warehouseItemService.findByOrderItem(orderItem);
     }
 
-  /*  private Double getCalcWhereHouseItems() {
-        return warehouseItems.stream().mapToDouble(item -> item.getQuantity()).sum();
-    }*/
 
     private void addToWarehouse() {
         WarehouseItem warehouseItems = getWhereHouseItems();
@@ -283,7 +333,7 @@ public class ManufactureForm extends Div {
             warehouseItem.setProduct(item.getProduct());
             warehouseItem.setQuantity(materialSelect.getValue().getCountInProduction());
             warehouseItem.setState(WarehouseState.STORAGE);
-            warehouseItem.setMachine(machineSelect.getValue());
+            warehouseItem.setMachine(currentMachine);
             warehouseItem.setMaterial(materialSelect.getValue());
             warehouseItem.setOrderItem(orderItem);
             warehouseItemService.save(warehouseItem);
@@ -295,7 +345,7 @@ public class ManufactureForm extends Div {
             warehouseItemService.save(warehouseItems);
         }
         orderItem.setState(ItemState.READY);
-        orderItemsService.save(null,orderItem);
+        orderItemsService.save(null, orderItem);
 
     }
 
@@ -328,26 +378,28 @@ public class ManufactureForm extends Div {
     }
 
     private void changeItemState() {
-        item.setState( ItemState.READY);
+        item.setState(ItemState.READY);
         item.setDone(new Timestamp(System.currentTimeMillis()));
         OrderItem orderItem = orderItemsService.findById(item.getId());
         orderItem.setDone(new Timestamp(System.currentTimeMillis()));
-        orderItemsService.save(null, orderItem );
+        orderItemsService.save(null, orderItem);
     }
 
 
     private void findMachine(OrderItemManufacture editItem) {
-        machineSelect.clear();
         try {
             if (machineService != null && editItem != null) {
                 List<Machine> machine = machineService.findAll();
                 machine.forEach(item -> {
                     if (item.getName().equals(editItem.getProduct().getName().replace("Профнастил ", "")))
-                        machineSelect.setValue(item);
+                        //  machineSelect.setValue(item);
+                        currentMachine = item;
                 });
             }
         } catch (Exception e) {
+
         }
+        addMachineInfo();
     }
 
     private void findMaterial(OrderItemManufacture editItem) {
@@ -396,7 +448,7 @@ public class ManufactureForm extends Div {
                     }
                     if (orderMetalLength >= 0D) {
                         //Пpозводство из 2 и более бухт;
-                        Double maxLenght = material.getRemains() - machineSelect.getValue().getLength();
+                        Double maxLenght = material.getRemains() - currentMachine.getLength();
                         Integer maxCount = Helper.aroundToTheWhole(maxLenght / item.getHeight());
                         Double maxProductionLength = maxCount * item.getHeight();
 

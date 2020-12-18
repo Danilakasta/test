@@ -34,7 +34,7 @@ public class ManufactureView extends HorizontalLayout
 
     private final OrderItemsManufactureService itemService;
 
-    private final ManufacturerGrid grid;
+   public final ManufacturerGrid grid;
     private final ManufactureForm form;
     private TextField filter;
 
@@ -54,15 +54,18 @@ public class ManufactureView extends HorizontalLayout
         grid = new ManufacturerGrid();
         dataProvider = new ManufacturerDataProvider(itemService.findAllByPriority(), itemService);
         grid.setDataProvider(this.dataProvider);
+        form = new ManufactureForm(viewLogic, itemService, machineService, materialService, warehouseItemService, orderService, orderItemsService);
         // Allows user to select a single row in the grid.
         grid.asSingleSelect().addValueChangeListener(
                 event -> {
                     if (event.getValue() != null) {
                         if (event.getValue().getState().equals(ItemState.MANUFACTURE))
                             viewLogic.rowSelected(event.getValue());
-                    }
+                        form.open();
+                    }else
+                      form.close();
                 });
-        form = new ManufactureForm(viewLogic, itemService, machineService, materialService, warehouseItemService, orderService, orderItemsService);
+
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);
@@ -152,11 +155,9 @@ public class ManufactureView extends HorizontalLayout
     public void update(OrderItemManufacture item) {
         dataProvider.save(item);
         grid.getDataProvider().refreshItem(item);
+        form.close();
     }
 
-    public void refreshAll() {
-        grid.getDataProvider().refreshAll();
-    }
 
 
     /**

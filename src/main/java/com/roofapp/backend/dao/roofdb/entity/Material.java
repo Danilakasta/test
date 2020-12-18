@@ -111,7 +111,7 @@ public class Material extends AbstractEntity {
     @Override
     public String toString(){
         return   serialNumber +" " + manufacturer+" "+width +" "+materialColor  +" "+ cover+" "+materialClass +" Остаток-"+ remains+
-              " Производимая длина- "+remainInProduction +  " Колличество- "+countInProduction;
+              " Производимая длина- "+remainInProduction +  " Кол-во- "+countInProduction;
     }
 
 }

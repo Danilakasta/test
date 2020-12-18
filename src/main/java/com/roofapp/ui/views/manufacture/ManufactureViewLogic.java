@@ -91,7 +91,7 @@ public class ManufactureViewLogic implements Serializable {
         final boolean newItem = item.isNew();
         view.clearSelection();
         view.update(item);
-        view.refreshAll();
+        view.grid.refresh(item);
      //   view.remove(item);
         setFragmentParameter("");
      /*   view.showNotification(item.getProduct().getName()
