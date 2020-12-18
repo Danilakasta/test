@@ -1,5 +1,6 @@
 package com.roofapp.ui.views.manufacture;
 
+import com.roofapp.backend.dao.roofdb.ItemState;
 import com.roofapp.backend.dao.roofdb.OrderState;
 import com.roofapp.backend.dao.roofdb.entity.OrderItemManufacture;
 import com.roofapp.backend.service.*;
@@ -55,7 +56,12 @@ public class ManufactureView extends HorizontalLayout
         grid.setDataProvider(this.dataProvider);
         // Allows user to select a single row in the grid.
         grid.asSingleSelect().addValueChangeListener(
-                event -> viewLogic.rowSelected(event.getValue()));
+                event -> {
+                    if (event.getValue() != null) {
+                        if (event.getValue().getState().equals(ItemState.MANUFACTURE))
+                            viewLogic.rowSelected(event.getValue());
+                    }
+                });
         form = new ManufactureForm(viewLogic, itemService, machineService, materialService, warehouseItemService, orderService, orderItemsService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
@@ -145,8 +151,13 @@ public class ManufactureView extends HorizontalLayout
      */
     public void update(OrderItemManufacture item) {
         dataProvider.save(item);
+        grid.getDataProvider().refreshItem(item);
+    }
+
+    public void refreshAll() {
         grid.getDataProvider().refreshAll();
     }
+
 
     /**
      * Removes a product from the list of products.
@@ -154,7 +165,7 @@ public class ManufactureView extends HorizontalLayout
      * @param item
      */
     public void remove(OrderItemManufacture item) {
-        dataProvider.delete(item);
+       // dataProvider.delete(item);
     }
 
     /**

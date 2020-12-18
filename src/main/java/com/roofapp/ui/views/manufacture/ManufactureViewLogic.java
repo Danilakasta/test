@@ -91,6 +91,7 @@ public class ManufactureViewLogic implements Serializable {
         final boolean newItem = item.isNew();
         view.clearSelection();
         view.update(item);
+        view.refreshAll();
      //   view.remove(item);
         setFragmentParameter("");
      /*   view.showNotification(item.getProduct().getName()
@@ -99,7 +100,7 @@ public class ManufactureViewLogic implements Serializable {
 
     public void delete(OrderItemManufacture item) {
         view.clearSelection();
-        view.remove(item);
+    //    view.remove(item);
         setFragmentParameter("");
      //   view.showNotification(item.OrderItem getName() + " удалено");
     }

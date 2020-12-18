@@ -328,9 +328,11 @@ public class ManufactureForm extends Div {
     }
 
     private void changeItemState() {
+        item.setState( ItemState.READY);
+        item.setDone(new Timestamp(System.currentTimeMillis()));
         OrderItem orderItem = orderItemsService.findById(item.getId());
         orderItem.setDone(new Timestamp(System.currentTimeMillis()));
-        orderItemsService.save(null, orderItem);
+        orderItemsService.save(null, orderItem );
     }
 
 
