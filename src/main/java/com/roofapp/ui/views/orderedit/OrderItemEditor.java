@@ -103,6 +103,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
 
 
     private final ProductAmountService productAmountService;
+    private final ProductService productService;
 
     private BeanValidationBinder<OrderItem> binder = new BeanValidationBinder<>(OrderItem.class);
 
@@ -111,6 +112,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
                                                                                 MaterialService materialService,
                                                                                 WidthGuideService widthGuideService) {
         this.productAmountService = productAmountService;
+        this.productService = productService;
         this.fieldSupport = new AbstractFieldSupport<>(this, null,
                 Objects::equals, c -> {
         });
@@ -350,28 +352,17 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
                     materialSquaring.setText(String.format("%.2f", product.getSquareMeters() * heightVal * amount.getValue()) + " кв.м.");
 
                 if (product.getType().equals(ProductType.ADDITIONAL_ELEMENTS))
-                    materialSquaring.setText(String.format("%.2f", calculateAdditionalWidth() / 1000 * heightVal * amount.getValue()) + " кв.м.");
+                    materialSquaring.setText(String.format("%.2f", productService.calculateAdditionalWidth(size.getValue()) / 1000 * heightVal * amount.getValue()) + " кв.м.");
             }
         }
     }
 
     private void setAdditionalLength(ComponentValueChangeEvent event) {
-        Double result = calculateAdditionalWidth();
+        Double result = productService.calculateAdditionalWidth(size.getValue());
         comment.setValue(result + " мм " + "1/" + Helper.aroundToTheWhole((products.getValue().getWidth() * 1000) / result) + " листа");
     }
 
-    private Double calculateAdditionalWidth() {
-        ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
-        if (size != null && size.getValue() != null) {
-            try {
-                return Double.valueOf(engine.eval(size.getValue()).toString());
-            } catch (Exception e) {
-                //  log.warning("Calculator mScriptEngine error: " + e.getMessage());
-            }
-        }
-        return 0D;
 
-    }
 
 
     private Double findProductPrice() {
@@ -397,7 +388,7 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
                     }
                 } else if (product.getType().equals(ProductType.ADDITIONAL_ELEMENTS)) {
                     if (!ObjectUtils.isEmpty(height.getValue()) && !ObjectUtils.isEmpty(product.getSquareMeters())) {
-                        totalPrice = new BigDecimal(selectedAmount * (findProductPrice()) * calculateAdditionalWidth() / 1000 * height.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+                        totalPrice = new BigDecimal(selectedAmount * (findProductPrice()) * productService.calculateAdditionalWidth(size.getValue()) / 1000 * height.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
 
                     }
                 }

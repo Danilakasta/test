@@ -23,6 +23,8 @@ public class WarehouseGrid extends Grid<WarehouseItem> {
     public WarehouseGrid() {
 
         setSizeFull();
+        addColumn(WarehouseItem::getWarehouseType).setHeader("Название склада")
+                .setFlexGrow(40).setSortable(true).setKey("Название склада").setResizable(true);
 
         addColumn(WarehouseItem::getProduct).setHeader("Название номенклатуры")
                 .setFlexGrow(20).setSortable(true).setKey("Название номенклатуры").setResizable(true);

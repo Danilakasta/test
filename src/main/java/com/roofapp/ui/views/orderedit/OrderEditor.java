@@ -152,9 +152,11 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
         //  customerName.setItems(contractorService.findAllOrderName());
         customerName.setDataProvider(dataProvider);
         customerName.addValueChangeListener(e -> {
-            if (e != null && e.getValue() != null)
-                if (e.getValue().getPhone() != null)
+            if (e != null && e.getValue() != null) {
+                if (e.getValue().getPhone() != null) {
                     customerNumber.setValue(e.getValue().getPhone());
+                } else customerNumber.clear();
+            }else customerNumber.clear();
         });
 
         itemsContainer.add(itemsEditor);

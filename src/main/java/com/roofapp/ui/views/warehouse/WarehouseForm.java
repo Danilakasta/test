@@ -4,8 +4,10 @@ import com.roofapp.backend.dao.roofdb.WarehouseState;
 import com.roofapp.backend.dao.roofdb.entity.Contractor;
 import com.roofapp.backend.dao.roofdb.entity.Product;
 import com.roofapp.backend.dao.roofdb.entity.WarehouseItem;
+import com.roofapp.backend.dao.roofdb.entity.guides.WarehouseType;
 import com.roofapp.backend.service.ProductService;
 import com.roofapp.backend.service.WarehouseItemService;
+import com.roofapp.backend.service.guides.WarehouseTypeGuideService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -41,6 +43,9 @@ public class WarehouseForm extends Div {
     WarehouseItemService itemService;
 
     private final ComboBox<Product> product;
+
+    private final ComboBox<WarehouseType> warehouseType;
+
     private final IntegerField quantity;
 
     private final Select<WarehouseState>  state;
@@ -103,13 +108,22 @@ public class WarehouseForm extends Div {
     }
 
     @Autowired
-    public WarehouseForm(WarehouseViewLogic viewLogic, WarehouseItemService itemService, ProductService productService) {
+    public WarehouseForm(WarehouseViewLogic viewLogic, WarehouseItemService itemService, ProductService productService, WarehouseTypeGuideService warehouseTypeGuideService) {
         this.itemService = itemService;
         setClassName("product-form");
         content = new VerticalLayout();
         content.setSizeUndefined();
         content.addClassName("product-form-content");
         add(content);
+
+        warehouseType = new ComboBox<>();
+        warehouseType.setLabel("Название склада");
+        warehouseType.setWidth("100%");
+        warehouseType.setItemLabelGenerator(WarehouseType::toString);
+        warehouseType.setItems(warehouseTypeGuideService.findAll());
+        content.add(warehouseType);
+
+
 
         product = new ComboBox<>();
         product.setLabel("Номенклатура");

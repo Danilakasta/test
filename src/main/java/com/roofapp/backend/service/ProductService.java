@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,4 +109,24 @@ public class ProductService implements FilterableCrudService<Product>  {
         return productRepository.findAllByOrderByTypeAndName();
     }
 
+    public Product findByName(String name) {
+        return productRepository.findByName( name);
+    }
+
+    /**
+     * Расчет размера из строки 100+100+100
+     * @param size
+     * @return
+     */
+    public Double calculateAdditionalWidth(String size) {
+        ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+        if (size != null ) {
+            try {
+                return Double.valueOf(engine.eval(size).toString());
+            } catch (Exception e) {
+                //  log.warning("Calculator mScriptEngine error: " + e.getMessage());
+            }
+        }
+        return 0D;
+    }
 }

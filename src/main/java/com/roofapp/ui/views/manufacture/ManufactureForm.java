@@ -1,9 +1,6 @@
 package com.roofapp.ui.views.manufacture;
 
-import com.roofapp.backend.dao.roofdb.ItemState;
-import com.roofapp.backend.dao.roofdb.MaterialCover;
-import com.roofapp.backend.dao.roofdb.OrderState;
-import com.roofapp.backend.dao.roofdb.WarehouseState;
+import com.roofapp.backend.dao.roofdb.*;
 import com.roofapp.backend.dao.roofdb.entity.*;
 import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.service.*;
@@ -44,6 +41,9 @@ public class ManufactureForm extends Dialog {
     private final VerticalLayout machineInfo;
     private final VerticalLayout materialInfo;
 
+    private final H6 materialRequired = new H6();
+    private final H6 materialRemains = new H6();
+    private final H6 materialUsed = new H6();
 
     private final ComboBox<Material> materialSelect;
 
@@ -96,7 +96,12 @@ public class ManufactureForm extends Dialog {
         //   materialSelect.setLabel("Cырье");
         materialSelect.setWidth("100%");
         // content.add(materialSelect);
-
+        materialSelect.addValueChangeListener(e->{
+            if(e.getValue() != null) {
+                materialRemains.setText("Остаток - " + e.getValue().getRemains() + " м");
+                materialUsed.setText("Израсходовано - " + e.getValue().getUsed() + " м");
+            }
+        });
         horizontalLayout = new HorizontalLayout(verticalLayoutLeft, verticalLayoutRight);
         horizontalLayout.setWidth("100%");
         horizontalLayout.setFlexGrow(1, verticalLayoutLeft, verticalLayoutRight);
@@ -111,6 +116,7 @@ public class ManufactureForm extends Dialog {
         materialInfo.setWidth("70%");
         materialInfo.add(new H3("Cырье"));
         materialInfo.add(materialSelect);
+        materialInfo.add( new HorizontalLayout(materialUsed,materialRemains,materialRequired));
 
         horizontalLayoutInfo = new HorizontalLayout(machineInfo, materialInfo);
         horizontalLayoutInfo.setWidth("100%");
@@ -118,7 +124,6 @@ public class ManufactureForm extends Dialog {
         content.add(horizontalLayoutInfo);
 
 
-//        machineSelect.addValueChangeListener(e -> save.setEnabled(!materialSelect.isEmpty() && !machineSelect.isEmpty()));
         materialSelect.addValueChangeListener(e -> save.setEnabled(!materialSelect.isEmpty()));
 
         binder = new Binder<>(OrderItemManufacture.class);
@@ -191,7 +196,7 @@ public class ManufactureForm extends Dialog {
         Div div4 = new Div();
         try {
 
-            div4.setText("Цвет - " + editItem.getMaterialColor() != null ? editItem.getMaterialColor().toString() : "");
+            div4.setText("Цвет - " + (editItem.getMaterialColor() != null ? editItem.getMaterialColor().toString() : ""));
         } catch (Exception e) {
         }
         Div div5 = new Div();
@@ -230,16 +235,19 @@ public class ManufactureForm extends Dialog {
         }
         Div div10 = new Div();
         try {
-
-            div10.setText("Телефон - " + editItem.getOrder().getCustomer().getName());
+            div10.setText("Телефон - " + editItem.getOrder().getCustomer().getPhone());
         } catch (Exception e) {
         }
         Div div11 = new Div();
         try {
 
-            div11.setText("Адрес -" + editItem.getOrder().getCustomer().getFizAddress() != null ? editItem.getOrder().getCustomer().getFizAddress() : "");
+            div11.setText("Адрес -" + (editItem.getOrder().getCustomer().getFizAddress() != null ? editItem.getOrder().getCustomer().getFizAddress() : ""));
         } catch (Exception e) {
         }
+
+        materialRequired.setText( "Требуется - " + editItem.getHeight() * editItem.getQuantity()+ " м");
+
+
         verticalLayoutRight.add(h3_, div9, div10, div11);
     }
 
@@ -259,7 +267,6 @@ public class ManufactureForm extends Dialog {
         }
         Div div2 = new Div();
         try {
-
             div2.setText("Длинна станка - " + currentMachine.getLength());
         } catch (Exception e) {
         }
@@ -285,14 +292,12 @@ public class ManufactureForm extends Dialog {
             dialog.close();
             Dialog dialog2 = new Dialog();
             dialog2.add("Станок работает!");
-
             dialog2.setCloseOnEsc(false);
             dialog2.setCloseOnOutsideClick(false);
             Button confirmButton2 = new Button("Завершить выпуск продукции?", event2 -> {
                 dialog2.close();
                 Dialog dialog3 = new Dialog();
                 dialog3.add("Прокат завершен");
-
                 dialog3.setCloseOnEsc(false);
                 dialog3.setCloseOnOutsideClick(false);
                 Button confirmButton3 = new Button("Передать на склад?", event3 -> {
@@ -305,13 +310,9 @@ public class ManufactureForm extends Dialog {
                 });
                 dialog3.add(confirmButton3);
                 dialog3.open();
-
-
             });
             dialog2.add(confirmButton2);
             dialog2.open();
-
-
         });
         dialog.add(confirmButton);
         dialog.open();
@@ -387,13 +388,18 @@ public class ManufactureForm extends Dialog {
 
 
     private void findMachine(OrderItemManufacture editItem) {
+        currentMachine = null;
         try {
             if (machineService != null && editItem != null) {
                 List<Machine> machine = machineService.findAll();
                 machine.forEach(item -> {
-                    if (item.getName().equals(editItem.getProduct().getName().replace("Профнастил ", "")))
+                    if (item.getName().equals(editItem.getProduct().getName().replace("Профнастил ", ""))) {
                         //  machineSelect.setValue(item);
                         currentMachine = item;
+                    }else if (editItem.getProduct().getType().equals(ProductType.ADDITIONAL_ELEMENTS)){
+                        if (item.getName().equals("Гибочный станок"))
+                            currentMachine = item;
+                    }
                 });
             }
         } catch (Exception e) {
@@ -427,13 +433,6 @@ public class ManufactureForm extends Dialog {
                         else if (item.getCover().equals(MaterialCover.ZINK))
                             allMaterials.add(item);
                 });
-
-                /*    Material minMaterial = allMaterials.stream().min(Comparator.comparing(Material::getRemains)).get();
-                if (minMaterial.getRemains() >= orderMetalLength) {
-                    materialSelect.setValue(minMaterial);
-                    return;
-                }*/
-
 
                 allMaterials.stream().sorted(Comparator.comparing(Material::getRemains));
                 Double remainsToProduce = 0D;

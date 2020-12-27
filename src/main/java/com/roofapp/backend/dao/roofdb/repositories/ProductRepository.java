@@ -23,7 +23,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByOrderByName();
 
+    Product findByName(String name);
+
     @Query("select e from Product e order by e.type,e.name")
     @Cacheable("products")
     List<Product> findAllByOrderByTypeAndName();
+
+
 }

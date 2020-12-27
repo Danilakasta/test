@@ -3,6 +3,7 @@ package com.roofapp.ui.views.warehouse;
 import com.roofapp.backend.dao.roofdb.entity.WarehouseItem;
 import com.roofapp.backend.service.ProductService;
 import com.roofapp.backend.service.WarehouseItemService;
+import com.roofapp.backend.service.guides.WarehouseTypeGuideService;
 import com.roofapp.ui.MainLayout;
 import com.roofapp.ui.views.products.ProductViewLogic;
 import com.vaadin.flow.component.Key;
@@ -59,7 +60,7 @@ public class WarehouseView extends HorizontalLayout
 
     private WarehouseDataProvider dataProvider;
 
-    public WarehouseView(WarehouseItemService itemService, ProductService productService) {
+    public WarehouseView(WarehouseItemService itemService, ProductService productService, WarehouseTypeGuideService warehouseTypeGuideService) {
         this.itemService = itemService;
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();
@@ -74,7 +75,7 @@ public class WarehouseView extends HorizontalLayout
 
 
         addGridFilterItem();
-        form = new WarehouseForm(viewLogic, itemService, productService);
+        form = new WarehouseForm(viewLogic, itemService, productService,warehouseTypeGuideService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);

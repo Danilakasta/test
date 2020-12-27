@@ -84,6 +84,7 @@ public class WarehouseDataProvider extends ListDataProvider<WarehouseItem> {
         }
         this.filterText = filterText.trim().toLowerCase(Locale.ENGLISH);
         setFilter(item -> passesFilter(item.getProduct().getName(), this.filterText)
+                ||passesFilter(item.getWarehouseType().getName(), this.filterText)
                 ||passesFilter(item.getQuantity(), this.filterText)
                 ||passesFilter(item.getComment(), this.filterText)
                 ||passesFilter(item.getState().getDisplayName(), this.filterText)
