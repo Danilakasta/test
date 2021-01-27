@@ -18,10 +18,14 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.*;
 
 import com.vaadin.flow.component.html.*;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * A form for editing a single product.
@@ -96,8 +100,8 @@ public class ManufactureForm extends Dialog {
         //   materialSelect.setLabel("Cырье");
         materialSelect.setWidth("100%");
         // content.add(materialSelect);
-        materialSelect.addValueChangeListener(e->{
-            if(e.getValue() != null) {
+        materialSelect.addValueChangeListener(e -> {
+            if (e.getValue() != null) {
                 materialRemains.setText("Остаток - " + e.getValue().getRemains() + " м");
                 materialUsed.setText("Израсходовано - " + e.getValue().getUsed() + " м");
             }
@@ -116,7 +120,7 @@ public class ManufactureForm extends Dialog {
         materialInfo.setWidth("70%");
         materialInfo.add(new H3("Cырье"));
         materialInfo.add(materialSelect);
-        materialInfo.add( new HorizontalLayout(materialUsed,materialRemains,materialRequired));
+        materialInfo.add(new HorizontalLayout(materialUsed, materialRemains, materialRequired));
 
         horizontalLayoutInfo = new HorizontalLayout(machineInfo, materialInfo);
         horizontalLayoutInfo.setWidth("100%");
@@ -245,7 +249,7 @@ public class ManufactureForm extends Dialog {
         } catch (Exception e) {
         }
 
-        materialRequired.setText( "Требуется - " + editItem.getHeight() * editItem.getQuantity()+ " м");
+        materialRequired.setText("Требуется - " + editItem.getHeight() * editItem.getQuantity() + " м");
 
 
         verticalLayoutRight.add(h3_, div9, div10, div11);
@@ -284,40 +288,46 @@ public class ManufactureForm extends Dialog {
     public void emulateManufactureWork() {
 
         Dialog dialog = new Dialog();
-        dialog.add("Загрузите бухту, отсканируйте QCode");
+        String result = sendOrderToArduino(item, currentMachine, materialSelect.getValue());
+        if(result.equals("ok")) {
+            dialog.add("Задание отправлено! Загрузите бухту, отсканируйте QCode");
 
-        dialog.setCloseOnEsc(false);
-        dialog.setCloseOnOutsideClick(false);
-        Button confirmButton = new Button("Загружена", event -> {
-            dialog.close();
-            Dialog dialog2 = new Dialog();
-            dialog2.add("Станок работает!");
-            dialog2.setCloseOnEsc(false);
-            dialog2.setCloseOnOutsideClick(false);
-            Button confirmButton2 = new Button("Завершить выпуск продукции?", event2 -> {
-                dialog2.close();
-                Dialog dialog3 = new Dialog();
-                dialog3.add("Прокат завершен");
-                dialog3.setCloseOnEsc(false);
-                dialog3.setCloseOnOutsideClick(false);
-                Button confirmButton3 = new Button("Передать на склад?", event3 -> {
-                    dialog3.close();
-                    addToWarehouse();
-                    useMaterial();
-                    changeItemState();
-                    changeOrderState();
-                    viewLogic.saveItem(item);
+            dialog.setCloseOnEsc(false);
+            dialog.setCloseOnOutsideClick(false);
+            Button confirmButton = new Button("Загружена", event -> {
+                dialog.close();
+                Dialog dialog2 = new Dialog();
+                dialog2.add("Станок работает!");
+                dialog2.setCloseOnEsc(false);
+                dialog2.setCloseOnOutsideClick(false);
+                Button confirmButton2 = new Button("Завершить выпуск продукции?", event2 -> {
+                    dialog2.close();
+                    Dialog dialog3 = new Dialog();
+                    dialog3.add("Прокат завершен");
+                    dialog3.setCloseOnEsc(false);
+                    dialog3.setCloseOnOutsideClick(false);
+                    Button confirmButton3 = new Button("Передать на склад?", event3 -> {
+                        dialog3.close();
+                        addToWarehouse();
+                        useMaterial();
+                        changeItemState();
+                        changeOrderState();
+                        viewLogic.saveItem(item);
+                    });
+                    dialog3.add(confirmButton3);
+                    dialog3.open();
                 });
-                dialog3.add(confirmButton3);
-                dialog3.open();
+                dialog2.add(confirmButton2);
+                dialog2.open();
             });
-            dialog2.add(confirmButton2);
-            dialog2.open();
-        });
-        dialog.add(confirmButton);
-        dialog.open();
-
+            dialog.add(confirmButton);
+            dialog.open();
+        }else{
+            dialog.add("Ошибка отправки задания на станок!!!!");
+           dialog.open();
+        }
     }
+
 
     private WarehouseItem getWhereHouseItems() {
         OrderItem orderItem = orderItemsService.findById(item.getId());
@@ -396,7 +406,7 @@ public class ManufactureForm extends Dialog {
                     if (item.getName().equals(editItem.getProduct().getName().replace("Профнастил ", ""))) {
                         //  machineSelect.setValue(item);
                         currentMachine = item;
-                    }else if (editItem.getProduct().getType().equals(ProductType.ADDITIONAL_ELEMENTS)){
+                    } else if (editItem.getProduct().getType().equals(ProductType.ADDITIONAL_ELEMENTS)) {
                         if (item.getName().equals("Гибочный станок"))
                             currentMachine = item;
                     }
@@ -478,4 +488,22 @@ public class ManufactureForm extends Dialog {
 
         }
     }
+
+    /**
+     * Отправка Задания на станок
+     *
+     * @param machine
+     * @param material
+     */
+    private String sendOrderToArduino(OrderItemManufacture item, Machine machine, Material material) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://192.168.0.108:8090/manufactureOrder?" +
+                "id=" + item.getId().toString() +
+                "&count=" + item.getQuantity().toString() +
+                "&lenght=" +item.getHeight().toString() +
+                "&materialId=" + material.getId();
+        return restTemplate.getForObject(url, String.class);
+    }
+
+
 }
