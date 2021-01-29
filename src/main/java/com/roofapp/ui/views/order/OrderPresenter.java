@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@Transactional("roofTransactionManager")
+//@Transactional("roofTransactionManager")
 public class OrderPresenter {
 
 	private OrderCardHeaderGenerator headersGenerator;

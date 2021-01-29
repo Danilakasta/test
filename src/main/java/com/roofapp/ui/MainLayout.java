@@ -44,8 +44,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * The main layout. Contains the navigation menu.
  */
 @Theme(value = Lumo.class)
-@PWA(name = "Roof Factory", shortName = "roofApp",
-        startPath = "login",
+@PWA(name = "Roof Factory1", shortName = "roofApp1",
+        startPath = "orders",
        //   startPath = "orders",
         backgroundColor = "#227aef", themeColor = "#227aef",
         offlinePath = "offline-page.html",

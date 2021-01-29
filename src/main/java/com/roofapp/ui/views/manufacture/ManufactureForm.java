@@ -16,6 +16,9 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
+import com.wontlost.zxing.Constants;
+import com.wontlost.zxing.ZXingVaadinReader;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.HttpURLConnection;
@@ -24,13 +27,13 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import com.vaadin.flow.component.html.*;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
+import sk.smartbase.component.qrscanner.QrScanner;
 
 /**
  * A form for editing a single product.
  */
-
+@Log
 public class ManufactureForm extends Dialog {
     OrderItemsManufactureService itemService;
 
@@ -288,7 +291,61 @@ public class ManufactureForm extends Dialog {
     public void emulateManufactureWork() {
 
         Dialog dialog = new Dialog();
-        String result = sendOrderToArduino(item, currentMachine, materialSelect.getValue());
+        String result = "ok";
+        try {
+            // result = sendOrderToArduino(item, currentMachine, materialSelect.getValue());
+        }catch (Exception e){
+            Notification.show( "Нет связи со станком!"+result);
+        }
+     /*  QrScanner qrScanner = new QrScanner(false);
+
+        qrScanner.setConsumer(qrCode -> {
+            if (!"error decoding QR Code".equals(qrCode)) {
+                System.out.println("scanned qr code: " + qrCode);
+            }
+        });*/
+
+        QrScanner qrScanner = new QrScanner(true);
+        qrScanner.setFrequency(1);
+        qrScanner.setActive(true);
+        qrScanner.setDebug(true);
+        qrScanner.setShowChangeCamera(true);
+        qrScanner.setVisible(true);
+
+        qrScanner.setConsumer(event -> {
+            if(!event.equalsIgnoreCase(QrScanner.ERROR_DECODING_QR_CODE))
+              //  qrScanner.setActive(false);
+            System.out.println("consumer event value: " + event);
+        });
+
+
+
+/*
+        ZXingVaadinReader zXingVaadin = new ZXingVaadinReader();
+        zXingVaadin.setFrom(Constants.From.camera);
+        zXingVaadin.setId("video");
+        zXingVaadin.setWidth("350");
+        zXingVaadin.setStyle("border : 1px solid gray");
+
+        zXingVaadin.addValueChangeListener(event->{
+            log.info(event.toString());
+        });
+
+      zXingVaadin.addValueChangeListener(event->{
+                log.info(event.toString());
+        });*
+
+        zXingVaadin.addFocusShortcut(event->{
+            log.info(event);
+        });
+
+        dialog.add(zXingVaadin );
+*/
+        dialog.add(qrScanner );
+        dialog.setWidth("1200px");
+        dialog.setHeight("600px");
+        dialog.open();
+
         if(result.equals("ok")) {
             dialog.add("Задание отправлено! Загрузите бухту, отсканируйте QCode");
 
@@ -326,6 +383,7 @@ public class ManufactureForm extends Dialog {
             dialog.add("Ошибка отправки задания на станок!!!!");
            dialog.open();
         }
+
     }
 
 
@@ -506,4 +564,7 @@ public class ManufactureForm extends Dialog {
     }
 
 
+    public ManufactureViewLogic getViewLogic() {
+        return viewLogic;
+    }
 }

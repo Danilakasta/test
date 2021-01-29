@@ -40,7 +40,17 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>sk.smartbase.component</groupId>
+            <artifactId>qr-scanner</artifactId>
+            <version>1.0.4</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.wontlost</groupId>
+            <artifactId>zxing-vaadin</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <!-- <dependency>
          jsoup HTML parser library @ https://jsoup.org/

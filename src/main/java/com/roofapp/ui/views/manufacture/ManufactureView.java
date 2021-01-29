@@ -18,6 +18,11 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.InitialPageSettings;
+import com.vaadin.flow.server.PageConfigurator;
+import com.wontlost.zxing.Constants;
+import com.wontlost.zxing.ZXingVaadinReader;
+import sk.smartbase.component.qrscanner.QrScanner;
 
 /**
  * A view for performing create-read-update-delete operations on Manufacturerss.
@@ -65,6 +70,17 @@ public class ManufactureView extends HorizontalLayout
                     }else
                       form.close();
                 });
+       /* QrScanner qrScanner = new QrScanner(false);
+        qrScanner.setFrequency(1);
+        qrScanner.setActive(true);
+        qrScanner.setDebug(true);
+        qrScanner.setShowChangeCamera(true);
+        qrScanner.setConsumer(qrCode -> {
+            if (!"error decoding QR Code".equals(qrCode)) {
+                System.out.println("scanned qr code: " + qrCode);
+            }
+        });*/
+
 
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
@@ -198,5 +214,11 @@ public class ManufactureView extends HorizontalLayout
                              @OptionalParameter String parameter) {
         viewLogic.enter(parameter);
     }
+
+   /* @Override
+    public void configurePage(InitialPageSettings settings) {
+        settings.addMetaTag("apple-mobile-web-app-capable", "yes");
+        settings.addMetaTag("apple-mobile-web-app-status-bar-style", "black");
+    }*/
 }
 
