@@ -1,0 +1,3 @@
+INSERT INTO public.users
+(id, email, first_name, last_name, "locked", password_hash, "role")
+VALUES(3, 'admin@roof.ru', 'Admin', 'admin', false, '$2a$10$WoUODCAvWmNblco7tujhEO.FJapmt6yEZ/cNRyy15283JZs2Nwdh6', 0);
