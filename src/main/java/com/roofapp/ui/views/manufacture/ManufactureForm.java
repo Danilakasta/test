@@ -16,8 +16,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
-import com.wontlost.zxing.Constants;
-import com.wontlost.zxing.ZXingVaadinReader;
+//import com.wontlost.zxing.Constants;
+//import com.wontlost.zxing.ZXingVaadinReader;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -20,8 +20,8 @@ import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.InitialPageSettings;
 import com.vaadin.flow.server.PageConfigurator;
-import com.wontlost.zxing.Constants;
-import com.wontlost.zxing.ZXingVaadinReader;
+//import com.wontlost.zxing.Constants;
+//import com.wontlost.zxing.ZXingVaadinReader;
 import sk.smartbase.component.qrscanner.QrScanner;
 
 /**
