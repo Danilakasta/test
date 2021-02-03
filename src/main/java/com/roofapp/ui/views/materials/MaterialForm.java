@@ -8,6 +8,7 @@ import com.roofapp.backend.dao.roofdb.entity.guides.Width;
 import com.roofapp.backend.service.MaterialService;
 import com.roofapp.backend.service.guides.WidthGuideService;
 import com.roofapp.backend.utils.Helper;
+import com.roofapp.ui.utils.converters.StringToLongConverterNotNull;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -25,10 +26,8 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.barcodes.Barcode;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -42,6 +41,7 @@ public class MaterialForm extends Div {
     private final VerticalLayout content;
 
     MaterialService materialService;
+    private final TextField id ;
 
     private final IntegerField serialNumber;
     private final TextField manufacturer;
@@ -71,7 +71,7 @@ public class MaterialForm extends Div {
     private Button discard;
     private Button cancel;
     private final Button delete;
-
+  //  private final Barcode qrcode;
     private MateriaslViewLogic viewLogic;
 
     public void setViewLogic(MateriaslViewLogic viewLogic) {
@@ -122,9 +122,13 @@ public class MaterialForm extends Div {
         }
     }
 
-    @Autowired
+
+
+
+   // @Autowired
     public MaterialForm(MateriaslViewLogic viewLogic, MaterialService MaterialService, WidthGuideService widthGuideService) {
         this.materialService = MaterialService;
+      //  this.qrcode = createBarcode("");
         setClassName("product-form ");
 
         content = new VerticalLayout();
@@ -169,7 +173,7 @@ public class MaterialForm extends Div {
         //У цинка не блокируем выбор цвета
 
         cover.addValueChangeListener(e -> {
-            if(e.getValue() !=null) {
+            if (e.getValue() != null) {
                 if (e.getValue().equals(MaterialCover.ZINK)) {
                     materialColor.setEnabled(false);
                 } else {
@@ -179,12 +183,10 @@ public class MaterialForm extends Div {
         });
 
 
-
         materialClass = new Select<>();
         materialClass.setLabel("Клас покрытия");
         materialClass.setWidth("100%");
         materialClass.setItems(MaterialClass.values());
-
 
 
         width = new Select<>();
@@ -204,7 +206,7 @@ public class MaterialForm extends Div {
 
         // content.add(materialColor);
 
-        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(cover,  materialClass, materialColor, width, widthFact);
+        final HorizontalLayout horizontalLayout2 = new HorizontalLayout(cover, materialClass, materialColor, width, widthFact);
         horizontalLayout2.setWidth("100%");
         horizontalLayout2.setFlexGrow(3, cover, materialClass, materialColor, width, widthFact);
         content.add(horizontalLayout2);
@@ -278,7 +280,7 @@ public class MaterialForm extends Div {
         content.add(factCoefficient);
         used = new NumberField("Израсходовано");
         used.setSuffixComponent(new Span("м"));
-     //   used.setEnabled(false);
+        //   used.setEnabled(false);
         used.setWidth("100%");
         used.setValueChangeMode(ValueChangeMode.EAGER);
         used.setReadOnly(true);
@@ -286,13 +288,13 @@ public class MaterialForm extends Div {
 
         remains = new NumberField("Остаток");
         remains.setSuffixComponent(new Span("м"));
-      //  remains.setEnabled(false);
+        //  remains.setEnabled(false);
         remains.setWidth("100%");
         remains.setReadOnly(true);
-     //   remains.setValueChangeMode(ValueChangeMode.EAGER);
+        //   remains.setValueChangeMode(ValueChangeMode.EAGER);
         length.addValueChangeListener(e -> {
             setPriceOneMetre();
-            if(remains != null && e.getValue()!= null) {
+            if (remains != null && e.getValue() != null) {
                 remains.setValue(Double.valueOf(e.getValue()));
             }
         });
@@ -307,10 +309,32 @@ public class MaterialForm extends Div {
         content.add(horizontalLayout5);
 
 
+         id = new TextField("id");
+     //    content.add(id);
+      //   id.setValue("");
+        // id.setValue("");
+   /*     ZXingVaadinWriter zXingVaadin = new ZXingVaadinWriter();
+        zXingVaadin.setSize(300);
+        zXingVaadin.setValue(manufacturer.getValue());
+        content.add(zXingVaadin.getValue());
+*/
+// Defaults defaults
+       /* Barcode qrcode = new Barcode(
+                id.getValue(),
+                Barcode.Type.qrcode,
+                "200px",
+                "200px");*/
+        //   content.add(qrcode);
+
+
         binder = new BeanValidationBinder<>(Material.class);
 
+        binder.forField(id)
+                .withConverter(new StringToLongConverterNotNull())
+                .bind("id");
 
-        binder.bindInstanceFields(this);
+     //   binder.bindInstanceFields(this);
+
 
         // enable/disable save button while editing
         binder.addStatusChangeListener(event -> {
@@ -354,20 +378,37 @@ public class MaterialForm extends Div {
             }
         });
 
+
+       /* qrcode = createBarcode("");
+
+        final VerticalLayout verticalLayout = new VerticalLayout(qrcode);
+        verticalLayout.setWidth("30%");
+        verticalLayout.add(qrcode);
+
+        final VerticalLayout verticalLayout2 = new VerticalLayout();
+        verticalLayout2.setWidth("70%");
+        verticalLayout2.add(save, discard, delete, cancel);
+
+        final HorizontalLayout horizontalLayout6 = new HorizontalLayout(verticalLayout, verticalLayout2);
+        horizontalLayout6.setWidth("100%");
+        horizontalLayout6.setFlexGrow(2, verticalLayout, verticalLayout2);
+        content.add(horizontalLayout6);
+*/
+
         content.add(save, discard, delete, cancel);
     }
 
-    //  public void setCategories(Collection<Category> categories) {
-    //    category.setItems(categories);
-    //  }
 
-    public void edit(Material Material) {
-        if (Material == null) {
-            Material = new Material();
+
+    public void edit(Material material) {
+        if (material == null) {
+            material = new Material();
         }
-        delete.setVisible(!Material.isNew());
-        currentMaterial = Material;
-        binder.readBean(Material);
+        delete.setVisible(!material.isNew());
+        currentMaterial = material;
+        binder.readBean(material);
+       // qrcode = createBarcode(material.getId().toString());
+
     }
 
     private void setPriceOneTone() {
@@ -400,7 +441,6 @@ public class MaterialForm extends Div {
         } else
             teorCoefficient.setValue(teofCofDouble);
     }
-
 
 
 }

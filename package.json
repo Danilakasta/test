@@ -49,7 +49,8 @@
     "@vaadin/vaadin-upload": "4.2.2",
     "@webcomponents/webcomponentsjs": "^2.2.10",
     "@zxing/library": "^0.18.3",
-    "multiselect-combo-box": "2.4.2"
+    "multiselect-combo-box": "2.4.2",
+    "bwip-js": "2.0.6"
   },
   "devDependencies": {
     "@types/w3c-image-capture": "^1.0.2",
@@ -113,7 +114,8 @@
       "@vaadin/vaadin-grid-pro": "2.0.7",
       "@vaadin/vaadin-shrinkwrap": "15.0.3",
       "@vaadin/vaadin-confirm-dialog": "1.1.6",
-      "@vaadin/vaadin-rich-text-editor": "1.1.1"
+      "@vaadin/vaadin-rich-text-editor": "1.1.1",
+      "bwip-js": "2.0.6"
     },
     "devDependencies": {
       "webpack-babel-multi-target-plugin": "2.3.3",
@@ -129,6 +131,6 @@
       "webpack-merge": "4.2.2",
       "webpack-dev-server": "3.10.3"
     },
-    "hash": "b1498699cd76a2bfbad7bedda35e2277c95c2fc8dab44b940b243e8ae026585a"
+    "hash": "e6cd96ec4a33c05aeff1db2a5c2cf275e57843c0c3ad751464fa2339d9c46347"
   }
 }

@@ -1,12 +1,24 @@
 package com.roofapp.ui.views.materials;
 
 import com.roofapp.backend.dao.roofdb.entity.Material;
+import com.roofapp.ui.views.accounts.AccountDataProvider;
+import com.roofapp.ui.views.accounts.AccountGrid;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
+
+import org.vaadin.barcodes.Barcode;
+import sk.smartbase.component.qrscanner.QrScanner;
 
 import java.util.Comparator;
 
@@ -17,8 +29,60 @@ import java.util.Comparator;
  */
 public class MaterialsGrid extends Grid<Material> {
 
+    private Button openQrCode;
+
+
+    Dialog dialog = new Dialog();
+
+    private Barcode createBarcode(String string) {
+
+        return new Barcode(
+                string,
+                Barcode.Type.qrcode,
+                "300px",
+                "300px");
+    }
+
+
+   private void addBarCodeInfo(Material material){
+       dialog.removeAll();
+
+       VerticalLayout verticalLayoutBarcode = new VerticalLayout();
+       verticalLayoutBarcode.setWidth("50%");
+       verticalLayoutBarcode.add(createBarcode(material.getId().toString()));
+
+       VerticalLayout verticalLayoutInfo = new VerticalLayout();
+       verticalLayoutInfo.setWidth("50%");
+       verticalLayoutInfo.add(new H4("id:"+material.getId().toString()),
+               new H5(material.toString()));
+
+       HorizontalLayout horizontalLayout = new HorizontalLayout();
+       horizontalLayout.add(verticalLayoutBarcode, verticalLayoutInfo);
+
+       dialog.add(horizontalLayout);
+
+   }
+
     public MaterialsGrid() {
         setSizeFull();
+
+        dialog.setWidth("600px");
+        dialog.setHeight("320px");
+
+        addComponentColumn(material -> {
+
+            Button button = new Button("");
+            button.setIcon(VaadinIcon.QRCODE.create());
+            button.addClickListener(event -> {
+                addBarCodeInfo(material);
+                dialog.open();
+            });
+            return button;
+        });
+
+
+        addColumn(Material::getId).setHeader("id")
+                .setFlexGrow(10).setSortable(true).setKey("id").setWidth("100px").setResizable(true);
 
         addColumn(Material::getSerialNumber).setHeader("Порядковый номер")
                 .setFlexGrow(20).setSortable(true).setKey("serialNumber").setWidth("100px").setResizable(true);

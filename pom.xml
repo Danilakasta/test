@@ -46,18 +46,23 @@
             <version>1.0.4</version>
         </dependency>
 
-
-        <!--     <dependency>
-            <groupId>com.wontlost</groupId>
-            <artifactId>zxing-vaadin</artifactId>
+        <dependency>
+            <groupId>org.vaadin.barcodes</groupId>
+            <artifactId>barcode-bwipjs</artifactId>
             <version>1.0.0</version>
         </dependency>
- <dependency>
-         jsoup HTML parser library @ https://jsoup.org/
-        <groupId>org.jsoup</groupId>
-        <artifactId>jsoup</artifactId>
-        <version>1.13.1</version>
-    </dependency>-->
+
+        <!--    <dependency>
+               <groupId>com.wontlost</groupId>
+               <artifactId>zxing-vaadin</artifactId>
+               <version>1.0.1</version>
+           </depey>
+       <!-  <dependency>
+            jsoup HTML parser library @ https://jsoup.org/
+           <groupId>org.jsoup</groupId>
+           <artifactId>jsoup</artifactId>
+           <version>1.13.1</version>
+       </dependency>-->
 
 
         <!-- https://mvnrepository.com/artifact/com.vaadin/vaadin-server

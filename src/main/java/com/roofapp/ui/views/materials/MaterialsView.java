@@ -17,7 +17,7 @@ import com.vaadin.flow.router.*;
 
 /**
  * A view for performing create-read-update-delete operations on products.
- *
+ * <p>
  * See also {@link MateriaslViewLogic} for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
@@ -30,10 +30,10 @@ public class MaterialsView extends HorizontalLayout
     public static final String VIEW_NAME = "Сырье";
 
 
-   private final MaterialService productService;
+    private final MaterialService productService;
 
     private final MaterialsGrid grid;
-   private final MaterialForm form;
+    private final MaterialForm form;
     private TextField filter;
 
     private final MateriaslViewLogic viewLogic = new MateriaslViewLogic(this);
@@ -52,7 +52,7 @@ public class MaterialsView extends HorizontalLayout
         // Allows user to select a single row in the grid.
         grid.asSingleSelect().addValueChangeListener(
                 event -> viewLogic.rowSelected(event.getValue()));
-       form = new MaterialForm(viewLogic,materialService,widthGuideService);
+        form = new MaterialForm(viewLogic, materialService, widthGuideService);
 //        form.setCategories(DataService.get().getAllCategories());
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);
@@ -100,9 +100,9 @@ public class MaterialsView extends HorizontalLayout
 
     /**
      * Shows a temporary popup notification to the user.
-     * 
-     * @see Notification#show(String)
+     *
      * @param msg
+     * @see Notification#show(String)
      */
     public void showNotification(String msg) {
         Notification.show(msg);
@@ -110,7 +110,7 @@ public class MaterialsView extends HorizontalLayout
 
     /**
      * Enables/Disables the new product button.
-     * 
+     *
      * @param enabled
      */
     public void setNewProductEnabled(boolean enabled) {
@@ -127,7 +127,7 @@ public class MaterialsView extends HorizontalLayout
 
     /**
      * Selects a row
-     * 
+     *
      * @param row
      */
     public void selectRow(Material row) {
@@ -136,7 +136,7 @@ public class MaterialsView extends HorizontalLayout
 
     /**
      * Updates a product in the list of products.
-     * 
+     *
      * @param item
      */
     public void updateProduct(Material item) {
@@ -145,7 +145,7 @@ public class MaterialsView extends HorizontalLayout
 
     /**
      * Removes a product from the list of products.
-     * 
+     *
      * @param item
      */
     public void removeProduct(Material item) {
@@ -154,7 +154,7 @@ public class MaterialsView extends HorizontalLayout
 
     /**
      * Displays user a form to edit a Product.
-     * 
+     *
      * @param item
      */
     public void editProduct(Material item) {
@@ -164,7 +164,7 @@ public class MaterialsView extends HorizontalLayout
 
     /**
      * Shows and hides the new product form
-     * 
+     *
      * @param show
      */
     public void showForm(boolean show) {
@@ -174,7 +174,7 @@ public class MaterialsView extends HorizontalLayout
 
     @Override
     public void setParameter(BeforeEvent event,
-            @OptionalParameter String parameter) {
+                             @OptionalParameter String parameter) {
         viewLogic.enter(parameter);
     }
 }

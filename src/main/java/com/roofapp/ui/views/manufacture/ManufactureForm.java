@@ -16,13 +16,10 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
-//import com.wontlost.zxing.Constants;
-//import com.wontlost.zxing.ZXingVaadinReader;
+
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -287,16 +284,13 @@ public class ManufactureForm extends Dialog {
 
     }
 
+    private Button confirmButton;
 
     public void emulateManufactureWork() {
 
         Dialog dialog = new Dialog();
         String result = "ok";
-        try {
-            // result = sendOrderToArduino(item, currentMachine, materialSelect.getValue());
-        }catch (Exception e){
-            Notification.show( "Нет связи со станком!"+result);
-        }
+
      /*  QrScanner qrScanner = new QrScanner(false);
 
         qrScanner.setConsumer(qrCode -> {
@@ -305,56 +299,71 @@ public class ManufactureForm extends Dialog {
             }
         });*/
 
-        QrScanner qrScanner = new QrScanner(true);
-        qrScanner.setFrequency(1);
-        qrScanner.setActive(true);
-        qrScanner.setDebug(true);
-        qrScanner.setShowChangeCamera(true);
-        qrScanner.setVisible(true);
-
-        qrScanner.setConsumer(event -> {
-            if(!event.equalsIgnoreCase(QrScanner.ERROR_DECODING_QR_CODE))
-              //  qrScanner.setActive(false);
-            System.out.println("consumer event value: " + event);
-        });
 
 
-
-/*
-        ZXingVaadinReader zXingVaadin = new ZXingVaadinReader();
+      /*  ZXingVaadinReader zXingVaadin = new ZXingVaadinReader();
         zXingVaadin.setFrom(Constants.From.camera);
         zXingVaadin.setId("video");
         zXingVaadin.setWidth("350");
         zXingVaadin.setStyle("border : 1px solid gray");
 
-        zXingVaadin.addValueChangeListener(event->{
-            log.info(event.toString());
+        zXingVaadin.addValueChangeListener(e->{
+            System.out.println("=QR=:"+e.getValue());
         });
-
-      zXingVaadin.addValueChangeListener(event->{
-                log.info(event.toString());
-        });*
-
-        zXingVaadin.addFocusShortcut(event->{
-            log.info(event);
-        });
-
-        dialog.add(zXingVaadin );
+        zXingVaadin.onEnabledStateChanged(true);
 */
-        dialog.add(qrScanner );
+
+       QrScanner qrScanner = new QrScanner(false);
+        qrScanner.setFrequency(1);
+        qrScanner.setActive(true);
+       // qrScanner.setDebug(true);
+      //  qrScanner.setShowChangeCamera(true);
+        qrScanner.setVisible(true);
+
         dialog.setWidth("1200px");
-        dialog.setHeight("600px");
+        dialog.setHeight("550px");
+        qrScanner.setConsumer(event -> {
+            if (!event.equalsIgnoreCase(QrScanner.ERROR_DECODING_QR_CODE)) {
+                qrScanner.setActive(false);
+                dialog.add(new Span(confirmButton));
+                System.out.println("consumer event value: " + event);
+            }
+        });
+
+    /*   QrScanner qrScanner = new QrScanner(false);
+
+        qrScanner.setConsumer(qrCode -> {
+            if (!"error decoding QR Code".equals(qrCode)) {
+                System.out.println("scanned qr code: " + qrCode);
+                qrScanner.setActive(false);
+                dialog.add(new Span(confirmButton));
+                System.out.println("consumer event value: " + qrCode);
+            }
+            System.out.println("ERR: " + qrCode);
+        });
+*/
+
         dialog.open();
 
-        if(result.equals("ok")) {
-            dialog.add("Задание отправлено! Загрузите бухту, отсканируйте QCode");
+        dialog.add(new Span("Загрузите бухту, отсканируйте QCode"));
+        Div divWithCamera = new Div();
+        divWithCamera.setHeight("200px");
+        divWithCamera.add(qrScanner);
+        dialog.add(divWithCamera);
+        //   dialog.add(zXingVaadin );
+        dialog.setCloseOnEsc(false);
+        dialog.setCloseOnOutsideClick(false);
 
-            dialog.setCloseOnEsc(false);
-            dialog.setCloseOnOutsideClick(false);
-            Button confirmButton = new Button("Загружена", event -> {
+        confirmButton = new Button("Загружена", event -> {
+            try {
+                // result = sendOrderToArduino(item, currentMachine, materialSelect.getValue());
+            } catch (Exception e) {
+                Notification.show("Нет связи со станком!" + result);
+            }
+            if (result.equals("ok")) {
                 dialog.close();
                 Dialog dialog2 = new Dialog();
-                dialog2.add("Станок работает!");
+                dialog2.add("Задание отправлено Станок работает!");
                 dialog2.setCloseOnEsc(false);
                 dialog2.setCloseOnOutsideClick(false);
                 Button confirmButton2 = new Button("Завершить выпуск продукции?", event2 -> {
@@ -376,13 +385,11 @@ public class ManufactureForm extends Dialog {
                 });
                 dialog2.add(confirmButton2);
                 dialog2.open();
-            });
-            dialog.add(confirmButton);
-            dialog.open();
-        }else{
-            dialog.add("Ошибка отправки задания на станок!!!!");
-           dialog.open();
-        }
+            } else {
+                dialog.add("Ошибка отправки задания на станок!!!!");
+            }
+        });
+
 
     }
 
@@ -558,7 +565,7 @@ public class ManufactureForm extends Dialog {
         String url = "http://192.168.0.108:8090/manufactureOrder?" +
                 "id=" + item.getId().toString() +
                 "&count=" + item.getQuantity().toString() +
-                "&lenght=" +item.getHeight().toString() +
+                "&lenght=" + item.getHeight().toString() +
                 "&materialId=" + material.getId();
         return restTemplate.getForObject(url, String.class);
     }

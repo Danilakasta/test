@@ -110,7 +110,7 @@ public class Material extends AbstractEntity {
 
     @Override
     public String toString(){
-        return   "Бухта № "+serialNumber +" Партия- " +party +" Характеристики - " + manufacturer+" "+width +" "+(materialColor!=null?materialColor:"")  +" "+ materialClass+" "+ cover/*+" "+materialClass +" Остаток-"+ remains+
+        return   "Бухта № "+serialNumber +"; Партия- " +party +"; Характеристики - " + manufacturer+" "+width +" "+(materialColor!=null?materialColor:"")  +" "+ materialClass+" "+ cover/*+" "+materialClass +" Остаток-"+ remains+
               " Производимая длина- "+remainInProduction +  " Кол-во- "+countInProduction*/;
     }
 
